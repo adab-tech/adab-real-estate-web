@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PRODUCTION_URL } from "@/lib/domain";
 import { formatPropertyPrice } from "@/lib/format";
 import { siteConfig } from "@/lib/site-config";
 import type { Property } from "@/types/property";
@@ -6,7 +7,7 @@ import type { Property } from "@/types/property";
 export function getSiteUrl(): string {
   const url = process.env.NEXT_PUBLIC_SITE_URL;
   if (url) return url.replace(/\/$/, "");
-  return "https://adab-real-estate-web.vercel.app";
+  return PRODUCTION_URL;
 }
 
 export function absoluteUrl(path: string): string {

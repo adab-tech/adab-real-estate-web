@@ -1,5 +1,10 @@
 # Deployment — Adab Real Estate Web
 
+**Production domain:** [https://adab.ng](https://adab.ng)  
+**Live app host:** Vercel (`adab-real-estate-web`)
+
+---
+
 ## 1. Supabase (database + CMS)
 
 1. Create a project at [supabase.com](https://supabase.com)
@@ -13,70 +18,53 @@
 
 | Variable | Required | Purpose |
 |----------|----------|---------|
+| `NEXT_PUBLIC_SITE_URL` | Yes | `https://adab.ng` — sitemap, OG, JSON-LD |
 | `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Public API key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Recommended | Server inquiry inserts |
-| `NEXT_PUBLIC_SITE_URL` | Yes (prod) | Sitemap, OG tags, JSON-LD |
 
 When Supabase is connected and `properties` is seeded, the site reads listings from the database. If Supabase is unavailable, it falls back to static seed data in `src/data/properties.ts`.
 
 ---
 
-## 2. Vercel (hosting)
+## 2. Vercel (website hosting)
 
-### First deploy
+1. Import `adab-tech/adab-real-estate-web` at [vercel.com/new](https://vercel.com/new)
+2. Framework: **Next.js** (auto-detected)
+3. Add environment variables from `.env.example`
+4. Deploy
 
-1. Go to [vercel.com/new](https://vercel.com/new)
-2. Import `adab-tech/adab-real-estate-web`
-3. Framework preset: **Next.js** (auto-detected)
-4. Add all environment variables from `.env.example`
-5. Deploy
-
-### CLI deploy (optional)
-
-```bash
-npm i -g vercel
-vercel login
-cd adab-real-estate-web
-vercel link
-vercel env pull .env.local
-vercel --prod
-```
+The website does **not** run on traditional shared hosting — only DNS (and optionally email MX) uses your **adab.ng** package.
 
 ---
 
-## 3. Custom domain — adabrealestate.ng
+## 3. Custom domain — adab.ng
 
-### Register the domain
+**Full guide:** [DOMAIN.md](./DOMAIN.md)
 
-Purchase `.ng` or `.com.ng` from a NiRA-accredited registrar (e.g. Whogohost, RegisterAM).
+Quick steps:
 
-### Connect to Vercel
-
-1. Vercel project → **Settings** → **Domains**
-2. Add `adabrealestate.ng` and `www.adabrealestate.ng`
-3. At your registrar, add DNS records Vercel provides:
+1. Vercel → **Settings** → **Domains** → add `adab.ng` and `www.adab.ng`
+2. At your registrar, set DNS:
 
 | Type | Name | Value |
 |------|------|-------|
 | A | `@` | `76.76.21.21` |
 | CNAME | `www` | `cname.vercel-dns.com` |
 
-4. Wait for SSL provisioning (usually minutes)
-5. Set `NEXT_PUBLIC_SITE_URL=https://adabrealestate.ng` in Vercel env vars
-6. Redeploy
+3. Set `NEXT_PUBLIC_SITE_URL=https://adab.ng` in Vercel
+4. Redeploy after DNS validates
 
 ---
 
 ## 4. Post-deploy checklist
 
-- [ ] Homepage loads with featured properties
+- [ ] https://adab.ng loads with featured properties
 - [ ] `/properties` search filters work
 - [ ] Property detail maps render
-- [ ] Contact form saves to `inquiries` table
-- [ ] `/sitemap.xml` and `/robots.txt` accessible
-- [ ] WhatsApp link opens with correct number
-- [ ] Update phone/email in `src/lib/site-config.ts` and redeploy
+- [ ] Contact form saves to `inquiries` table (if Supabase connected)
+- [ ] `/sitemap.xml` lists `adab.ng` URLs
+- [ ] WhatsApp opens **+234 812 827 2287**
 
 ---
 

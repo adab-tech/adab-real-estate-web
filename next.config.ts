@@ -9,6 +9,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.adab.ng" }],
+        destination: "https://adab.ng/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -55,7 +55,8 @@ SEO routes: `/sitemap.xml`, `/robots.txt`
 
 ### CMS & deployment guides
 
-- [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) — Vercel, Supabase, custom domain
+- [docs/DOMAIN.md](docs/DOMAIN.md) — **adab.ng** DNS + Vercel setup
+- [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) — Vercel, Supabase, production
 - [docs/CMS.md](docs/CMS.md) — Manage listings in Supabase Table Editor
 
 ## Configuration
