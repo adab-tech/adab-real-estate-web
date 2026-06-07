@@ -7,6 +7,8 @@ export const siteConfig = {
   location: "Nigeria",
   phone: "+234 XXX XXX XXXX",
   email: "hello@adabrealestate.ng",
+  website:
+    "https://adab-real-estate-agency-adab-techs-projects.vercel.app",
   whatsapp: "https://wa.me/234XXXXXXXXXX",
   logo: "/brand/logo.png",
   logoMark: "/brand/logo-mark.svg",
