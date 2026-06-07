@@ -30,9 +30,16 @@ public/brand/         # Logo, favicon, mark (synced from brand repo)
 
 ## Build phases
 
-1. **Done** — Scaffold, brand theme, layout shell, placeholder pages
-2. **Next** — Property data model, listing cards, inquiry forms → Supabase
-3. **Later** — CMS, search, maps, SEO, analytics
+1. **Done** — Scaffold, brand theme, layout shell
+2. **Done** — Property listings, detail pages, inquiry forms → Supabase
+3. **Next** — Connect Supabase, CMS, search/filters, maps, SEO
+
+### Supabase setup
+
+1. Create a project at [supabase.com](https://supabase.com)
+2. Run `supabase/schema.sql` in the SQL Editor
+3. Copy `.env.example` → `.env.local` and add your keys
+4. Restart `npm run dev` — inquiry forms will persist to `inquiries`
 
 ## Configuration
 

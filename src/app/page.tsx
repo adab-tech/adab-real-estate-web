@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FeaturedProperties } from "@/components/properties/FeaturedProperties";
 import { siteConfig } from "@/lib/site-config";
 
 export default function Home() {
@@ -72,6 +73,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <FeaturedProperties />
     </main>
   );
 }
