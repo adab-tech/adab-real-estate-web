@@ -1,12 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
-import { submitInquiry, type InquiryState } from "@/app/actions/inquiry";
-
-const initialState: InquiryState = {
-  success: false,
-  message: "",
-};
+import { useState } from "react";
+import { siteConfig } from "@/lib/site-config";
 
 type InquiryFormProps = {
   propertyId?: string;
@@ -14,40 +9,89 @@ type InquiryFormProps = {
   source?: "contact" | "property_detail";
 };
 
+type FieldErrors = Record<string, string>;
+
 export function InquiryForm({
   propertyId,
   propertySlug,
   source = "contact",
 }: InquiryFormProps) {
-  const [state, formAction, pending] = useActionState(
-    submitInquiry,
-    initialState,
-  );
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
-  if (state.success) {
+  function validate(form: FormData): FieldErrors {
+    const errors: FieldErrors = {};
+    const name = String(form.get("name") ?? "").trim();
+    const phone = String(form.get("phone") ?? "").trim();
+    const message = String(form.get("message") ?? "").trim();
+
+    if (name.length < 2) errors.name = "Please enter your full name.";
+    if (phone.length < 7) errors.phone = "Please enter a valid phone number.";
+    if (message.length < 10) errors.message = "Please enter a longer message.";
+
+    return errors;
+  }
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const errors = validate(form);
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setError("Please fix the errors below.");
+      setSuccess(false);
+      return;
+    }
+
+    const name = String(form.get("name")).trim();
+    const phone = String(form.get("phone")).trim();
+    const email = String(form.get("email") ?? "").trim();
+    const message = String(form.get("message")).trim();
+
+    const lines = [
+      `Hi Adab, I'd like to get in touch.`,
+      "",
+      `Name: ${name}`,
+      `Phone: ${phone}`,
+      email ? `Email: ${email}` : null,
+      propertySlug ? `Property: ${propertySlug}` : null,
+      `Source: ${source}`,
+      "",
+      message,
+    ].filter(Boolean);
+
+    const whatsappUrl = `${siteConfig.whatsapp}?text=${encodeURIComponent(lines.join("\n"))}`;
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    setFieldErrors({});
+    setError("");
+    setSuccess(true);
+  }
+
+  if (success) {
     return (
       <div
         className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"
         role="status"
       >
-        {state.message}
+        WhatsApp opened with your message. If it did not open, call us at{" "}
+        <a href={`tel:${siteConfig.phone.replace(/\s/g, "")}`} className="font-semibold underline">
+          {siteConfig.phone}
+        </a>
+        .
       </div>
     );
   }
 
   return (
-    <form action={formAction} className="space-y-4" noValidate>
-      {propertyId ? (
-        <input type="hidden" name="propertyId" value={propertyId} />
-      ) : null}
-      {propertySlug ? (
-        <input type="hidden" name="propertySlug" value={propertySlug} />
-      ) : null}
-      <input type="hidden" name="source" value={source} />
-
-      {state.message && !state.success ? (
-        <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
-          {state.message}
+    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+      {error ? (
+        <p
+          className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+          role="alert"
+        >
+          {error}
         </p>
       ) : null}
 
@@ -56,7 +100,7 @@ export function InquiryForm({
         name="name"
         type="text"
         required
-        errors={state.fieldErrors?.name}
+        error={fieldErrors.name}
       />
       <Field
         label="Phone (WhatsApp)"
@@ -64,13 +108,13 @@ export function InquiryForm({
         type="tel"
         placeholder="+234 801 234 5678"
         required
-        errors={state.fieldErrors?.phone}
+        error={fieldErrors.phone}
       />
       <Field
         label="Email (optional)"
         name="email"
         type="email"
-        errors={state.fieldErrors?.email}
+        error={fieldErrors.email}
       />
       <div>
         <label
@@ -91,19 +135,16 @@ export function InquiryForm({
           }
           className="w-full rounded-xl border border-adab-gray-300 px-4 py-3 text-sm text-adab-navy-800 outline-none transition-colors focus:border-adab-gold-500"
         />
-        {state.fieldErrors?.message ? (
-          <p className="mt-1 text-xs text-red-600">
-            {state.fieldErrors.message[0]}
-          </p>
+        {fieldErrors.message ? (
+          <p className="mt-1 text-xs text-red-600">{fieldErrors.message}</p>
         ) : null}
       </div>
 
       <button
         type="submit"
-        disabled={pending}
-        className="w-full rounded-full bg-adab-navy-800 py-3 text-sm font-semibold text-white transition-colors hover:bg-adab-navy-700 disabled:opacity-60"
+        className="w-full rounded-full bg-adab-navy-800 py-3 text-sm font-semibold text-white transition-colors hover:bg-adab-navy-700"
       >
-        {pending ? "Sending…" : "Send inquiry"}
+        Send via WhatsApp
       </button>
     </form>
   );
@@ -115,10 +156,10 @@ type FieldProps = {
   type: string;
   placeholder?: string;
   required?: boolean;
-  errors?: string[];
+  error?: string;
 };
 
-function Field({ label, name, type, placeholder, required, errors }: FieldProps) {
+function Field({ label, name, type, placeholder, required, error }: FieldProps) {
   return (
     <div>
       <label
@@ -135,9 +176,7 @@ function Field({ label, name, type, placeholder, required, errors }: FieldProps)
         required={required}
         className="w-full rounded-xl border border-adab-gray-300 px-4 py-3 text-sm text-adab-navy-800 outline-none transition-colors focus:border-adab-gold-500"
       />
-      {errors?.[0] ? (
-        <p className="mt-1 text-xs text-red-600">{errors[0]}</p>
-      ) : null}
+      {error ? <p className="mt-1 text-xs text-red-600">{error}</p> : null}
     </div>
   );
 }

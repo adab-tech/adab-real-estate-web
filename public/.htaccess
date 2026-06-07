@@ -1,0 +1,23 @@
+# Adab Real Estate — static site (Apache / DirectAdmin)
+
+RewriteEngine On
+
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Redirect www to apex
+RewriteCond %{HTTP_HOST} ^www\.adab\.ng [NC]
+RewriteRule ^ https://adab.ng%{REQUEST_URI} [L,R=301]
+
+# Serve existing files and directories
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Trailing slash for directory-style routes
+RewriteCond %{REQUEST_URI} !/$
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}/index.html -f
+RewriteRule ^ %{REQUEST_URI}/ [L,R=301]
+
+DirectoryIndex index.html

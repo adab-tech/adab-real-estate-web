@@ -41,3 +41,25 @@ export function mapPropertyRow(row: PropertyRow): Property {
     publishedAt: row.published_at,
   };
 }
+
+export function mapPropertyToRow(property: Property): PropertyRow {
+  return {
+    id: property.id,
+    slug: property.slug,
+    title: property.title,
+    description: property.description,
+    type: property.type,
+    category: property.category,
+    price_ngn: property.priceNGN,
+    price_period: property.pricePeriod ?? null,
+    location: property.location,
+    beds: property.beds ?? null,
+    baths: property.baths ?? null,
+    sqm: property.sqm ?? null,
+    features: property.features,
+    images: property.images,
+    status: property.status,
+    featured: property.featured,
+    published_at: property.publishedAt,
+  };
+}

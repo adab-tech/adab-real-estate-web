@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ListingType, PropertyFilters } from "@/types/property";
-import { buildQuery } from "@/components/properties/PropertySearch";
+import { buildQuery } from "@/lib/property-query";
 
 type FilterValue = ListingType | "all";
 

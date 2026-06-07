@@ -2,6 +2,8 @@ import Link from "next/link";
 import { FeaturedProperties } from "@/components/properties/FeaturedProperties";
 import { siteConfig } from "@/lib/site-config";
 
+export const revalidate = 300;
+
 export default function Home() {
   return (
     <main>

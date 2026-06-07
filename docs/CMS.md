@@ -1,66 +1,52 @@
-# CMS Guide — Managing Listings in Supabase
+# CMS Guide — Managing Listings
 
-Adab uses **Supabase Table Editor** as the property CMS. No separate admin panel is required for v1.
+Adab has a built-in **admin panel** at `/admin` for managing property listings. Supabase remains the database; the admin UI is the recommended way to add and edit listings.
 
-## Access
+## Quick start
 
-1. Log in to [supabase.com](https://supabase.com)
-2. Open your project → **Table Editor** → `properties`
+1. Run `supabase/admin-setup.sql` once in the Supabase SQL Editor (policies + image storage).
+2. In Supabase → **Authentication** → **Users** → **Add user** (your email + password).
+3. Open the user → **Raw App Meta Data** → set: `{ "role": "admin" }`
+4. Go to [https://adab.ng/admin/login](https://adab.ng/admin/login) and sign in.
 
-## Adding a listing
+## Admin panel
 
-| Column | Example | Notes |
-|--------|---------|-------|
-| `id` | `prop-009` | Unique text ID |
-| `slug` | `2-bed-flat-ikeja` | URL-safe, used in `/properties/[slug]` |
-| `title` | `2-Bedroom Flat in Ikeja` | Display title |
-| `description` | Full paragraph | Shown on detail page |
-| `type` | `sale` or `rent` | |
-| `category` | `apartment`, `house`, `duplex`, `land`, `commercial` | |
-| `price_ngn` | `45000000` | Integer NGN amount |
-| `price_period` | `year` or `month` | Rent only; leave null for sale |
-| `location` | JSON (see below) | Must include `lat` and `lng` |
-| `beds` / `baths` / `sqm` | Numbers | Optional for land |
-| `features` | JSON array | `["Pool", "Security"]` |
-| `images` | JSON array | Full image URLs |
-| `status` | `available` | Or `under_offer`, `sold`, `rented` |
-| `featured` | `true` / `false` | Shows on homepage |
-| `published_at` | `2026-06-06` | Date |
+| URL | Purpose |
+|-----|---------|
+| `/admin/login` | Sign in |
+| `/admin/properties` | List all listings |
+| `/admin/properties/new` | Add a listing |
+| `/admin/properties/[id]/edit` | Edit or delete a listing |
+| `/admin/inquiries` | View recent leads |
 
-### Location JSON example
+After saving, the live site refreshes **immediately** (no 5-minute wait).
 
-```json
-{
-  "city": "Lagos",
-  "area": "Ikeja GRA",
-  "state": "Lagos",
-  "address": "Obafemi Awolowo Way",
-  "lat": 6.6018,
-  "lng": 3.3515
-}
-```
+## Listing fields
 
-## Viewing inquiries
-
-**Table Editor** → `inquiries` — all form submissions from the website.
-
-Columns include `name`, `phone`, `email`, `message`, `property_slug`, and `source` (`contact` or `property_detail`).
-
-## Cache / publish timing
-
-Property pages revalidate every **5 minutes** (`revalidate = 300`). New or edited listings appear on the live site within that window after saving in Supabase.
-
-For immediate updates after urgent edits, trigger a redeploy in Vercel or wait for the revalidation window.
+| Field | Notes |
+|-------|-------|
+| **Title** | Name shown on the site |
+| **URL slug** | Auto-generated from title; used in `/properties/[slug]` |
+| **Description** | Full text on the detail page |
+| **Type** | `sale` or `rent` |
+| **Category** | apartment, house, duplex, land, commercial |
+| **Price (NGN)** | Integer amount |
+| **Rent period** | year or month (rent only) |
+| **Location** | City, area, state, optional address, lat/lng |
+| **Features** | One per line |
+| **Images** | Upload via the form, or paste URLs one per line |
+| **Status** | available, under_offer, sold, rented |
+| **Featured** | Shows on homepage when available |
+| **Published date** | Controls sort order on `/properties` |
 
 ## Images
 
-Upload property photos to:
+Upload photos in the admin form (stored in Supabase **property-images** bucket), or paste external URLs (e.g. Unsplash).
 
-- Supabase **Storage** (create a `property-images` bucket, public read), or
-- Cloudinary / any CDN
+## Fallback (advanced)
 
-Paste the public URLs into the `images` JSON array.
+If the `properties` table is empty or Supabase is unavailable, the public site falls back to `src/data/properties.ts`.
 
-## Fallback data
+## Legacy: Supabase Table Editor
 
-If the `properties` table is empty or Supabase is down, the site serves listings from `src/data/properties.ts` automatically.
+You can still edit rows directly in Supabase **Table Editor** → `properties`, but the admin panel is easier and triggers instant site refresh.

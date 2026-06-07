@@ -1,7 +1,8 @@
 # Deployment — Adab Real Estate Web
 
 **Production domain:** [https://adab.ng](https://adab.ng)  
-**Live app host:** Vercel (`adab-real-estate-web`)
+**Primary host:** HOSTAFRICA / DomainKing (`public_html` static upload) — see [HOSTING.md](./HOSTING.md)  
+**Optional backup:** Vercel (`adab-real-estate-web`)
 
 ---
 
@@ -34,7 +35,7 @@ When Supabase is connected and `properties` is seeded, the site reads listings f
 3. Add environment variables from `.env.example`
 4. Deploy
 
-The website does **not** run on traditional shared hosting — only DNS (and optionally email MX) uses your **adab.ng** package.
+For **shared hosting**, run `npm run build` and upload the `out/` folder — see [HOSTING.md](./HOSTING.md). Vercel is optional when you do not use hosting.
 
 ---
 

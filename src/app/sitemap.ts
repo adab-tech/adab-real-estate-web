@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { getAllPropertySlugs } from "@/lib/properties";
 import { getSiteUrl } from "@/lib/seo";
 
+export const dynamic = "force-static";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl();
   const now = new Date();
