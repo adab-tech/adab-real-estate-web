@@ -33,7 +33,8 @@ public/brand/         # Logo, favicon, mark (synced from brand repo)
 1. **Done** — Scaffold, brand theme, layout shell
 2. **Done** — Property listings, detail pages, inquiry forms → Supabase
 3. **Done** — Search filters, Google Maps, structured data, sitemap, Vercel config
-4. **Next** — Deploy to Vercel, connect Supabase, CMS
+4. **Done** — Supabase CMS, services pages, deployment docs
+5. **Next** — Production deploy + live Supabase keys + custom domain
 
 ### Supabase setup
 
@@ -51,6 +52,11 @@ public/brand/         # Logo, favicon, mark (synced from brand repo)
 5. Deploy — Vercel auto-detects Next.js
 
 SEO routes: `/sitemap.xml`, `/robots.txt`
+
+### CMS & deployment guides
+
+- [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) — Vercel, Supabase, custom domain
+- [docs/CMS.md](docs/CMS.md) — Manage listings in Supabase Table Editor
 
 ## Configuration
 

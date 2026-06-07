@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { getAllPropertySlugs } from "@/lib/properties";
 import { getSiteUrl } from "@/lib/seo";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl();
   const now = new Date();
 
@@ -34,7 +34,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const propertyRoutes: MetadataRoute.Sitemap = getAllPropertySlugs().map(
+  const slugs = await getAllPropertySlugs();
+  const propertyRoutes: MetadataRoute.Sitemap = slugs.map(
     (slug) => ({
       url: `${base}/properties/${slug}`,
       lastModified: now,
@@ -43,5 +44,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
-  return [...staticRoutes, ...propertyRoutes];
+  const serviceRoutes: MetadataRoute.Sitemap = [
+    "buy",
+    "sell",
+    "rent",
+    "property-management",
+  ].map((slug) => ({
+    url: `${base}/services/${slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...serviceRoutes, ...propertyRoutes];
 }

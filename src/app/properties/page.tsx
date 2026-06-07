@@ -7,6 +7,8 @@ import {
   parsePropertySearchParams,
 } from "@/lib/properties";
 
+export const revalidate = 300;
+
 export const metadata = {
   title: "Properties",
   description:
@@ -22,7 +24,7 @@ export default async function PropertiesPage({
 }: PropertiesPageProps) {
   const params = await searchParams;
   const filters = parsePropertySearchParams(params);
-  const listings = filterProperties(filters);
+  const listings = await filterProperties(filters);
 
   return (
     <main>

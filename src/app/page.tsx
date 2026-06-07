@@ -44,24 +44,33 @@ export default function Home() {
             End-to-end real estate services for the Nigerian market
           </p>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {[
             {
               title: "Buy",
               desc: "Discover verified homes, apartments, and land with local market insight.",
+              href: "/services/buy",
             },
             {
               title: "Rent",
               desc: "Short and long-term rentals across Lagos, Abuja, Port Harcourt, and beyond.",
+              href: "/services/rent",
             },
             {
               title: "Sell",
               desc: "List your property with professional marketing and qualified buyer leads.",
+              href: "/services/sell",
+            },
+            {
+              title: "Manage",
+              desc: "Full property management — tenants, maintenance, and rent collection.",
+              href: "/services/property-management",
             },
           ].map((item) => (
-            <article
+            <Link
               key={item.title}
-              className="rounded-2xl border border-adab-gray-300 bg-white p-6 shadow-[0_4px_24px_rgba(27,42,74,0.08)]"
+              href={item.href}
+              className="rounded-2xl border border-adab-gray-300 bg-white p-6 shadow-[0_4px_24px_rgba(27,42,74,0.08)] transition-shadow hover:shadow-[0_8px_32px_rgba(27,42,74,0.12)]"
             >
               <h3 className="font-[family-name:var(--font-display)] text-xl font-semibold text-adab-navy-800">
                 {item.title}
@@ -69,7 +78,7 @@ export default function Home() {
               <p className="mt-3 text-sm leading-relaxed text-adab-gray-500">
                 {item.desc}
               </p>
-            </article>
+            </Link>
           ))}
         </div>
       </section>

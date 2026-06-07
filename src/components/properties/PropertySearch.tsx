@@ -18,8 +18,8 @@ function buildQuery(filters: PropertyFilters): string {
   return qs ? `?${qs}` : "";
 }
 
-export function PropertySearch({ filters }: PropertySearchProps) {
-  const cities = getPropertyCities();
+export async function PropertySearch({ filters }: PropertySearchProps) {
+  const cities = await getPropertyCities();
 
   return (
     <form

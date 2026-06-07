@@ -2,8 +2,8 @@ import Link from "next/link";
 import { PropertyGrid } from "@/components/properties/PropertyGrid";
 import { getFeaturedProperties } from "@/lib/properties";
 
-export function FeaturedProperties() {
-  const featured = getFeaturedProperties(3);
+export async function FeaturedProperties() {
+  const featured = await getFeaturedProperties(3);
 
   return (
     <section className="bg-adab-cream py-16">

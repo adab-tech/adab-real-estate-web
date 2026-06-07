@@ -1,29 +1,52 @@
-import { properties } from "@/data/properties";
+import { cache } from "react";
+import { properties as staticProperties } from "@/data/properties";
+import {
+  fetchPropertiesFromSupabase,
+  fetchPropertyBySlugFromSupabase,
+} from "@/lib/supabase/properties";
 import type { ListingType, Property, PropertyFilters } from "@/types/property";
 
-export function getAllProperties(): Property[] {
-  return [...properties].sort(
+function sortProperties(list: Property[]): Property[] {
+  return [...list].sort(
     (a, b) =>
       new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
   );
 }
 
-export function getFeaturedProperties(limit = 3): Property[] {
-  return getAllProperties()
+function getStaticProperties(): Property[] {
+  return sortProperties(staticProperties);
+}
+
+export const getAllProperties = cache(async (): Promise<Property[]> => {
+  const fromDb = await fetchPropertiesFromSupabase();
+  if (fromDb?.length) return fromDb;
+  return getStaticProperties();
+});
+
+export async function getFeaturedProperties(limit = 3): Promise<Property[]> {
+  const all = await getAllProperties();
+  return all
     .filter((p) => p.featured && p.status === "available")
     .slice(0, limit);
 }
 
-export function getPropertyBySlug(slug: string): Property | undefined {
-  return properties.find((p) => p.slug === slug);
+export async function getPropertyBySlug(
+  slug: string,
+): Promise<Property | undefined> {
+  const fromDb = await fetchPropertyBySlugFromSupabase(slug);
+  if (fromDb) return fromDb;
+  return staticProperties.find((p) => p.slug === slug);
 }
 
-export function getPropertyCities(): string[] {
-  return [...new Set(properties.map((p) => p.location.city))].sort();
+export async function getPropertyCities(): Promise<string[]> {
+  const all = await getAllProperties();
+  return [...new Set(all.map((p) => p.location.city))].sort();
 }
 
-export function filterProperties(filters: PropertyFilters): Property[] {
-  let result = getAllProperties();
+export async function filterProperties(
+  filters: PropertyFilters,
+): Promise<Property[]> {
+  let result = await getAllProperties();
 
   if (filters.type && filters.type !== "all") {
     result = result.filter((p) => p.type === filters.type);
@@ -48,13 +71,9 @@ export function filterProperties(filters: PropertyFilters): Property[] {
   return result;
 }
 
-/** @deprecated Use filterProperties */
-export function getPropertiesByType(type?: ListingType | "all"): Property[] {
-  return filterProperties({ type: type ?? "all" });
-}
-
-export function getAllPropertySlugs(): string[] {
-  return properties.map((p) => p.slug);
+export async function getAllPropertySlugs(): Promise<string[]> {
+  const all = await getAllProperties();
+  return all.map((p) => p.slug);
 }
 
 export function parsePropertySearchParams(
@@ -74,4 +93,11 @@ export function parsePropertySearchParams(
     maxPrice: maxPrice && !Number.isNaN(maxPrice) ? maxPrice : undefined,
     beds: beds && !Number.isNaN(beds) ? beds : undefined,
   };
+}
+
+/** @deprecated Use filterProperties */
+export async function getPropertiesByType(
+  type?: ListingType | "all",
+): Promise<Property[]> {
+  return filterProperties({ type: type ?? "all" });
 }

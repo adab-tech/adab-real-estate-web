@@ -16,17 +16,20 @@ import {
 import { buildListingJsonLd, buildPropertyMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
 
+export const revalidate = 300;
+
 type PropertyDetailPageProps = {
   params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
-  return getAllPropertySlugs().map((slug) => ({ slug }));
+  const slugs = await getAllPropertySlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PropertyDetailPageProps) {
   const { slug } = await params;
-  const property = getPropertyBySlug(slug);
+  const property = await getPropertyBySlug(slug);
   if (!property) return { title: "Property not found" };
   return buildPropertyMetadata(property);
 }
@@ -35,7 +38,7 @@ export default async function PropertyDetailPage({
   params,
 }: PropertyDetailPageProps) {
   const { slug } = await params;
-  const property = getPropertyBySlug(slug);
+  const property = await getPropertyBySlug(slug);
 
   if (!property) notFound();
 
