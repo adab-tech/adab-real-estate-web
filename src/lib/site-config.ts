@@ -5,11 +5,10 @@ export const siteConfig = {
   description:
     "Adab Real Estate Agency helps you buy, sell, and rent property across Nigeria with trusted local expertise.",
   location: "Nigeria",
-  phone: "+234 XXX XXX XXXX",
+  phone: "+234 812 827 2287",
   email: "hello@adabrealestate.ng",
-  website:
-    "https://adab-real-estate-agency-adab-techs-projects.vercel.app",
-  whatsapp: "https://wa.me/234XXXXXXXXXX",
+  website: "https://adab-real-estate-web.vercel.app",
+  whatsapp: "https://wa.me/2348128272287",
   logo: "/brand/logo.png",
   logoMark: "/brand/logo-mark.svg",
   favicon: "/brand/favicon.svg",

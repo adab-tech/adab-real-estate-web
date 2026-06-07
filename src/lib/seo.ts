@@ -6,7 +6,7 @@ import type { Property } from "@/types/property";
 export function getSiteUrl(): string {
   const url = process.env.NEXT_PUBLIC_SITE_URL;
   if (url) return url.replace(/\/$/, "");
-  return "https://adab-real-estate-agency-adab-techs-projects.vercel.app";
+  return "https://adab-real-estate-web.vercel.app";
 }
 
 export function absoluteUrl(path: string): string {
