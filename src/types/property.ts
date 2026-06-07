@@ -18,6 +18,16 @@ export type PropertyLocation = {
   area: string;
   state: string;
   address?: string;
+  lat: number;
+  lng: number;
+};
+
+export type PropertyFilters = {
+  type?: ListingType | "all";
+  city?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  beds?: number;
 };
 
 export type Property = {

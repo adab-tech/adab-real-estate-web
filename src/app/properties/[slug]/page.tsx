@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { InquiryForm } from "@/components/inquiry/InquiryForm";
+import { PropertyMap } from "@/components/properties/PropertyMap";
+import { JsonLd } from "@/components/seo/JsonLd";
 import {
   categoryLabel,
   formatLocation,
@@ -11,6 +13,7 @@ import {
   getAllPropertySlugs,
   getPropertyBySlug,
 } from "@/lib/properties";
+import { buildListingJsonLd, buildPropertyMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
 
 type PropertyDetailPageProps = {
@@ -25,10 +28,7 @@ export async function generateMetadata({ params }: PropertyDetailPageProps) {
   const { slug } = await params;
   const property = getPropertyBySlug(slug);
   if (!property) return { title: "Property not found" };
-  return {
-    title: property.title,
-    description: property.description,
-  };
+  return buildPropertyMetadata(property);
 }
 
 export default async function PropertyDetailPage({
@@ -46,6 +46,7 @@ export default async function PropertyDetailPage({
 
   return (
     <main>
+      <JsonLd data={buildListingJsonLd(property)} />
       <div className="border-b border-adab-gray-300 bg-white">
         <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6 lg:px-8">
           <Link
@@ -118,6 +119,10 @@ export default async function PropertyDetailPage({
                     </li>
                   ))}
                 </ul>
+              </div>
+
+              <div className="mt-10">
+                <PropertyMap property={property} />
               </div>
             </div>
           </div>

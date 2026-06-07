@@ -1,5 +1,6 @@
 import Link from "next/link";
-import type { ListingType } from "@/types/property";
+import type { ListingType, PropertyFilters } from "@/types/property";
+import { buildQuery } from "@/components/properties/PropertySearch";
 
 type FilterValue = ListingType | "all";
 
@@ -11,23 +12,28 @@ const filters: { label: string; value: FilterValue }[] = [
 
 type PropertyFilterProps = {
   current?: string;
+  searchFilters?: PropertyFilters;
 };
 
-export function PropertyFilter({ current = "all" }: PropertyFilterProps) {
+export function PropertyFilter({
+  current = "all",
+  searchFilters = {},
+}: PropertyFilterProps) {
   const active = filters.some((f) => f.value === current) ? current : "all";
 
   return (
     <div className="flex flex-wrap gap-2" role="tablist" aria-label="Filter by listing type">
       {filters.map((filter) => {
         const isActive = active === filter.value;
+        const href =
+          filter.value === "all"
+            ? `/properties${buildQuery({ ...searchFilters, type: "all" })}`
+            : `/properties${buildQuery({ ...searchFilters, type: filter.value })}`;
+
         return (
           <Link
             key={filter.value}
-            href={
-              filter.value === "all"
-                ? "/properties"
-                : `/properties?type=${filter.value}`
-            }
+            href={href}
             role="tab"
             aria-selected={isActive}
             className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${

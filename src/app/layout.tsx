@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
-import { siteConfig } from "@/lib/site-config";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { buildDefaultMetadata, buildOrganizationJsonLd } from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -16,16 +17,7 @@ const plusJakarta = Plus_Jakarta_Sans({
   weight: ["600", "700"],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: siteConfig.name,
-    template: `%s | ${siteConfig.shortName}`,
-  },
-  description: siteConfig.description,
-  icons: {
-    icon: siteConfig.favicon,
-  },
-};
+export const metadata: Metadata = buildDefaultMetadata();
 
 export default function RootLayout({
   children,
@@ -38,6 +30,7 @@ export default function RootLayout({
       className={`${inter.variable} ${plusJakarta.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-adab-cream text-adab-navy-900">
+        <JsonLd data={buildOrganizationJsonLd()} />
         <Header />
         <div className="flex flex-1 flex-col">{children}</div>
         <Footer />
