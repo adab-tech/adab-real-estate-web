@@ -34,7 +34,10 @@ public/brand/         # Logo, favicon, mark (synced from brand repo)
 2. **Done** — Property listings, detail pages, inquiry forms → Supabase
 3. **Done** — Search filters, Google Maps, structured data, sitemap, Vercel config
 4. **Done** — Supabase CMS, services pages, deployment docs
-5. **Next** — Production deploy + live Supabase keys + custom domain
+5. **Done** — Lister portal at `/portal` (separate from `/admin` CMS)
+6. **Next** — Run `supabase/portal-schema.sql` on production Supabase if not already applied
+
+**Canonical deploy:** this repo → Vercel → adab.ng. The `adab-ng-site` static export is not deployed. See [docs/CANONICAL.md](docs/CANONICAL.md).
 
 ### Supabase setup
 

@@ -1,0 +1,100 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { formatNaira, statusLabel } from "@/lib/portal/format";
+import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+
+type Listing = {
+  id: string;
+  slug: string;
+  title: string;
+  type: string;
+  status: string;
+  price_ngn: number;
+  location: {
+    area?: string;
+    city?: string;
+    state?: string;
+  };
+  rejection_reason?: string | null;
+};
+
+export function DashboardListings() {
+  const [listings, setListings] = useState<Listing[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function load() {
+      const client = createSupabaseBrowserClient();
+      const session = await client.auth.getSession();
+      if (!session.data.session) {
+        window.location.href = "/portal/login";
+        return;
+      }
+
+      const result = await client
+        .from("properties")
+        .select(
+          "id, slug, title, type, status, price_ngn, location, rejection_reason, created_at, updated_at",
+        )
+        .order("updated_at", { ascending: false });
+
+      if (result.error) {
+        setError(result.error.message);
+        setListings([]);
+        return;
+      }
+
+      setListings(result.data ?? []);
+    }
+
+    load();
+  }, []);
+
+  if (listings === null) {
+    return (
+      <p className="text-sm text-adab-gray-500">Loading listings…</p>
+    );
+  }
+
+  if (error) {
+    return <div className="portal-alert portal-alert-error">{error}</div>;
+  }
+
+  if (!listings.length) {
+    return (
+      <p className="text-sm text-adab-gray-500">
+        No listings yet. Create your first property.
+      </p>
+    );
+  }
+
+  return (
+    <>
+      {listings.map((item) => {
+        const place = [item.location?.area, item.location?.city, item.location?.state]
+          .filter(Boolean)
+          .join(", ");
+
+        return (
+          <div className="portal-listing-row" key={item.id}>
+            <div>
+              <p className="font-semibold text-adab-navy-800">{item.title}</p>
+              <p className="text-sm text-adab-gray-500">
+                {place} · {formatNaira(item.price_ngn)}
+              </p>
+              {item.rejection_reason && (
+                <p className="mt-1 text-xs text-red-700">
+                  Rejected: {item.rejection_reason}
+                </p>
+              )}
+            </div>
+            <span className={`portal-badge portal-badge-${item.status}`}>
+              {statusLabel(item.status)}
+            </span>
+          </div>
+        );
+      })}
+    </>
+  );
+}

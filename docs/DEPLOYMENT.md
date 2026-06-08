@@ -1,8 +1,10 @@
 # Deployment — Adab Real Estate Web
 
 **Production domain:** [https://adab.ng](https://adab.ng)  
-**Primary host:** HOSTAFRICA / DomainKing (`public_html` static upload) — see [HOSTING.md](./HOSTING.md)  
-**Optional backup:** Vercel (`adab-real-estate-web`)
+**Canonical repo:** [adab-tech/adab-real-estate-web](https://github.com/adab-tech/adab-real-estate-web)  
+**Vercel project:** [adab-real-estate-web.vercel.app](https://adab-real-estate-web.vercel.app)
+
+> The static export folder `adab-ng-site` is **not** the deploy target. See [CANONICAL.md](./CANONICAL.md).
 
 ---
 
@@ -12,6 +14,7 @@
 2. Open **SQL Editor** and run, in order:
    - `supabase/schema.sql`
    - `supabase/seed.sql`
+   - `supabase/portal-schema.sql` (lister portal — profiles, RLS, image storage)
 3. Copy **Project URL** and **anon key** from Settings → API
 4. Optional: copy **service_role** key for server-side writes
 

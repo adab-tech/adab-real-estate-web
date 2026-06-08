@@ -1,4 +1,5 @@
 import { formatLocation } from "@/lib/format";
+import { NIGERIA_MAP_CENTER } from "@/lib/portal/constants";
 import type { Property } from "@/types/property";
 
 type PropertyMapProps = {
@@ -6,11 +7,14 @@ type PropertyMapProps = {
 };
 
 export function PropertyMap({ property }: PropertyMapProps) {
-  const { lat, lng } = property.location;
+  const hasCoords = Boolean(property.location.lat && property.location.lng);
+  const lat = property.location.lat || NIGERIA_MAP_CENTER.lat;
+  const lng = property.location.lng || NIGERIA_MAP_CENTER.lng;
+  const zoom = hasCoords ? 14 : NIGERIA_MAP_CENTER.zoom;
   const label = encodeURIComponent(
     `${property.title}, ${formatLocation(property.location)}`,
   );
-  const embedUrl = `https://maps.google.com/maps?q=${lat},${lng}(${label})&z=14&output=embed`;
+  const embedUrl = `https://maps.google.com/maps?q=${lat},${lng}(${label})&z=${zoom}&output=embed`;
 
   return (
     <section aria-label="Property location map">

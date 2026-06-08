@@ -13,12 +13,40 @@ export type PropertyRow = {
   beds: number | null;
   baths: number | null;
   sqm: number | null;
-  features: string[];
-  images: string[];
-  status: Property["status"];
+  features: string[] | unknown;
+  images: string[] | unknown;
+  status: string;
   featured: boolean;
-  published_at: string;
+  published_at: string | null;
 };
+
+function normalizeFeatures(value: PropertyRow["features"]): string[] {
+  if (Array.isArray(value)) return value.map(String);
+  return [];
+}
+
+function normalizeImages(value: PropertyRow["images"]): string[] {
+  if (Array.isArray(value)) return value.map(String);
+  return [];
+}
+
+function normalizeStatus(status: string): Property["status"] {
+  if (status === "published") return "available";
+  if (
+    status === "available" ||
+    status === "under_offer" ||
+    status === "sold" ||
+    status === "rented"
+  ) {
+    return status;
+  }
+  return "available";
+}
+
+function normalizePublishedAt(value: string | null): string {
+  if (!value) return new Date().toISOString().slice(0, 10);
+  return value.slice(0, 10);
+}
 
 export function mapPropertyRow(row: PropertyRow): Property {
   return {
@@ -34,11 +62,11 @@ export function mapPropertyRow(row: PropertyRow): Property {
     beds: row.beds ?? undefined,
     baths: row.baths ?? undefined,
     sqm: row.sqm ?? undefined,
-    features: row.features ?? [],
-    images: row.images ?? [],
-    status: row.status,
+    features: normalizeFeatures(row.features),
+    images: normalizeImages(row.images),
+    status: normalizeStatus(row.status),
     featured: row.featured,
-    publishedAt: row.published_at,
+    publishedAt: normalizePublishedAt(row.published_at),
   };
 }
 

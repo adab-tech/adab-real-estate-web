@@ -1,0 +1,203 @@
+.portal-shell {
+  min-height: calc(100vh - 4rem);
+}
+
+.portal-card {
+  border-radius: 1rem;
+  border: 1px solid var(--adab-gray-300);
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(27, 42, 74, 0.08);
+}
+
+.portal-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--adab-navy-800);
+}
+
+.portal-input,
+.portal-select,
+.portal-textarea {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid var(--adab-gray-300);
+  padding: 0.65rem 0.9rem;
+  font-size: 0.95rem;
+  color: var(--adab-navy-900);
+  background: #fff;
+}
+
+.portal-input:focus,
+.portal-select:focus,
+.portal-textarea:focus {
+  outline: none;
+  border-color: var(--adab-gold-500);
+}
+
+.portal-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.portal-btn-primary {
+  background: var(--adab-gold-500);
+  color: var(--adab-navy-900);
+}
+
+.portal-btn-primary:hover {
+  background: var(--adab-gold-400);
+}
+
+.portal-btn-secondary {
+  background: var(--adab-navy-800);
+  color: #fff;
+}
+
+.portal-btn-secondary:hover {
+  background: var(--adab-navy-700);
+}
+
+.portal-btn-ghost {
+  border: 1px solid var(--adab-gray-300);
+  color: var(--adab-navy-800);
+  background: #fff;
+}
+
+.portal-alert {
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+
+.portal-alert-error {
+  background: #fef2f2;
+  border: 1px solid #ffcaca;
+  color: #bf000f;
+}
+
+.portal-alert-success {
+  background: #f0fdf4;
+  border: 1px solid #b9f8cf;
+  color: #016630;
+}
+
+.portal-suggestions {
+  margin-top: 0.25rem;
+  border: 1px solid var(--adab-gray-300);
+  border-radius: 0.75rem;
+  background: #fff;
+  overflow: hidden;
+}
+
+.portal-suggestions button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.875rem;
+  border: 0;
+  background: #fff;
+  color: var(--adab-navy-800);
+  cursor: pointer;
+}
+
+.portal-suggestions button:hover {
+  background: var(--adab-cream);
+}
+
+.portal-listing-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--adab-gray-300);
+}
+
+.portal-badge {
+  display: inline-block;
+  border-radius: 9999px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  background: var(--adab-cream);
+  color: var(--adab-navy-800);
+}
+
+.portal-badge-pending_review {
+  background: #fff7e6;
+  color: #8a6d1d;
+}
+
+.portal-badge-published {
+  background: #f0fdf4;
+  color: #016630;
+}
+
+.portal-badge-rejected {
+  background: #fef2f2;
+  color: #bf000f;
+}
+
+.portal-image-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.portal-image-preview img {
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid var(--adab-gray-300);
+}
+
+.portal-admin-card {
+  display: grid;
+  gap: 1rem;
+  border-radius: 1rem;
+  border: 1px solid var(--adab-gray-300);
+  background: #fff;
+  padding: 1rem;
+  box-shadow: 0 4px 24px rgba(27, 42, 74, 0.08);
+}
+
+@media (min-width: 640px) {
+  .portal-admin-card {
+    grid-template-columns: 10rem 1fr;
+  }
+}
+
+.portal-admin-thumb {
+  width: 100%;
+  height: 8rem;
+  object-fit: cover;
+  border-radius: 0.75rem;
+}
+
+.portal-admin-thumb-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--adab-cream);
+  color: var(--adab-gray-500);
+  font-size: 0.75rem;
+}
+
+.adab-nigeria-flag img {
+  display: block;
+  height: 3.5rem;
+  width: auto;
+}

@@ -66,8 +66,24 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-white/10 pt-6 text-center text-xs text-white/50">
-          © {year} {siteConfig.name}. All rights reserved.
+        <div className="mt-10 border-t border-white/10 pt-8">
+          <div
+            className="adab-nigeria-flag mb-4"
+            role="img"
+            aria-label="Flag of Nigeria"
+          >
+            <Image
+              src="/brand/nigeria-flag.svg"
+              alt=""
+              width={160}
+              height={56}
+              decoding="async"
+            />
+          </div>
+          <p className="text-sm text-white/70">{siteConfig.tagline}</p>
+          <p className="mt-6 text-center text-xs text-white/50">
+            © {year} {siteConfig.name}. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

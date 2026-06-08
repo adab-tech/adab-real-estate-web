@@ -1,6 +1,21 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+const PORTAL_PUBLIC = new Set([
+  "/portal",
+  "/portal/login",
+  "/portal/register",
+  "/portal/verify-email",
+]);
+
+function isPortalProtected(pathname: string): boolean {
+  return (
+    pathname.startsWith("/portal") &&
+    !PORTAL_PUBLIC.has(pathname) &&
+    !pathname.startsWith("/portal/verify-email")
+  );
+}
+
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -30,6 +45,25 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
+
+  if (isPortalProtected(pathname)) {
+    if (!user) {
+      const loginUrl = request.nextUrl.clone();
+      loginUrl.pathname = "/portal/login";
+      loginUrl.searchParams.set("next", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    if (!user.email_confirmed_at) {
+      const verifyUrl = request.nextUrl.clone();
+      verifyUrl.pathname = "/portal/verify-email";
+      verifyUrl.searchParams.set("reason", "confirm");
+      return NextResponse.redirect(verifyUrl);
+    }
+
+    return response;
+  }
+
   const isLogin = pathname === "/admin/login";
   const isAdminRoute = pathname.startsWith("/admin");
 
@@ -61,5 +95,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/portal/:path*"],
 };

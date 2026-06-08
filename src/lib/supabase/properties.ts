@@ -9,6 +9,7 @@ export async function fetchPropertiesFromSupabase(): Promise<Property[] | null> 
   const { data, error } = await supabase
     .from("properties")
     .select("*")
+    .in("status", ["published", "available"])
     .order("published_at", { ascending: false });
 
   if (error) {
@@ -31,6 +32,7 @@ export async function fetchPropertyBySlugFromSupabase(
     .from("properties")
     .select("*")
     .eq("slug", slug)
+    .in("status", ["published", "available"])
     .maybeSingle();
 
   if (error) {

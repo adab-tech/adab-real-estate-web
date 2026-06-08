@@ -38,3 +38,9 @@ body {
   color: var(--foreground);
   font-family: var(--font-body), system-ui, sans-serif;
 }
+
+.adab-nigeria-flag img {
+  display: block;
+  height: 3.5rem;
+  width: auto;
+}
