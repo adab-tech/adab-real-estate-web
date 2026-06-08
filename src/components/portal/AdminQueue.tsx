@@ -1,6 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import {
+  approveListing,
+  rejectListing,
+} from "@/app/portal/admin/actions";
 import { formatNaira } from "@/lib/portal/format";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
@@ -71,45 +75,43 @@ export function AdminQueue() {
   }, [load]);
 
   async function reviewListing(id: string, action: "approve" | "reject") {
-    const client = createSupabaseBrowserClient();
-    let reason: string | undefined;
-
     if (action === "reject") {
       const input = window.prompt(
         "Reason for rejection (shown to lister):",
         "Please update photos and property details.",
       );
       if (input === null) return;
-      reason = input;
-    }
 
-    const payload =
-      action === "approve"
-        ? { status: "published" }
-        : {
-            status: "rejected",
-            rejection_reason:
-              reason || "Listing needs changes before approval.",
-          };
+      const result = await rejectListing(id, input);
+      if (result.error) {
+        setMessage({ type: "error", text: result.error });
+        return;
+      }
 
-    const result = await client
-      .from("properties")
-      .update(payload)
-      .eq("id", id)
-      .select("id, status")
-      .single();
-
-    if (result.error) {
-      setMessage({ type: "error", text: result.error.message });
+      setMessage({
+        type: "success",
+        text: result.success ?? "Listing rejected.",
+      });
+      load();
       return;
     }
 
+    const result = await approveListing(id);
+    if (result.error) {
+      setMessage({ type: "error", text: result.error });
+      return;
+    }
+
+    const emailNote =
+      result.emailSent === false
+        ? " (confirmation email logged — configure RESEND_API_KEY to send.)"
+        : result.emailSent
+          ? " Confirmation email sent to the lister."
+          : "";
+
     setMessage({
       type: "success",
-      text:
-        action === "approve"
-          ? "Listing approved and published."
-          : "Listing rejected. The lister can revise and resubmit.",
+      text: `${result.success ?? "Listing approved."}${emailNote}`,
     });
     load();
   }

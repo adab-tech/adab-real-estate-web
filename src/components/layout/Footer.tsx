@@ -66,10 +66,22 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-white/10 pt-8">
-          <p className="text-center text-xs text-white/50">
+        <div className="mt-10 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-8 sm:flex-row">
+          <p className="text-center text-xs text-white/50 sm:text-left">
             © {year} {siteConfig.name}. All rights reserved.
           </p>
+          <div className="flex flex-col items-center gap-2 text-white/70 sm:items-end">
+            <Image
+              src="/brand/cac-logo.svg"
+              alt="Corporate Affairs Commission Nigeria"
+              width={120}
+              height={48}
+              className="h-10 w-auto text-white"
+            />
+            <p className="text-xs tracking-wide text-white/60">
+              CAC Reg. No. RC 9590252
+            </p>
+          </div>
         </div>
       </div>
     </footer>
