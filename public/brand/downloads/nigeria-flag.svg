@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 56" role="img" aria-label="Flag of Nigeria">
+  <defs>
+    <linearGradient id="ng-green-left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a9a5c"/>
+      <stop offset="100%" stop-color="#008751"/>
+    </linearGradient>
+    <linearGradient id="ng-green-right" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0a9a5c"/>
+      <stop offset="100%" stop-color="#008751"/>
+    </linearGradient>
+    <linearGradient id="ng-light-sweep" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="45%" stop-color="#ffffff" stop-opacity="0.12"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="ng-frame">
+      <rect width="160" height="56" rx="2" ry="2"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#ng-frame)">
+    <g class="ng-band ng-band-left">
+      <rect width="53.333" height="56" fill="url(#ng-green-left)"/>
+    </g>
+    <g class="ng-band ng-band-center">
+      <rect x="53.333" width="53.334" height="56" fill="#ffffff"/>
+    </g>
+    <g class="ng-band ng-band-right">
+      <rect x="106.667" width="53.333" height="56" fill="url(#ng-green-right)"/>
+    </g>
+    <rect class="ng-light" width="160" height="56" fill="url(#ng-light-sweep)" opacity="0"/>
+  </g>
+
+  <style>
+    .ng-band { transform-origin: center center; }
+    .ng-band-left { animation: ng-honor-left 6s ease-in-out infinite; }
+    .ng-band-center { animation: ng-honor-center 6s ease-in-out infinite; }
+    .ng-band-right { animation: ng-honor-right 6s ease-in-out infinite; }
+    .ng-light { animation: ng-light-pass 8s ease-in-out infinite; }
+    @keyframes ng-honor-left {
+      0%, 100% { transform: skewY(0deg); }
+      50% { transform: skewY(0.35deg); }
+    }
+    @keyframes ng-honor-center {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(1.008); }
+    }
+    @keyframes ng-honor-right {
+      0%, 100% { transform: skewY(0deg); }
+      50% { transform: skewY(-0.35deg); }
+    }
+    @keyframes ng-light-pass {
+      0%, 100% { opacity: 0; transform: translateX(-8%); }
+      45%, 55% { opacity: 0.35; transform: translateX(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ng-band-left, .ng-band-center, .ng-band-right, .ng-light { animation: none; }
+    }
+  </style>
+</svg>

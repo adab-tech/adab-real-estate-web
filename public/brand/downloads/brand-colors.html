@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adab Brand Colors</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: #f8f6f1;
+      color: #1b2a4a;
+      padding: 2.5rem;
+      line-height: 1.5;
+    }
+    h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+    .subtitle { color: #6b7280; margin-bottom: 2rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
+    .swatch {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(27, 42, 74, 0.12);
+      background: #fff;
+    }
+    .color { height: 96px; }
+    .meta { padding: 1rem; }
+    .name { font-weight: 700; font-size: 0.95rem; }
+    .hex { font-family: ui-monospace, monospace; font-size: 0.85rem; color: #6b7280; margin-top: 0.25rem; }
+    .usage { font-size: 0.8rem; color: #6b7280; margin-top: 0.5rem; }
+    section { margin-top: 2.5rem; }
+    h2 { font-size: 1.1rem; margin-bottom: 1rem; }
+    .fonts p { margin-bottom: 0.5rem; }
+    footer { margin-top: 3rem; font-size: 0.8rem; color: #6b7280; }
+  </style>
+</head>
+<body>
+  <h1>Adab Brand Colors</h1>
+  <p class="subtitle">Adab Real Estate Agency · adab.ng</p>
+
+  <div class="grid">
+    <div class="swatch">
+      <div class="color" style="background:#1B2A4A"></div>
+      <div class="meta">
+        <div class="name">Adab Navy</div>
+        <div class="hex">#1B2A4A</div>
+        <div class="usage">Primary brand, headings, navigation</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="color" style="background:#0F1A2E"></div>
+      <div class="meta">
+        <div class="name">Adab Navy Dark</div>
+        <div class="hex">#0F1A2E</div>
+        <div class="usage">Footer, dark backgrounds</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="color" style="background:#C9A227"></div>
+      <div class="meta">
+        <div class="name">Adab Gold</div>
+        <div class="hex">#C9A227</div>
+        <div class="usage">Accents, CTAs, highlights</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="color" style="background:#F8F6F1"></div>
+      <div class="meta">
+        <div class="name">Adab Cream</div>
+        <div class="hex">#F8F6F1</div>
+        <div class="usage">Page backgrounds, cards</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="color" style="background:#FFFFFF; border-bottom: 1px solid #eee"></div>
+      <div class="meta">
+        <div class="name">Adab Paper</div>
+        <div class="hex">#FFFFFF</div>
+        <div class="usage">Content surfaces, logo backgrounds</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="color" style="background:#6B7280"></div>
+      <div class="meta">
+        <div class="name">Adab Gray</div>
+        <div class="hex">#6B7280</div>
+        <div class="usage">Body text, secondary labels</div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Typography</h2>
+    <div class="fonts">
+      <p><strong>Display:</strong> Plus Jakarta Sans — headings, hero text</p>
+      <p><strong>Body:</strong> Inter — paragraphs, UI, forms</p>
+    </div>
+  </section>
+
+  <footer>© Adab Real Estate Agency. For internal and partner use.</footer>
+</body>
+</html>
