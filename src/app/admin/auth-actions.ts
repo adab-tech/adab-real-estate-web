@@ -21,15 +21,18 @@ export async function signInAdmin(
     return { error: "Email and password are required." };
   }
 
+  let supabase;
   try {
-    const supabase = await createSupabaseAuthClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    supabase = await createSupabaseAuthClient();
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Auth is not configured.";
+    return { error: message };
+  }
 
-    if (error) {
-      return { error: error.message };
-    }
-  } catch {
-    return { error: "Sign-in failed. Check site configuration and try again." };
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    return { error: error.message };
   }
 
   redirect(destination);
