@@ -40,6 +40,19 @@ When Supabase is connected and `properties` is seeded, the site reads listings f
 
 For **shared hosting**, run `npm run build` and upload the `out/` folder — see [HOSTING.md](./HOSTING.md). Vercel is optional when you do not use hosting.
 
+### Lister approval emails (Resend)
+
+When an admin publishes a listing from `/portal/admin`, listers receive a confirmation email via [Resend](https://resend.com). Approvals succeed without email configured; content is logged server-side instead.
+
+| Variable | Required | Purpose |
+|----------|----------|---------|
+| `RESEND_API_KEY` | Yes (for send) | Resend API key — required to deliver approval emails |
+| `EMAIL_FROM` | Recommended | e.g. `Adab Real Estate <hello@adab.ng>` |
+
+Add both in Vercel → **Settings** → **Environment Variables** (Production). Verify the `adab.ng` sending domain in the Resend dashboard.
+
+**Smoke test:** Approve a listing in `/portal/admin`, then check Vercel function logs for a successful send.
+
 ---
 
 ## 3. Custom domain — adab.ng
@@ -69,6 +82,7 @@ Quick steps:
 - [ ] Contact form saves to `inquiries` table (if Supabase connected)
 - [ ] `/sitemap.xml` lists `adab.ng` URLs
 - [ ] WhatsApp opens **+234 812 827 2287**
+- [ ] `/portal/admin` listing approval sends lister email (Vercel logs)
 
 ---
 
