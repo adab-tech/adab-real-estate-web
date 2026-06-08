@@ -24,9 +24,9 @@ export default function PortalLandingPage() {
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/75">
               A dedicated platform for property owners, landlords, and
-              third-party agencies — separate from Adab admin. Create your
-              account, add listings with any Nigerian address, and reach verified
-              buyers and renters nationwide.
+              third-party agencies — courtesy of Adab Real Estate Agency. Create
+              your account, add listings with any Nigerian address, and reach
+              verified buyers and renters nationwide.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Link className="portal-btn portal-btn-primary" href="/portal/register">
