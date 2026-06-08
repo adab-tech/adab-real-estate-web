@@ -1,51 +1,31 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { useActionState } from "react";
+import { useSearchParams } from "next/navigation";
+import { signInAdmin, type SignInState } from "@/app/admin/auth-actions";
 
 export function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
   const queryError = searchParams.get("error");
   const next = searchParams.get("next") || "/admin/properties";
 
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    const supabase = createSupabaseBrowserClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (signInError) {
-      setError(signInError.message);
-      setLoading(false);
-      return;
-    }
-
-    router.push(next);
-    router.refresh();
-  }
+  const [state, formAction, pending] = useActionState<SignInState, FormData>(
+    signInAdmin,
+    null,
+  );
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form action={formAction} className="space-y-5">
+      <input type="hidden" name="next" value={next} />
+
       {queryError === "unauthorized" && (
         <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
           Your account is not authorized for admin access.
         </p>
       )}
-      {error && (
+      {state?.error && (
         <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
-          {error}
+          {state.error}
         </p>
       )}
 
@@ -55,10 +35,9 @@ export function LoginForm() {
         </label>
         <input
           id="email"
+          name="email"
           type="email"
           required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           className={inputClass}
           autoComplete="email"
         />
@@ -70,10 +49,9 @@ export function LoginForm() {
         </label>
         <input
           id="password"
+          name="password"
           type="password"
           required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           className={inputClass}
           autoComplete="current-password"
         />
@@ -81,10 +59,10 @@ export function LoginForm() {
 
       <button
         type="submit"
-        disabled={loading}
+        disabled={pending}
         className="w-full rounded-full bg-adab-navy-800 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-adab-navy-700 disabled:opacity-60"
       >
-        {loading ? "Signing in…" : "Sign in"}
+        {pending ? "Signing in…" : "Sign in"}
       </button>
     </form>
   );
