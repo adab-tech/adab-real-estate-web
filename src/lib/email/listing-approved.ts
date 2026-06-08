@@ -38,6 +38,10 @@ function buildLogoUrl(): string {
   return `${getSiteBase()}/brand/logo.png`;
 }
 
+function buildCacLogoUrl(): string {
+  return `${getSiteBase()}/brand/cac-logo.png`;
+}
+
 function buildWhatsAppShareUrl(shareText: string): string {
   return `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 }
@@ -53,6 +57,7 @@ function escapeHtml(value: string): string {
 function buildEmailContent(params: ListingApprovedEmailParams) {
   const listingUrl = buildListingUrl(params.propertySlug);
   const logoUrl = buildLogoUrl();
+  const cacLogoUrl = buildCacLogoUrl();
   const displayName = params.listerName.trim() || "there";
   const greeting =
     params.listerName.trim() ? `Dear ${params.listerName.trim()},` : "Dear Lister,";
@@ -178,7 +183,8 @@ CAC Reg. No. ${CAC_REGISTRATION}
 
           <!-- Footer -->
           <tr>
-            <td style="background-color:${BRAND.navy};padding:20px 32px;text-align:center;">
+            <td style="background-color:${BRAND.navy};padding:20px 32px;text-align:right;">
+              <img src="${cacLogoUrl}" alt="Corporate Affairs Commission Nigeria" width="56" height="56" style="display:block;margin:0 0 8px auto;max-width:56px;height:auto;border:0;" />
               <p style="margin:0 0 6px;font-size:11px;line-height:1.5;color:rgba(255,255,255,0.75);letter-spacing:0.03em;">
                 CAC Reg. No. ${CAC_REGISTRATION}
               </p>

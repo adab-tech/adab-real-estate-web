@@ -24,11 +24,11 @@ export function Footer() {
 
           <div className="flex flex-col items-start gap-2 sm:items-end sm:text-right">
             <Image
-              src="/brand/cac-logo.svg"
+              src="/brand/cac-logo.png"
               alt="Corporate Affairs Commission Nigeria"
-              width={72}
-              height={72}
-              className="h-14 w-14 sm:h-16 sm:w-16"
+              width={64}
+              height={64}
+              className="h-12 w-12 sm:h-16 sm:w-16"
             />
             <p className="text-xs tracking-wide text-white/60">
               CAC Reg. No. RC 9590252
