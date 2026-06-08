@@ -8,8 +8,8 @@ export function Footer() {
   return (
     <footer className="border-t border-adab-gray-300 bg-adab-navy-900 text-white">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-3">
-          <div>
+        <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
+          <div className="max-w-xs">
             <Image
               src="/brand/nigeria-flag.svg"
               alt={siteConfig.name}
@@ -22,6 +22,21 @@ export function Footer() {
             </p>
           </div>
 
+          <div className="flex flex-col items-start gap-2 sm:items-end sm:text-right">
+            <Image
+              src="/brand/cac-logo.svg"
+              alt="Corporate Affairs Commission Nigeria"
+              width={72}
+              height={72}
+              className="h-14 w-14 sm:h-16 sm:w-16"
+            />
+            <p className="text-xs tracking-wide text-white/60">
+              CAC Reg. No. RC 9590252
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-10 grid gap-10 sm:grid-cols-2">
           <div>
             <h3 className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-adab-gold-500">
               Quick links
@@ -66,22 +81,10 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-8 sm:flex-row">
+        <div className="mt-10 border-t border-white/10 pt-8">
           <p className="text-center text-xs text-white/50 sm:text-left">
             © {year} {siteConfig.name}. All rights reserved.
           </p>
-          <div className="flex flex-col items-center gap-2 text-white/70 sm:items-end">
-            <Image
-              src="/brand/cac-logo.svg"
-              alt="Corporate Affairs Commission Nigeria"
-              width={120}
-              height={48}
-              className="h-10 w-auto text-white"
-            />
-            <p className="text-xs tracking-wide text-white/60">
-              CAC Reg. No. RC 9590252
-            </p>
-          </div>
         </div>
       </div>
     </footer>

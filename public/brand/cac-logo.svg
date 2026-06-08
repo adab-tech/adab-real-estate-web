@@ -1,54 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48" role="img" aria-label="Corporate Affairs Commission Nigeria">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Corporate Affairs Commission Nigeria">
   <defs>
-    <linearGradient id="cac-green" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0a8f4a"/>
-      <stop offset="100%" stop-color="#006838"/>
-    </linearGradient>
+    <path id="cac-top-arc" d="M 30 100 A 70 70 0 0 1 170 100" fill="none"/>
+    <path id="cac-bottom-arc" d="M 170 100 A 70 70 0 0 1 30 100" fill="none"/>
   </defs>
-  <g fill="none" fill-rule="evenodd">
-    <path
-      d="M8 4h32c2.2 0 4 1.8 4 4v32c0 2.2-1.8 4-4 4H8c-2.2 0-4-1.8-4-4V8c0-2.2 1.8-4 4-4z"
-      fill="url(#cac-green)"
-    />
-    <path
-      d="M24 10c5.5 0 10 4.5 10 10s-4.5 10-10 10-10-4.5-10-10 4.5-10 10-10zm0 3.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13z"
-      fill="#ffffff"
-      opacity="0.95"
-    />
-    <text
-      x="24"
-      y="27"
-      text-anchor="middle"
-      font-family="Arial, Helvetica, sans-serif"
-      font-size="9"
-      font-weight="700"
-      fill="#006838"
-    >CAC</text>
-    <text
-      x="52"
-      y="18"
-      font-family="Arial, Helvetica, sans-serif"
-      font-size="7.5"
-      font-weight="700"
-      fill="currentColor"
-      letter-spacing="0.02em"
-    >CORPORATE AFFAIRS</text>
-    <text
-      x="52"
-      y="30"
-      font-family="Arial, Helvetica, sans-serif"
-      font-size="7.5"
-      font-weight="700"
-      fill="currentColor"
-      letter-spacing="0.02em"
-    >COMMISSION</text>
-    <text
-      x="52"
-      y="42"
-      font-family="Arial, Helvetica, sans-serif"
-      font-size="6.5"
-      fill="currentColor"
-      opacity="0.75"
-    >Federal Republic of Nigeria</text>
+
+  <!-- Outer green ring -->
+  <circle cx="100" cy="100" r="98" fill="#006838"/>
+  <circle cx="100" cy="100" r="88" fill="#ffffff"/>
+  <circle cx="100" cy="100" r="78" fill="#006838"/>
+
+  <!-- Top arc text -->
+  <text fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" letter-spacing="1.2">
+    <textPath href="#cac-top-arc" startOffset="50%" text-anchor="middle">
+      CORPORATE AFFAIRS COMMISSION
+    </textPath>
+  </text>
+
+  <!-- Bottom arc text -->
+  <text fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="9.5" font-weight="600" letter-spacing="0.8">
+    <textPath href="#cac-bottom-arc" startOffset="50%" text-anchor="middle">
+      FEDERAL REPUBLIC OF NIGERIA
+    </textPath>
+  </text>
+
+  <!-- Inner white disc -->
+  <circle cx="100" cy="100" r="58" fill="#ffffff"/>
+
+  <!-- Simplified Nigerian coat of arms (center) -->
+  <g transform="translate(100 100)">
+    <!-- Eagle -->
+    <path d="M0 -38 L4 -28 L0 -24 L-4 -28 Z" fill="#1a1a1a"/>
+    <ellipse cx="0" cy="-30" rx="5" ry="3" fill="#1a1a1a"/>
+    <!-- Shield -->
+    <path d="M-18 0 C-18 -14 -10 -22 0 -24 C10 -22 18 -14 18 0 C18 14 10 22 0 24 C-10 22 -18 14 -18 0Z" fill="#1a1a1a" stroke="#1a1a1a" stroke-width="0.5"/>
+    <!-- White Y on shield -->
+    <path d="M0 -18 L-10 8 L-4 8 L0 -4 L4 8 L10 8 Z" fill="#ffffff"/>
+    <!-- Green base -->
+    <rect x="-12" y="10" width="24" height="6" rx="1" fill="#006838"/>
+    <!-- Supporters (stylized horses) -->
+    <path d="M-28 8 C-32 -4 -26 -12 -20 -8 C-18 -2 -22 4 -28 8Z" fill="#8B7355" opacity="0.85"/>
+    <path d="M28 8 C32 -4 26 -12 20 -8 C18 -2 22 4 28 8Z" fill="#8B7355" opacity="0.85"/>
+    <!-- Motto scroll -->
+    <rect x="-22" y="22" width="44" height="8" rx="2" fill="#006838"/>
+    <text x="0" y="28" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="4.5" font-weight="600">UNITY AND FAITH</text>
   </g>
+
+  <!-- Decorative stars -->
+  <circle cx="100" cy="34" r="2" fill="#ffffff"/>
+  <circle cx="100" cy="166" r="2" fill="#ffffff"/>
 </svg>
