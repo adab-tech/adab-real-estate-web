@@ -59,8 +59,9 @@ async function main() {
   ).catch(() => {});
 
   console.log("Generating PNGs...");
-  await svgToPng(sharp, join(brandDir, "logo-primary.svg"), join(brandDir, "logo.png"), 720);
-  await svgToPng(sharp, join(brandDir, "logo-primary.svg"), join(downloadsDir, "logo-primary.png"), 720);
+  // logo.png is the authoritative restored primary logo — copy, do not regenerate from SVG
+  await copyFile(join(brandDir, "logo.png"), join(downloadsDir, "logo-primary.png"));
+  console.log("  brand/downloads/logo-primary.png (from logo.png)");
   await svgToPng(sharp, join(brandDir, "logo-primary-white.svg"), join(downloadsDir, "logo-primary-white.png"), 720);
   await svgToPng(sharp, join(brandDir, "logo-mark.svg"), join(downloadsDir, "logo-mark.png"), 512);
   await svgToPng(sharp, join(brandDir, "logo-mark-white.svg"), join(downloadsDir, "logo-mark-white.png"), 512);

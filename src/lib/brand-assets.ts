@@ -12,8 +12,8 @@ export const brandAssets: BrandAsset[] = [
   {
     id: "logo-primary",
     name: "Primary Logo",
-    description: "Full horizontal logo for light backgrounds, print, and documents.",
-    preview: "/brand/logo-primary.svg",
+    description: "Full logo for light backgrounds, print, and documents.",
+    preview: "/brand/logo.png",
     files: [
       { label: "SVG", href: "/brand/downloads/logo-primary.svg", format: "SVG" },
       { label: "PNG", href: "/brand/downloads/logo-primary.png", format: "PNG" },

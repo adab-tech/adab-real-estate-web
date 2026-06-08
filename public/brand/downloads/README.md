@@ -6,7 +6,7 @@ Official downloadable assets for **Adab Real Estate Agency** (adab.ng).
 
 | File | Description |
 |------|-------------|
-| `logo-primary.svg` / `.png` | Full horizontal logo for light backgrounds |
+| `logo-primary.svg` / `.png` | Full logo for light backgrounds |
 | `logo-primary-white.svg` / `.png` | Full logo for dark / navy backgrounds |
 | `logo-mark.svg` / `.png` | Square icon mark for light backgrounds |
 | `logo-mark-white.svg` / `.png` | Square mark on navy background |

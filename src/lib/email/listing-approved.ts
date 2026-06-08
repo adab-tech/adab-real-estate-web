@@ -35,7 +35,7 @@ function buildListingUrl(slug: string): string {
 }
 
 function buildLogoUrl(): string {
-  return `${getSiteBase()}/brand/logo-primary.png`;
+  return `${getSiteBase()}/brand/logo.png`;
 }
 
 function buildWhatsAppShareUrl(shareText: string): string {
