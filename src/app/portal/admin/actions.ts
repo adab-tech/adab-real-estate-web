@@ -19,7 +19,9 @@ export async function approveListing(id: string): Promise<ReviewListingResult> {
 
   const property = await supabase
     .from("properties")
-    .select("id, slug, title, status, profiles(full_name, email)")
+    .select(
+      "id, slug, title, status, owner_id, profiles!owner_id(full_name, email)",
+    )
     .eq("id", id)
     .eq("status", "pending_review")
     .single();
@@ -50,6 +52,7 @@ export async function approveListing(id: string): Promise<ReviewListingResult> {
   let emailSent = false;
 
   if (ownerEmail && property.data.slug) {
+    // Await email send before returning — admin UI reflects delivery status.
     const emailResult = await sendListingApprovedEmail({
       to: ownerEmail,
       listerName: owner?.full_name?.trim() ?? "",
@@ -57,10 +60,18 @@ export async function approveListing(id: string): Promise<ReviewListingResult> {
       propertySlug: property.data.slug,
     });
     emailSent = emailResult.sent;
+
+    if (emailResult.error) {
+      console.error("[approveListing] Approval email failed to send.", {
+        propertyId: id,
+        ownerEmail,
+        error: emailResult.error,
+      });
+    }
   } else if (!ownerEmail) {
     console.warn(
-      "[approveListing] No lister email — approval email skipped.",
-      { propertyId: id },
+      "[approveListing] No lister email on profile — approval email skipped.",
+      { propertyId: id, ownerId: property.data.owner_id },
     );
   }
 
