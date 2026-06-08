@@ -1,5 +1,5 @@
 /**
- * Generates PNG/ICO assets and the brand kit zip from SVG sources.
+ * Generates PNG/ICO assets and the brand kit zip from brand sources.
  * Run: node scripts/generate-brand-assets.mjs
  */
 import { readFile, writeFile, copyFile, mkdir, readdir } from "node:fs/promises";
@@ -33,41 +33,82 @@ async function svgToPng(sharp, svgPath, pngPath, width) {
   console.log(`  ${pngPath.replace(brandDir, "brand")}`);
 }
 
+async function optimizePrimaryLogo(sharp) {
+  const logoPath = join(brandDir, "logo.png");
+  const original = await readFile(logoPath);
+  const meta = await sharp(original).metadata();
+
+  if (meta.width && meta.width <= 800) {
+    console.log(`  logo.png already optimized (${meta.width}px wide)`);
+    return original;
+  }
+
+  const optimized = await sharp(original)
+    .resize(720, null, { fit: "inside", withoutEnlargement: true })
+    .png({ compressionLevel: 9, adaptiveFiltering: true })
+    .toBuffer();
+
+  await writeFile(logoPath, optimized);
+  console.log(
+    `  logo.png optimized: ${original.length} → ${optimized.length} bytes`,
+  );
+  return optimized;
+}
+
+async function generateOgImage(sharp, logoBuffer) {
+  const logoOnNavy = await sharp(logoBuffer)
+    .resize(520, null, { fit: "inside" })
+    .png()
+    .toBuffer();
+
+  const ogPath = join(brandDir, "og-image.png");
+  const ogDownloadPath = join(downloadsDir, "og-image.png");
+
+  await sharp({
+    create: {
+      width: 1200,
+      height: 630,
+      channels: 4,
+      background: "#1B2A4A",
+    },
+  })
+    .composite([{ input: logoOnNavy, gravity: "center" }])
+    .png()
+    .toFile(ogPath);
+
+  await copyFile(ogPath, ogDownloadPath);
+  console.log("  brand/og-image.png (from logo.png on navy)");
+}
+
 async function main() {
   const sharpMod = await ensureSharp();
   const sharp = sharpMod.default;
 
   await mkdir(downloadsDir, { recursive: true });
 
+  console.log("Optimizing primary logo...");
+  const logoBuffer = await optimizePrimaryLogo(sharp);
+
   const copies = [
-    "logo-primary.svg",
-    "logo-primary-white.svg",
     "logo-mark.svg",
     "logo-mark-white.svg",
     "favicon.svg",
     "nigeria-flag.svg",
-    "og-image.svg",
+    "cac-logo.png",
   ];
 
   for (const file of copies) {
     await copyFile(join(brandDir, file), join(downloadsDir, file));
   }
 
-  await copyFile(
-    join(downloadsDir, "README.md"),
-    join(downloadsDir, "README.md"),
-  ).catch(() => {});
-
   console.log("Generating PNGs...");
-  // logo.png is the authoritative restored primary logo — copy, do not regenerate from SVG
-  await copyFile(join(brandDir, "logo.png"), join(downloadsDir, "logo-primary.png"));
+  await writeFile(join(downloadsDir, "logo-primary.png"), logoBuffer);
   console.log("  brand/downloads/logo-primary.png (from logo.png)");
-  await svgToPng(sharp, join(brandDir, "logo-primary-white.svg"), join(downloadsDir, "logo-primary-white.png"), 720);
   await svgToPng(sharp, join(brandDir, "logo-mark.svg"), join(downloadsDir, "logo-mark.png"), 512);
   await svgToPng(sharp, join(brandDir, "logo-mark-white.svg"), join(downloadsDir, "logo-mark-white.png"), 512);
   await svgToPng(sharp, join(brandDir, "favicon.svg"), join(downloadsDir, "favicon-512.png"), 512);
-  await svgToPng(sharp, join(brandDir, "og-image.svg"), join(brandDir, "og-image.png"), 1200);
-  await svgToPng(sharp, join(brandDir, "og-image.svg"), join(downloadsDir, "og-image.png"), 1200);
+
+  await generateOgImage(sharp, logoBuffer);
 
   console.log("Generating favicon.ico...");
   const faviconPng = await sharp(await readFile(join(brandDir, "favicon.svg")))

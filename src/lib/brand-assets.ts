@@ -15,18 +15,8 @@ export const brandAssets: BrandAsset[] = [
     description: "Full logo for light backgrounds, print, and documents.",
     preview: "/brand/logo.png",
     files: [
-      { label: "SVG", href: "/brand/downloads/logo-primary.svg", format: "SVG" },
-      { label: "PNG", href: "/brand/downloads/logo-primary.png", format: "PNG" },
-    ],
-  },
-  {
-    id: "logo-primary-white",
-    name: "Primary Logo (White)",
-    description: "Inverted logo for navy or dark backgrounds.",
-    preview: "/brand/logo-primary-white.svg",
-    files: [
-      { label: "SVG", href: "/brand/downloads/logo-primary-white.svg", format: "SVG" },
-      { label: "PNG", href: "/brand/downloads/logo-primary-white.png", format: "PNG" },
+      { label: "PNG", href: "/brand/logo.png", format: "PNG" },
+      { label: "PNG (kit)", href: "/brand/downloads/logo-primary.png", format: "PNG" },
     ],
   },
   {
@@ -69,13 +59,23 @@ export const brandAssets: BrandAsset[] = [
     ],
   },
   {
+    id: "cac-seal",
+    name: "CAC Registration Seal",
+    description:
+      "Official Corporate Affairs Commission seal for footer registration display only — not an Adab brand logo.",
+    preview: "/brand/cac-logo.png",
+    files: [
+      { label: "PNG", href: "/brand/cac-logo.png", format: "PNG" },
+      { label: "PNG (kit)", href: "/brand/downloads/cac-logo.png", format: "PNG" },
+    ],
+  },
+  {
     id: "og-image",
     name: "Social Share Image",
     description: "Open Graph image for link previews on social media (1200×630).",
     preview: "/brand/og-image.png",
     files: [
       { label: "PNG", href: "/brand/downloads/og-image.png", format: "PNG" },
-      { label: "SVG", href: "/brand/downloads/og-image.svg", format: "SVG" },
     ],
   },
   {

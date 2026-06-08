@@ -6,10 +6,15 @@ Official downloadable assets for **Adab Real Estate Agency** (adab.ng).
 
 | File | Description |
 |------|-------------|
-| `logo-primary.svg` / `.png` | Full logo for light backgrounds |
-| `logo-primary-white.svg` / `.png` | Full logo for dark / navy backgrounds |
+| `logo-primary.png` | Full logo for light backgrounds (same as site header) |
 | `logo-mark.svg` / `.png` | Square icon mark for light backgrounds |
 | `logo-mark-white.svg` / `.png` | Square mark on navy background |
+
+## Registration (footer only)
+
+| File | Description |
+|------|-------------|
+| `cac-logo.png` | Official CAC seal — footer registration display only, not an Adab logo |
 
 ## Icons & flags
 
@@ -36,4 +41,4 @@ Official downloadable assets for **Adab Real Estate Agency** (adab.ng).
 - **Display:** Plus Jakarta Sans
 - **Body:** Inter
 
-Download the complete kit as `adab-brand-kit.zip` from [adab.ng/brand](https://adab.ng/brand).
+Download the complete kit as `adab-brand-kit.zip` from [adab.ng/admin/brand](https://adab.ng/admin/brand).
