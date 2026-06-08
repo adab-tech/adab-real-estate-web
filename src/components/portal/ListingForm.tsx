@@ -131,6 +131,7 @@ export function ListingForm() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const formEl = event.currentTarget;
     setSubmitting(true);
     setAlert(null);
 
@@ -139,11 +140,12 @@ export function ListingForm() {
       const session = await client.auth.getSession();
       if (!session.data.session) {
         router.replace("/portal/login");
+        setSubmitting(false);
         return;
       }
 
       const userId = session.data.session.user.id;
-      const fileInput = event.currentTarget.elements.namedItem(
+      const fileInput = formEl.elements.namedItem(
         "image_files",
       ) as HTMLInputElement;
 
