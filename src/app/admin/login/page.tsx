@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import { LoginForm } from "@/components/admin/LoginForm";
 import { isSupabaseAuthConfigured } from "@/lib/supabase/env";
 
+export const dynamic = "force-dynamic";
+
 export default function AdminLoginPage() {
   const authConfigured = isSupabaseAuthConfigured();
 
