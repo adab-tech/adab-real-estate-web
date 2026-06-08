@@ -4,6 +4,7 @@ import { signOut } from "@/app/admin/actions";
 const links = [
   { href: "/admin/properties", label: "Properties" },
   { href: "/admin/inquiries", label: "Inquiries" },
+  { href: "/admin/brand", label: "Brand assets" },
 ];
 
 export function AdminNav({ email }: { email: string }) {

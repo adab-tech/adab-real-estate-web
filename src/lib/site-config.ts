@@ -13,14 +13,12 @@ export const siteConfig = {
   logoMark: "/brand/logo-mark.svg",
   favicon: "/brand/favicon.svg",
   ogImage: "/brand/og-image.png",
-  brandKit: "/brand/adab-brand-kit.zip",
   nav: [
     { label: "Home", href: "/" },
     { label: "Properties", href: "/properties" },
     { label: "List Property", href: "/portal" },
     { label: "Services", href: "/services" },
     { label: "About", href: "/about" },
-    { label: "Brand", href: "/brand" },
     { label: "Contact", href: "/contact" },
   ],
   colors: {

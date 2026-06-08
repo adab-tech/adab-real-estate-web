@@ -16,6 +16,22 @@ function isPortalProtected(pathname: string): boolean {
   );
 }
 
+function isBrandDownload(pathname: string): boolean {
+  return (
+    pathname.startsWith("/brand/downloads/") ||
+    pathname === "/brand/adab-brand-kit.zip"
+  );
+}
+
+function isAdminUser(user: {
+  app_metadata?: Record<string, unknown>;
+  user_metadata?: Record<string, unknown>;
+}): boolean {
+  return (
+    user.app_metadata?.role === "admin" || user.user_metadata?.role === "admin"
+  );
+}
+
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -46,6 +62,16 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
+  if (isBrandDownload(pathname)) {
+    if (!user || !isAdminUser(user)) {
+      const loginUrl = request.nextUrl.clone();
+      loginUrl.pathname = "/admin/login";
+      loginUrl.searchParams.set("next", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+    return response;
+  }
+
   if (isPortalProtected(pathname)) {
     if (!user) {
       const loginUrl = request.nextUrl.clone();
@@ -69,8 +95,7 @@ export async function middleware(request: NextRequest) {
 
   if (!isAdminRoute) return response;
 
-  const isAdmin =
-    user?.app_metadata?.role === "admin" || user?.user_metadata?.role === "admin";
+  const isAdmin = user ? isAdminUser(user) : false;
 
   if (!user && !isLogin) {
     const loginUrl = request.nextUrl.clone();
@@ -95,5 +120,10 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/portal/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/portal/:path*",
+    "/brand/downloads/:path*",
+    "/brand/adab-brand-kit.zip",
+  ],
 };
