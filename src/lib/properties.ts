@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { properties as staticProperties } from "@/data/properties";
+import { locationMatches } from "@/lib/nigeria-locations";
 import {
   fetchPropertiesFromSupabase,
   fetchPropertyBySlugFromSupabase,
@@ -48,9 +49,21 @@ export async function getPropertyBySlug(
   return staticProperties.find((p) => p.slug === slug);
 }
 
-export async function getPropertyCities(): Promise<string[]> {
+export async function getPropertyCities(state?: string): Promise<string[]> {
   const all = await getAllProperties();
-  return [...new Set(all.map((p) => p.location.city))].sort();
+  const fromListings = [
+    ...new Set(
+      all
+        .filter((p) =>
+          state && state !== "all"
+            ? locationMatches(p.location, { state })
+            : true,
+        )
+        .map((p) => p.location.city)
+        .filter(Boolean),
+    ),
+  ];
+  return fromListings.sort((a, b) => a.localeCompare(b));
 }
 
 export async function filterProperties(
@@ -62,8 +75,16 @@ export async function filterProperties(
     result = result.filter((p) => p.type === filters.type);
   }
 
+  if (filters.state && filters.state !== "all") {
+    result = result.filter((p) =>
+      locationMatches(p.location, { state: filters.state }),
+    );
+  }
+
   if (filters.city && filters.city !== "all") {
-    result = result.filter((p) => p.location.city === filters.city);
+    result = result.filter((p) =>
+      locationMatches(p.location, { city: filters.city }),
+    );
   }
 
   if (filters.minPrice && filters.minPrice > 0) {
@@ -98,6 +119,7 @@ export function parsePropertySearchParams(
 
   return {
     type,
+    state: params.state || undefined,
     city: params.city || undefined,
     minPrice: minPrice && !Number.isNaN(minPrice) ? minPrice : undefined,
     maxPrice: maxPrice && !Number.isNaN(maxPrice) ? maxPrice : undefined,

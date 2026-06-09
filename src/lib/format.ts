@@ -18,9 +18,12 @@ export function formatPropertyPrice(
   type: ListingType,
   pricePeriod?: Property["pricePeriod"],
 ): string {
+  if (pricePeriod === "negotiable") return "Negotiable";
   const base = formatNgn(priceNGN);
   if (type === "rent") {
-    return pricePeriod === "month" ? `${base}/mo` : `${base}/yr`;
+    if (pricePeriod === "month") return `${base}/mo`;
+    if (pricePeriod === "year") return `${base}/yr`;
+    return base;
   }
   return base;
 }

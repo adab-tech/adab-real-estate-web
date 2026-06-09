@@ -13,8 +13,13 @@ import { requireAdmin } from "@/lib/supabase/auth-server";
 function formDataToObject(formData: FormData): Record<string, unknown> {
   const obj: Record<string, unknown> = {};
   for (const [key, value] of formData.entries()) {
+    if (key === "featured") {
+      obj[key] = true;
+      continue;
+    }
     obj[key] = value;
   }
+  if (!("featured" in obj)) obj.featured = false;
   return obj;
 }
 
@@ -46,6 +51,7 @@ function toPostRow(
     gallery,
     post_type: values.postType,
     status: values.status,
+    featured: values.featured,
     author_id: authorId,
     published_at: publishedAt,
     scheduled_at: scheduledAt,
@@ -98,6 +104,25 @@ export async function updatePostAction(
   redirect(`/admin/posts/${postId}/edit?saved=1`);
 }
 
+export async function togglePostFeaturedAction(
+  postId: string,
+  slug: string,
+  featured: boolean,
+) {
+  const { supabase } = await requireAdmin();
+
+  const { error } = await supabase
+    .from("posts")
+    .update({ featured })
+    .eq("id", postId);
+
+  if (error) return { error: error.message };
+
+  revalidatePostPages(slug);
+  revalidatePath("/admin/posts");
+  return { success: featured ? "Post featured." : "Post unfeatured." };
+}
+
 export async function deletePostAction(postId: string, slug: string) {
   const { supabase } = await requireAdmin();
 
@@ -108,4 +133,39 @@ export async function deletePostAction(postId: string, slug: string) {
   revalidatePostPages(slug);
   revalidatePath("/admin/posts");
   redirect("/admin/posts?deleted=1");
+}
+
+export async function unpublishPostAction(postId: string, slug: string) {
+  const { supabase } = await requireAdmin();
+
+  const { error } = await supabase
+    .from("posts")
+    .update({ status: "archived" })
+    .eq("id", postId);
+
+  if (error) return { error: error.message };
+
+  revalidatePostPages(slug);
+  revalidatePath("/admin/posts");
+  revalidatePath(`/admin/posts/${postId}/edit`);
+  return { success: true };
+}
+
+export async function toggleFeaturedPostAction(
+  postId: string,
+  slug: string,
+  featured: boolean,
+) {
+  const { supabase } = await requireAdmin();
+
+  const { error } = await supabase
+    .from("posts")
+    .update({ featured })
+    .eq("id", postId);
+
+  if (error) return { error: error.message };
+
+  revalidatePostPages(slug);
+  revalidatePath("/admin/posts");
+  return { success: true };
 }

@@ -1,6 +1,14 @@
 export type PostType = "blog" | "promo" | "announcement" | "release";
 
-export type PostStatus = "draft" | "published" | "scheduled";
+export type PostStatus = "draft" | "published" | "scheduled" | "archived";
+
+export type PostSort = "newest" | "oldest" | "featured";
+
+export type PostFilters = {
+  type?: PostType | "all";
+  tag?: string;
+  sort?: PostSort;
+};
 
 export type Post = {
   id: string;
@@ -13,6 +21,7 @@ export type Post = {
   gallery: string[];
   postType: PostType;
   status: PostStatus;
+  featured: boolean;
   authorId: string | null;
   publishedAt: string | null;
   scheduledAt: string | null;
@@ -31,6 +40,7 @@ export type PostRow = {
   gallery: string[] | null;
   post_type: PostType;
   status: PostStatus;
+  featured: boolean;
   author_id: string | null;
   published_at: string | null;
   scheduled_at: string | null;
@@ -49,4 +59,5 @@ export const POST_STATUS_LABELS: Record<PostStatus, string> = {
   draft: "Draft",
   published: "Published",
   scheduled: "Scheduled",
+  archived: "Archived",
 };

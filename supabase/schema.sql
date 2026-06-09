@@ -38,7 +38,7 @@ create table if not exists public.properties (
     category in ('apartment', 'house', 'duplex', 'land', 'commercial')
   ),
   price_ngn bigint not null,
-  price_period text check (price_period in ('year', 'month')),
+  price_period text check (price_period is null or price_period in ('year', 'month', 'negotiable')),
   location jsonb not null,
   beds smallint,
   baths smallint,

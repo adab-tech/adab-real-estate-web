@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   createPropertyAction,
   deletePropertyAction,
+  retirePropertyAction,
   updatePropertyAction,
 } from "@/app/admin/actions";
 import { ImageUpload } from "@/components/admin/ImageUpload";
@@ -193,9 +194,10 @@ export function PropertyForm({ property, mode }: PropertyFormProps) {
             defaultValue={property?.pricePeriod ?? ""}
             className={inputClass}
           >
-            <option value="">N/A (sale)</option>
+            <option value="">Default</option>
             <option value="year">Per year</option>
             <option value="month">Per month</option>
+            <option value="negotiable">Negotiable (land / plot)</option>
           </select>
         </Field>
 

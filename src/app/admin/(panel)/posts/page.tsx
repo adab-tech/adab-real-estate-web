@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PostFeaturedToggle } from "@/components/admin/PostFeaturedToggle";
 import { requireAdmin } from "@/lib/supabase/auth-server";
 import { mapPostRow, type PostRow } from "@/lib/supabase/posts";
 import { POST_STATUS_LABELS, POST_TYPE_LABELS } from "@/types/post";
@@ -67,6 +68,7 @@ export default async function AdminPostsPage({
                 <th className="px-4 py-3">Title</th>
                 <th className="px-4 py-3">Type</th>
                 <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Featured</th>
                 <th className="px-4 py-3">Published</th>
                 <th className="px-4 py-3" />
               </tr>
@@ -88,6 +90,13 @@ export default async function AdminPostsPage({
                   </td>
                   <td className="px-4 py-3">
                     {POST_STATUS_LABELS[post.status]}
+                  </td>
+                  <td className="px-4 py-3">
+                    <PostFeaturedToggle
+                      postId={post.id}
+                      slug={post.slug}
+                      featured={post.featured}
+                    />
                   </td>
                   <td className="px-4 py-3 text-adab-gray-500">
                     {post.publishedAt

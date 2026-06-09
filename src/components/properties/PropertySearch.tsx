@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { getPropertyCities } from "@/lib/properties";
+import { citiesForState, NIGERIA_STATES } from "@/lib/nigeria-locations";
 import type { PropertyFilters } from "@/types/property";
 
 type PropertySearchProps = {
@@ -10,6 +10,7 @@ type PropertySearchProps = {
 function buildQuery(filters: PropertyFilters): string {
   const params = new URLSearchParams();
   if (filters.type && filters.type !== "all") params.set("type", filters.type);
+  if (filters.state && filters.state !== "all") params.set("state", filters.state);
   if (filters.city && filters.city !== "all") params.set("city", filters.city);
   if (filters.minPrice) params.set("minPrice", String(filters.minPrice));
   if (filters.maxPrice) params.set("maxPrice", String(filters.maxPrice));
@@ -19,7 +20,7 @@ function buildQuery(filters: PropertyFilters): string {
 }
 
 export async function PropertySearch({ filters }: PropertySearchProps) {
-  const cities = await getPropertyCities();
+  const cities = citiesForState(filters.state ?? "all");
 
   return (
     <form
@@ -27,7 +28,7 @@ export async function PropertySearch({ filters }: PropertySearchProps) {
       action="/properties"
       className="rounded-2xl border border-adab-gray-300 bg-white p-5 shadow-[0_4px_24px_rgba(27,42,74,0.08)]"
     >
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
         <Field label="Listing type" name="type">
           <select
             id="type"
@@ -38,6 +39,22 @@ export async function PropertySearch({ filters }: PropertySearchProps) {
             <option value="all">All types</option>
             <option value="sale">For sale</option>
             <option value="rent">For rent</option>
+          </select>
+        </Field>
+
+        <Field label="State" name="state">
+          <select
+            id="state"
+            name="state"
+            defaultValue={filters.state ?? "all"}
+            className={inputClass}
+          >
+            <option value="all">All states</option>
+            {NIGERIA_STATES.map((state) => (
+              <option key={state} value={state}>
+                {state}
+              </option>
+            ))}
           </select>
         </Field>
 

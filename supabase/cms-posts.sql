@@ -16,8 +16,9 @@ create table if not exists public.posts (
     post_type in ('blog', 'promo', 'announcement', 'release')
   ),
   status text not null default 'draft' check (
-    status in ('draft', 'published', 'scheduled')
+    status in ('draft', 'published', 'scheduled', 'archived')
   ),
+  featured boolean not null default false,
   author_id uuid references auth.users (id) on delete set null,
   published_at timestamptz,
   scheduled_at timestamptz,
@@ -74,6 +75,15 @@ create index if not exists posts_status_idx on public.posts (status);
 create index if not exists posts_post_type_idx on public.posts (post_type);
 create index if not exists posts_published_at_idx on public.posts (published_at desc nulls last);
 create index if not exists posts_tags_idx on public.posts using gin (tags);
+create index if not exists posts_featured_idx on public.posts (featured) where featured = true;
+
+-- Idempotent upgrades for existing deployments
+alter table public.posts
+  add column if not exists featured boolean not null default false;
+
+alter table public.posts drop constraint if exists posts_status_check;
+alter table public.posts add constraint posts_status_check
+  check (status in ('draft', 'published', 'scheduled', 'archived'));
 
 drop trigger if exists posts_updated_at on public.posts;
 create trigger posts_updated_at

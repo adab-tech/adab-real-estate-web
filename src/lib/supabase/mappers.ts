@@ -32,6 +32,7 @@ function normalizeImages(value: PropertyRow["images"]): string[] {
 
 function normalizeStatus(status: string): Property["status"] {
   if (status === "published") return "available";
+  if (status === "unavailable") return "sold";
   if (
     status === "available" ||
     status === "under_offer" ||
@@ -41,6 +42,15 @@ function normalizeStatus(status: string): Property["status"] {
     return status;
   }
   return "available";
+}
+
+function toDbStatus(property: Property): string {
+  if (property.dbStatus) return property.dbStatus;
+  if (property.status === "available") return "published";
+  if (property.status === "sold" || property.status === "rented") {
+    return "unavailable";
+  }
+  return property.status;
 }
 
 function normalizePublishedAt(value: string | null): string {
@@ -65,6 +75,7 @@ export function mapPropertyRow(row: PropertyRow): Property {
     features: normalizeFeatures(row.features),
     images: normalizeImages(row.images),
     status: normalizeStatus(row.status),
+    dbStatus: row.status,
     featured: row.featured,
     publishedAt: normalizePublishedAt(row.published_at),
   };
@@ -86,7 +97,7 @@ export function mapPropertyToRow(property: Property): PropertyRow {
     sqm: property.sqm ?? null,
     features: property.features,
     images: property.images,
-    status: property.status,
+    status: toDbStatus(property),
     featured: property.featured,
     published_at: property.publishedAt,
   };

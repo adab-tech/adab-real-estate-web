@@ -14,6 +14,7 @@ function mapPostRow(row: PostRow): Post {
     gallery: Array.isArray(row.gallery) ? row.gallery : [],
     postType: row.post_type,
     status: row.status,
+    featured: row.featured ?? false,
     authorId: row.author_id,
     publishedAt: row.published_at,
     scheduledAt: row.scheduled_at,

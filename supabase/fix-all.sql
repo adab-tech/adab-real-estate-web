@@ -417,3 +417,23 @@ create policy "property_images_owner_delete"
     bucket_id = 'property-images'
     and (storage.foldername(name))[1] = auth.uid()::text
   );
+
+-- ---------------------------------------------------------------------------
+-- CMS posts: featured + archived status
+-- ---------------------------------------------------------------------------
+alter table public.posts
+  add column if not exists featured boolean not null default false;
+
+alter table public.posts drop constraint if exists posts_status_check;
+alter table public.posts add constraint posts_status_check
+  check (status in ('draft', 'published', 'scheduled', 'archived'));
+
+create index if not exists posts_featured_idx on public.posts (featured)
+  where featured = true;
+
+-- ---------------------------------------------------------------------------
+-- Properties: optional price_period (land / one-time sales)
+-- ---------------------------------------------------------------------------
+alter table public.properties drop constraint if exists properties_price_period_check;
+alter table public.properties add constraint properties_price_period_check
+  check (price_period is null or price_period in ('year', 'month', 'negotiable'));

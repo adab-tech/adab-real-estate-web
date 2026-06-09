@@ -15,7 +15,8 @@ export const postFormSchema = z.object({
   coverImage: z.string().optional().default(""),
   gallery: z.string().optional().default(""),
   postType: z.enum(["blog", "promo", "announcement", "release"]),
-  status: z.enum(["draft", "published", "scheduled"]),
+  status: z.enum(["draft", "published", "scheduled", "archived"]),
+  featured: z.boolean().optional().default(false),
   publishedAt: z.string().optional().default(""),
   scheduledAt: z.string().optional().default(""),
 });

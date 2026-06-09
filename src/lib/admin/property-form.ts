@@ -11,7 +11,10 @@ export const propertyFormSchema = z.object({
   type: z.enum(["sale", "rent"]),
   category: z.enum(["apartment", "house", "duplex", "land", "commercial"]),
   priceNGN: z.coerce.number().positive(),
-  pricePeriod: z.enum(["year", "month"]).optional().or(z.literal("")),
+  pricePeriod: z
+    .enum(["year", "month", "negotiable"])
+    .optional()
+    .or(z.literal("")),
   city: z.string().min(2),
   area: z.string().min(2),
   state: z.string().min(2),

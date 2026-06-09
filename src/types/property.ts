@@ -22,13 +22,29 @@ export type PropertyLocation = {
   lng: number;
 };
 
+export type PricePeriod = "year" | "month" | "negotiable";
+
 export type PropertyFilters = {
   type?: ListingType | "all";
+  state?: string;
   city?: string;
   minPrice?: number;
   maxPrice?: number;
   beds?: number;
 };
+
+export type PropertyDbStatus =
+  | "draft"
+  | "pending_review"
+  | "published"
+  | "unavailable"
+  | "rejected";
+
+export type PropertyMarketStatus =
+  | "available"
+  | "under_offer"
+  | "sold"
+  | "rented";
 
 export type Property = {
   id: string;
@@ -38,7 +54,7 @@ export type Property = {
   type: ListingType;
   category: PropertyCategory;
   priceNGN: number;
-  pricePeriod?: "year" | "month";
+  pricePeriod?: PricePeriod;
   location: PropertyLocation;
   beds?: number;
   baths?: number;
@@ -46,6 +62,8 @@ export type Property = {
   features: string[];
   images: string[];
   status: PropertyStatus;
+  /** Raw Supabase status for admin edits (portal listings). */
+  dbStatus?: PropertyDbStatus | string;
   featured: boolean;
   publishedAt: string;
 };

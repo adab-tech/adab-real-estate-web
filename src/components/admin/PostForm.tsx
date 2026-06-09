@@ -195,6 +195,19 @@ export function PostForm({ post, mode }: PostFormProps) {
             className={inputClass}
           />
         </Field>
+
+        <div className="flex items-end sm:col-span-2">
+          <label className="flex cursor-pointer items-center gap-2 text-sm font-medium text-adab-navy-800">
+            <input
+              type="checkbox"
+              name="featured"
+              value="true"
+              defaultChecked={post?.featured}
+              className="h-4 w-4 rounded border-adab-gray-300 text-adab-gold-500"
+            />
+            Feature on updates page
+          </label>
+        </div>
       </section>
 
       <section className="space-y-4">

@@ -37,10 +37,9 @@ function toProperty(values: ReturnType<typeof propertyFormSchema.parse>): Proper
     type: values.type,
     category: values.category,
     priceNGN: values.priceNGN,
-    pricePeriod:
-      values.type === "rent" && values.pricePeriod
-        ? (values.pricePeriod as "year" | "month")
-        : undefined,
+    pricePeriod: values.pricePeriod
+      ? (values.pricePeriod as Property["pricePeriod"])
+      : undefined,
     location: {
       city: values.city,
       area: values.area,
@@ -129,4 +128,25 @@ export async function deletePropertyAction(propertyId: string, slug: string) {
   revalidatePropertyPages(slug);
   revalidatePath("/admin/properties");
   redirect("/admin/properties?deleted=1");
+}
+
+export async function retirePropertyAction(
+  propertyId: string,
+  slug: string,
+  listingType: "sale" | "rent",
+) {
+  const { supabase } = await requireAdmin();
+  const status = listingType === "rent" ? "rented" : "sold";
+
+  const { error } = await supabase
+    .from("properties")
+    .update({ status, featured: false })
+    .eq("id", propertyId);
+
+  if (error) return { error: error.message };
+
+  revalidatePropertyPages(slug);
+  revalidatePath("/admin/properties");
+  revalidatePath(`/admin/properties/${propertyId}/edit`);
+  return { success: true };
 }
