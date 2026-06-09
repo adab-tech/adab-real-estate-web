@@ -32,11 +32,14 @@ export function DashboardListings() {
         return;
       }
 
+      const userId = session.data.session.user.id;
+
       const result = await client
         .from("properties")
         .select(
           "id, slug, title, type, status, price_ngn, location, rejection_reason, created_at, updated_at",
         )
+        .eq("owner_id", userId)
         .order("updated_at", { ascending: false });
 
       if (result.error) {

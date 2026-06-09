@@ -25,7 +25,7 @@ src/
 ├── app/              # Routes (home, properties, services, about, contact)
 ├── components/layout/ # Header, Footer, PageHeader
 └── lib/site-config.ts # Brand name, nav, contact details
-public/brand/         # Logo, favicon, mark (synced from brand repo)
+public/brand/         # Official logo, favicon, and brand kit assets
 ```
 
 ## Build phases

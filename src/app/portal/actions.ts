@@ -68,12 +68,13 @@ export async function signUpPortal(
   }
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? siteConfig.website;
+  const emailRedirectTo = `${siteUrl}/auth/callback?next=/portal/dashboard`;
 
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo: `${siteUrl}/portal/verify-email`,
+      emailRedirectTo,
       data: {
         full_name: fullName,
         company_name: companyName,
@@ -111,11 +112,12 @@ export async function resendVerificationEmail(
   }
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? siteConfig.website;
+  const emailRedirectTo = `${siteUrl}/auth/callback?next=/portal/dashboard`;
 
   const { error } = await supabase.auth.resend({
     type: "signup",
     email,
-    options: { emailRedirectTo: `${siteUrl}/portal/verify-email` },
+    options: { emailRedirectTo },
   });
 
   if (error) return { error: error.message };

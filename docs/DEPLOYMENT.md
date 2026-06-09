@@ -12,9 +12,8 @@
 
 1. Create a project at [supabase.com](https://supabase.com)
 2. Open **SQL Editor** and run, in order:
-   - `supabase/schema.sql`
-   - `supabase/seed.sql`
-   - `supabase/portal-schema.sql` (lister portal — profiles, RLS, image storage)
+   - **Fresh project:** `supabase/schema.sql` → `supabase/seed.sql` → `supabase/portal-schema.sql`
+   - **Existing project** (portal save fails with status/RLS errors): run **`supabase/fix-all.sql`** once — it upgrades legacy `properties` tables, fixes status constraints (`pending_review`, `draft`, etc.), adds `owner_id`, profiles, RLS, and the `property-images` storage bucket.
 3. Copy **Project URL** and **anon key** from Settings → API
 4. Optional: copy **service_role** key for server-side writes
 

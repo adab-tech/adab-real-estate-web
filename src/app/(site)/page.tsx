@@ -8,7 +8,8 @@ export default function Home() {
   return (
     <main>
       <section className="relative overflow-hidden bg-adab-navy-800 text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,162,39,0.15),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,162,39,0.18),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(15,26,46,0.2),rgba(15,26,46,0.85))]" />
         <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
           <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-adab-gold-500">
             Nigeria&apos;s trusted property partner

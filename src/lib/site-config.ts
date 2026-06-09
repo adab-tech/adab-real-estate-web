@@ -10,8 +10,7 @@ export const siteConfig = {
   website: "https://adab.ng",
   whatsapp: "https://wa.me/2348128272287",
   logo: "/brand/logo.png",
-  logoMark: "/brand/logo-mark.svg",
-  favicon: "/brand/favicon.svg",
+  favicon: "/brand/favicon.ico",
   ogImage: "/brand/og-image.png",
   nav: [
     { label: "Home", href: "/" },

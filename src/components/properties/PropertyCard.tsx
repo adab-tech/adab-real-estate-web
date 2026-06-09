@@ -21,15 +21,19 @@ function statusLabel(status: Property["status"]): string {
   return labels[status];
 }
 
+const PLACEHOLDER_IMAGE =
+  "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80";
+
 export function PropertyCard({ property }: PropertyCardProps) {
   const isUnavailable = property.status === "sold" || property.status === "rented";
+  const imageSrc = property.images[0] || PLACEHOLDER_IMAGE;
 
   return (
-    <article className="group overflow-hidden rounded-2xl border border-adab-gray-300 bg-white shadow-[0_4px_24px_rgba(27,42,74,0.08)] transition-shadow hover:shadow-[0_8px_32px_rgba(27,42,74,0.12)]">
+    <article className="group overflow-hidden rounded-2xl border border-adab-gray-300 bg-white shadow-[0_4px_24px_rgba(27,42,74,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(27,42,74,0.14)]">
       <Link href={`/properties/${property.slug}`} className="block">
         <div className="relative aspect-[4/3] overflow-hidden bg-adab-cream">
           <Image
-            src={property.images[0]}
+            src={imageSrc}
             alt={property.title}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"

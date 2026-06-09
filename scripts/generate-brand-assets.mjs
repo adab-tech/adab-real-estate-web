@@ -10,6 +10,7 @@ import { execSync } from "node:child_process";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const brandDir = join(__dirname, "..", "public", "brand");
 const downloadsDir = join(brandDir, "downloads");
+const publicDir = join(__dirname, "..", "public");
 
 async function ensureSharp() {
   try {
@@ -22,15 +23,6 @@ async function ensureSharp() {
     });
     return await import("sharp");
   }
-}
-
-async function svgToPng(sharp, svgPath, pngPath, width) {
-  const svg = await readFile(svgPath);
-  await sharp(svg, { density: 300 })
-    .resize(width)
-    .png()
-    .toFile(pngPath);
-  console.log(`  ${pngPath.replace(brandDir, "brand")}`);
 }
 
 async function optimizePrimaryLogo(sharp) {
@@ -80,6 +72,37 @@ async function generateOgImage(sharp, logoBuffer) {
   console.log("  brand/og-image.png (from logo.png on navy)");
 }
 
+async function generateFavicons(sharp, logoBuffer) {
+  console.log("Generating favicons from logo.png...");
+
+  const favicon32 = await sharp(logoBuffer)
+    .resize(32, 32, { fit: "contain", background: "#1B2A4A" })
+    .png()
+    .toBuffer();
+
+  const favicon512 = await sharp(logoBuffer)
+    .resize(512, 512, { fit: "contain", background: "#1B2A4A" })
+    .png()
+    .toBuffer();
+
+  const faviconIcoPath = join(brandDir, "favicon.ico");
+  const faviconDownloadIcoPath = join(downloadsDir, "favicon.ico");
+  const favicon32Path = join(brandDir, "favicon-32.png");
+  const favicon512Path = join(downloadsDir, "favicon-512.png");
+  const publicFaviconPath = join(publicDir, "favicon.ico");
+
+  await writeFile(faviconIcoPath, favicon32);
+  await writeFile(faviconDownloadIcoPath, favicon32);
+  await writeFile(favicon32Path, favicon32);
+  await writeFile(favicon512Path, favicon512);
+  await writeFile(publicFaviconPath, favicon32);
+
+  console.log("  brand/favicon.ico");
+  console.log("  brand/favicon-32.png");
+  console.log("  brand/downloads/favicon-512.png");
+  console.log("  public/favicon.ico");
+}
+
 async function main() {
   const sharpMod = await ensureSharp();
   const sharp = sharpMod.default;
@@ -89,13 +112,7 @@ async function main() {
   console.log("Optimizing primary logo...");
   const logoBuffer = await optimizePrimaryLogo(sharp);
 
-  const copies = [
-    "logo-mark.svg",
-    "logo-mark-white.svg",
-    "favicon.svg",
-    "nigeria-flag.svg",
-    "cac-logo.png",
-  ];
+  const copies = ["nigeria-flag.svg", "cac-logo.png"];
 
   for (const file of copies) {
     await copyFile(join(brandDir, file), join(downloadsDir, file));
@@ -104,19 +121,9 @@ async function main() {
   console.log("Generating PNGs...");
   await writeFile(join(downloadsDir, "logo-primary.png"), logoBuffer);
   console.log("  brand/downloads/logo-primary.png (from logo.png)");
-  await svgToPng(sharp, join(brandDir, "logo-mark.svg"), join(downloadsDir, "logo-mark.png"), 512);
-  await svgToPng(sharp, join(brandDir, "logo-mark-white.svg"), join(downloadsDir, "logo-mark-white.png"), 512);
-  await svgToPng(sharp, join(brandDir, "favicon.svg"), join(downloadsDir, "favicon-512.png"), 512);
 
   await generateOgImage(sharp, logoBuffer);
-
-  console.log("Generating favicon.ico...");
-  const faviconPng = await sharp(await readFile(join(brandDir, "favicon.svg")))
-    .resize(32)
-    .png()
-    .toBuffer();
-  await writeFile(join(brandDir, "favicon.ico"), faviconPng);
-  await writeFile(join(downloadsDir, "favicon.ico"), faviconPng);
+  await generateFavicons(sharp, logoBuffer);
 
   console.log("Creating adab-brand-kit.zip...");
   const zipPath = join(brandDir, "adab-brand-kit.zip");

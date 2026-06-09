@@ -58,6 +58,13 @@ export function buildDefaultMetadata(): Metadata {
       index: true,
       follow: true,
     },
+    icons: {
+      icon: [
+        { url: siteConfig.favicon, sizes: "32x32" },
+        { url: "/brand/favicon-32.png", sizes: "32x32", type: "image/png" },
+      ],
+      shortcut: siteConfig.favicon,
+    },
   };
 }
 

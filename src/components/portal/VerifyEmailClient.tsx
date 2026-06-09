@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { resendVerificationEmail } from "@/app/portal/actions";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
 export function VerifyEmailClient() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<"loading" | "verified" | "pending">(
     "loading",
@@ -22,12 +23,28 @@ export function VerifyEmailClient() {
       const client = createSupabaseBrowserClient();
       const tokenHash = searchParams.get("token_hash");
       const type = searchParams.get("type");
+      const code = searchParams.get("code");
+      const errorCode = searchParams.get("error");
+      const errorMessage = searchParams.get("message");
+
+      if (errorCode) {
+        setError(
+          errorMessage ||
+            "This verification link is invalid or has expired. Request a new one below.",
+        );
+        setStatus("pending");
+        return;
+      }
 
       try {
-        if (tokenHash && type) {
+        if (code) {
+          const { error: exchangeError } =
+            await client.auth.exchangeCodeForSession(code);
+          if (exchangeError) throw exchangeError;
+        } else if (tokenHash && type) {
           const otp = await client.auth.verifyOtp({
             token_hash: tokenHash,
-            type: type as "signup" | "email",
+            type: type as "signup" | "email" | "recovery" | "invite",
           });
           if (otp.error) throw otp.error;
         }
@@ -37,6 +54,7 @@ export function VerifyEmailClient() {
 
         if (user?.email_confirmed_at) {
           setStatus("verified");
+          router.replace("/portal/dashboard");
           return;
         }
 
@@ -49,14 +67,16 @@ export function VerifyEmailClient() {
         setStatus("pending");
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : "Verification failed. Try signing in to resend the email.",
+          err instanceof Error
+            ? err.message
+            : "Verification failed. Try signing in to resend the email.",
         );
         setStatus("pending");
       }
     }
 
     verify();
-  }, [searchParams]);
+  }, [router, searchParams]);
 
   return (
     <div className="portal-card p-8">
@@ -70,13 +90,13 @@ export function VerifyEmailClient() {
             Email verified
           </h2>
           <p className="mt-3 text-sm text-adab-gray-500">
-            Your account is active. You can sign in and start listing properties.
+            Your account is active. Taking you to your dashboard…
           </p>
           <Link
             className="portal-btn portal-btn-primary mt-6 inline-flex"
-            href="/portal/login"
+            href="/portal/dashboard"
           >
-            Continue to sign in
+            Go to dashboard
           </Link>
         </>
       )}
@@ -88,7 +108,7 @@ export function VerifyEmailClient() {
           </h2>
           <p className="mt-3 text-sm text-adab-gray-500">
             We sent a confirmation link to your inbox. Open it to activate your
-            account.
+            account and start listing properties.
           </p>
         </>
       )}

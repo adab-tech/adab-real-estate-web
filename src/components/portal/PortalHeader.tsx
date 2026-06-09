@@ -17,10 +17,10 @@ export function PortalHeader({
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex shrink-0 items-center gap-3">
           <Image
-            src={siteConfig.logoMark}
+            src={siteConfig.logo}
             alt={siteConfig.name}
-            width={140}
-            height={48}
+            width={160}
+            height={56}
             className="h-10 w-auto"
             priority
           />
@@ -48,6 +48,12 @@ export function PortalHeader({
               className="text-sm font-medium text-adab-gold-500"
             >
               List Property
+            </Link>
+            <Link
+              href="/services"
+              className="text-sm font-medium text-adab-navy-800 transition-colors hover:text-adab-gold-500"
+            >
+              Services
             </Link>
             <Link
               href="/contact"

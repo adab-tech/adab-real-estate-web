@@ -94,7 +94,7 @@ export function BrandDownloads() {
             >
               <div
                 className={`flex h-36 items-center justify-center p-6 ${
-                  asset.id.includes("white") || asset.id === "og-image"
+                  asset.id === "og-image" || asset.id === "favicon"
                     ? "bg-adab-navy-800"
                     : "bg-adab-cream"
                 }`}

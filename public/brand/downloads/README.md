@@ -7,8 +7,6 @@ Official downloadable assets for **Adab Real Estate Agency** (adab.ng).
 | File | Description |
 |------|-------------|
 | `logo-primary.png` | Full logo for light backgrounds (same as site header) |
-| `logo-mark.svg` / `.png` | Square icon mark for light backgrounds |
-| `logo-mark-white.svg` / `.png` | Square mark on navy background |
 
 ## Registration (footer only)
 
@@ -20,7 +18,7 @@ Official downloadable assets for **Adab Real Estate Agency** (adab.ng).
 
 | File | Description |
 |------|-------------|
-| `favicon.svg` / `favicon.ico` | Browser tab icon |
+| `favicon.ico` / `favicon-512.png` | Browser tab icon (derived from primary logo) |
 | `nigeria-flag.svg` | Nigerian flag with subtle animation (web use) |
 
 ## Social & reference

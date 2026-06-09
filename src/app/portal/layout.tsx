@@ -5,5 +5,7 @@ export default function PortalLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="flex min-h-full flex-col">{children}</div>;
+  return (
+    <div className="flex min-h-full flex-col bg-adab-cream">{children}</div>
+  );
 }
