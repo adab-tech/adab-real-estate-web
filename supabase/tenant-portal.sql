@@ -73,7 +73,7 @@ create index if not exists pm_applications_status_idx
 create table if not exists public.leases (
   id uuid primary key default gen_random_uuid(),
   tenant_id uuid not null references public.profiles (id) on delete cascade,
-  property_id uuid references public.properties (id) on delete set null,
+  property_id text references public.properties (id) on delete set null,
   property_title text not null default '',
   rent_ngn bigint,
   rent_period text check (rent_period is null or rent_period in ('month', 'year')),
@@ -96,7 +96,7 @@ create index if not exists leases_status_idx on public.leases (status);
 -- ---------------------------------------------------------------------------
 create table if not exists public.management_agreements (
   id uuid primary key default gen_random_uuid(),
-  property_id uuid references public.properties (id) on delete set null,
+  property_id text references public.properties (id) on delete set null,
   owner_id uuid references public.profiles (id) on delete set null,
   status text not null default 'draft' check (
     status in ('draft', 'active', 'paused', 'terminated', 'retired')
@@ -121,7 +121,7 @@ create table if not exists public.maintenance_requests (
   id uuid primary key default gen_random_uuid(),
   tenant_id uuid not null references public.profiles (id) on delete cascade,
   lease_id uuid references public.leases (id) on delete set null,
-  property_id uuid references public.properties (id) on delete set null,
+  property_id text references public.properties (id) on delete set null,
   title text not null,
   description text not null,
   category text not null default 'general' check (
@@ -407,7 +407,7 @@ create table if not exists public.tenant_profiles (
 create table if not exists public.leases (
   id uuid primary key default gen_random_uuid(),
   tenant_id uuid not null references public.profiles (id) on delete cascade,
-  property_id uuid references public.properties (id) on delete set null,
+  property_id text references public.properties (id) on delete set null,
   rent_ngn bigint,
   rent_period text check (rent_period is null or rent_period in ('month', 'year')),
   lease_start date,
@@ -444,7 +444,7 @@ create index if not exists rent_payments_tenant_id_idx on public.rent_payments (
 
 create table if not exists public.management_agreements (
   id uuid primary key default gen_random_uuid(),
-  property_id uuid references public.properties (id) on delete set null,
+  property_id text references public.properties (id) on delete set null,
   owner_id uuid references public.profiles (id) on delete set null,
   status text not null default 'draft' check (
     status in ('draft', 'active', 'paused', 'terminated', 'retired')
