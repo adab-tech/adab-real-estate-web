@@ -21,7 +21,7 @@ const BRAND = {
   white: "#FFFFFF",
 } as const;
 
-const CAC_REGISTRATION = "RC 9590252";
+const BUSINESS_REGISTRATION = "9590252";
 
 function getSiteBase(): string {
   return (process.env.NEXT_PUBLIC_SITE_URL ?? siteConfig.website).replace(
@@ -90,7 +90,7 @@ ${siteConfig.email}
 ${siteConfig.phone}
 ${siteConfig.website}
 
-CAC Reg. No. ${CAC_REGISTRATION}
+Business Name Reg. No. ${BUSINESS_REGISTRATION}
 `;
 
   const html = `<!DOCTYPE html>
@@ -186,7 +186,7 @@ CAC Reg. No. ${CAC_REGISTRATION}
             <td style="background-color:${BRAND.navy};padding:20px 32px;text-align:right;">
               <img src="${cacLogoUrl}" alt="Corporate Affairs Commission Nigeria" width="56" height="56" style="display:block;margin:0 0 8px auto;max-width:56px;height:auto;border:0;" />
               <p style="margin:0 0 6px;font-size:11px;line-height:1.5;color:rgba(255,255,255,0.75);letter-spacing:0.03em;">
-                CAC Reg. No. ${CAC_REGISTRATION}
+                Business Name Reg. No. ${BUSINESS_REGISTRATION}
               </p>
               <p style="margin:0;font-size:11px;line-height:1.5;color:rgba(255,255,255,0.55);">
                 © ${new Date().getFullYear()} ${escapeHtml(siteConfig.name)}. All rights reserved.

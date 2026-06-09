@@ -20,7 +20,7 @@ export default function Home() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/75">
             {siteConfig.tagline}. We connect buyers, sellers, and renters with
-            verified properties across Lagos, Abuja, Port Harcourt, and beyond.
+            verified properties across Lagos, Abuja, Kano, Port Harcourt, and beyond.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <Link
@@ -79,7 +79,7 @@ export default function Home() {
             },
             {
               title: "Rent",
-              desc: "Short and long-term rentals across Lagos, Abuja, Port Harcourt, and beyond.",
+              desc: "Short and long-term rentals across Lagos, Abuja, Kano, Port Harcourt, and beyond.",
               href: "/services/rent",
             },
             {

@@ -18,7 +18,7 @@ export const services: ServiceContent[] = [
     description:
       "Whether you are a first-time buyer or expanding your portfolio, Adab guides you through Nigeria's property market with verified listings, transparent pricing, and due diligence support.",
     benefits: [
-      "Verified listings across Lagos, Abuja, and Port Harcourt",
+      "Verified listings across Lagos, Abuja, Kano, and Port Harcourt",
       "Title and documentation review support",
       "Negotiation and offer management",
       "Mortgage and payment plan referrals",

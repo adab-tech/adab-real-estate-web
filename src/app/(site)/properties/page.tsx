@@ -12,7 +12,7 @@ export const revalidate = 60;
 export const metadata = {
   title: "Properties",
   description:
-    "Search verified properties for sale and rent across Lagos, Abuja, Port Harcourt, and Nigeria.",
+    "Search verified properties for sale and rent across Lagos, Abuja, Kano, Port Harcourt, and Nigeria.",
 };
 
 type PropertiesPageProps = {

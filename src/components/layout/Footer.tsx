@@ -31,7 +31,7 @@ export function Footer() {
               className="h-12 w-12 sm:h-16 sm:w-16"
             />
             <p className="text-xs tracking-wide text-white/60">
-              CAC Reg. No. RC 9590252
+              Business Name Reg. No. 9590252
             </p>
           </div>
         </div>
