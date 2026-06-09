@@ -25,26 +25,14 @@ async function ensureSharp() {
   }
 }
 
-async function optimizePrimaryLogo(sharp) {
+async function readPrimaryLogo(sharp) {
   const logoPath = join(brandDir, "logo.png");
   const original = await readFile(logoPath);
   const meta = await sharp(original).metadata();
-
-  if (meta.width && meta.width <= 800) {
-    console.log(`  logo.png already optimized (${meta.width}px wide)`);
-    return original;
-  }
-
-  const optimized = await sharp(original)
-    .resize(720, null, { fit: "inside", withoutEnlargement: true })
-    .png({ compressionLevel: 9, adaptiveFiltering: true })
-    .toBuffer();
-
-  await writeFile(logoPath, optimized);
   console.log(
-    `  logo.png optimized: ${original.length} → ${optimized.length} bytes`,
+    `  logo.png source: ${original.length} bytes${meta.width ? `, ${meta.width}px wide` : ""}`,
   );
-  return optimized;
+  return original;
 }
 
 async function generateOgImage(sharp, logoBuffer) {
@@ -109,8 +97,8 @@ async function main() {
 
   await mkdir(downloadsDir, { recursive: true });
 
-  console.log("Optimizing primary logo...");
-  const logoBuffer = await optimizePrimaryLogo(sharp);
+  console.log("Reading primary logo (logo.png is never overwritten)...");
+  const logoBuffer = await readPrimaryLogo(sharp);
 
   const copies = ["nigeria-flag.svg", "cac-logo.png"];
 
