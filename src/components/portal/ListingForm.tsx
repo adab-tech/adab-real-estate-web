@@ -1,18 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   MAX_IMAGE_BYTES,
   MAX_IMAGES,
   NIGERIA_STATES,
 } from "@/lib/portal/constants";
 import { slugifyListing } from "@/lib/portal/format";
-import {
-  parseNominatimAddress,
-  searchNigeriaAddress,
-  type NominatimResult,
-} from "@/lib/portal/geocode";
+import { AddressAutocomplete } from "@/components/portal/AddressAutocomplete";
+import { ensureListerProfile, requirePortalSession } from "@/lib/portal/ensure-profile";
+import { formatSupabaseError } from "@/lib/portal/errors";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
 export function ListingForm() {
@@ -21,10 +19,8 @@ export function ListingForm() {
     type: "error" | "success";
     message: string;
   } | null>(null);
-  const [suggestions, setSuggestions] = useState<NominatimResult[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [form, setForm] = useState({
     title: "",
@@ -60,28 +56,6 @@ export function ListingForm() {
 
   function updateField(name: string, value: string) {
     setForm((prev) => ({ ...prev, [name]: value }));
-  }
-
-  function handleAddressInput(value: string) {
-    updateField("address", value);
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(async () => {
-      const results = await searchNigeriaAddress(value);
-      setSuggestions(results);
-    }, 350);
-  }
-
-  function selectAddress(item: NominatimResult) {
-    const parsed = parseNominatimAddress(item, NIGERIA_STATES);
-    setForm((prev) => ({
-      ...prev,
-      address: parsed.address,
-      city: parsed.city,
-      state: parsed.state,
-      lat: String(parsed.lat),
-      lng: String(parsed.lng),
-    }));
-    setSuggestions([]);
   }
 
   function handleFiles(files: FileList | null) {
@@ -137,14 +111,15 @@ export function ListingForm() {
 
     try {
       const client = createSupabaseBrowserClient();
-      const session = await client.auth.getSession();
-      if (!session.data.session) {
-        router.replace("/portal/login");
-        setSubmitting(false);
-        return;
-      }
+      const session = await requirePortalSession(client);
+      const user = session.user;
+      await ensureListerProfile(client, user);
 
-      const userId = session.data.session.user.id;
+      const userId = user.id;
+      const priceNgn = parseInt(form.price_ngn, 10);
+      if (!Number.isFinite(priceNgn) || priceNgn < 0) {
+        throw new Error("Enter a valid price in NGN.");
+      }
       const fileInput = formEl.elements.namedItem(
         "image_files",
       ) as HTMLInputElement;
@@ -171,7 +146,7 @@ export function ListingForm() {
         description: form.description.trim(),
         type: form.type,
         category: form.category,
-        price_ngn: parseInt(form.price_ngn, 10),
+        price_ngn: priceNgn,
         price_period: form.type === "rent" ? form.price_period : null,
         location: {
           address: form.address.trim(),
@@ -180,6 +155,11 @@ export function ListingForm() {
           state: form.state.trim(),
           lat: form.lat ? parseFloat(form.lat) : null,
           lng: form.lng ? parseFloat(form.lng) : null,
+          ...(form.lat && form.lng
+            ? {
+                map_url: `https://www.google.com/maps/search/?api=1&query=${form.lat},${form.lng}`,
+              }
+            : {}),
         },
         beds: form.beds ? parseInt(form.beds, 10) : null,
         baths: form.baths ? parseInt(form.baths, 10) : null,
@@ -208,10 +188,18 @@ export function ListingForm() {
       setAlert({ type: "success", message });
       setTimeout(() => router.push("/portal/dashboard"), 1200);
     } catch (err) {
+      if (
+        err instanceof Error &&
+        err.message === "Your session expired. Please sign in again."
+      ) {
+        router.replace("/portal/login");
+        setSubmitting(false);
+        return;
+      }
+
       setAlert({
         type: "error",
-        message:
-          err instanceof Error ? err.message : "Unable to save listing.",
+        message: formatSupabaseError(err, "Unable to save listing."),
       });
       setSubmitting(false);
     }
@@ -326,32 +314,25 @@ export function ListingForm() {
           </div>
         </div>
 
-        <div>
-          <label className="portal-label" htmlFor="address">
-            Street address or landmark
-          </label>
-          <input
-            className="portal-input"
-            id="address"
-            required
-            placeholder="Start typing any Nigerian address…"
-            value={form.address}
-            onChange={(e) => handleAddressInput(e.target.value)}
-          />
-          {suggestions.length > 0 && (
-            <div className="portal-suggestions">
-              {suggestions.map((item) => (
-                <button
-                  key={item.display_name}
-                  type="button"
-                  onClick={() => selectAddress(item)}
-                >
-                  {item.display_name}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        <AddressAutocomplete
+          id="address"
+          label="Street address or landmark"
+          required
+          placeholder="Start typing any Nigerian address…"
+          value={form.address}
+          onValueChange={(value) => updateField("address", value)}
+          onSelect={(parsed) =>
+            setForm((prev) => ({
+              ...prev,
+              address: parsed.address,
+              area: parsed.area || prev.area,
+              city: parsed.city,
+              state: parsed.state,
+              lat: String(parsed.lat),
+              lng: String(parsed.lng),
+            }))
+          }
+        />
 
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
@@ -514,7 +495,7 @@ export function ListingForm() {
           type="submit"
           disabled={submitting}
         >
-          {submitting ? "Uploading…" : "Save listing"}
+          {submitting ? "Saving listing…" : "Save listing"}
         </button>
       </form>
     </>

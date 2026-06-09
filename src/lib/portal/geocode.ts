@@ -1,57 +1,88 @@
+export const DEBOUNCE_MS = 300;
+export const MIN_QUERY_LENGTH = 3;
+
 export type NominatimResult = {
+  place_id: number;
   display_name: string;
   lat: string;
   lon: string;
 };
 
+export type ParsedAddress = {
+  address: string;
+  area: string;
+  city: string;
+  state: string;
+  lat: number;
+  lng: number;
+  mapUrl: string;
+};
+
 export async function searchNigeriaAddress(
   query: string,
+  signal?: AbortSignal,
 ): Promise<NominatimResult[]> {
-  if (!query || query.length < 3) return [];
+  if (!query || query.trim().length < MIN_QUERY_LENGTH) return [];
 
-  const url =
-    "https://nominatim.openstreetmap.org/search?format=json&countrycodes=ng&limit=6&q=" +
-    encodeURIComponent(`${query}, Nigeria`);
-
-  const response = await fetch(url, {
-    headers: { Accept: "application/json" },
-    next: { revalidate: 3600 },
-  });
+  const response = await fetch(
+    `/api/geocode?q=${encodeURIComponent(query)}`,
+    {
+      headers: { Accept: "application/json" },
+      signal,
+    },
+  );
 
   if (!response.ok) return [];
-  return response.json();
+  const data = (await response.json()) as NominatimResult[];
+  return Array.isArray(data) ? data : [];
+}
+
+export function buildMapUrl(lat: number, lng: number): string {
+  return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
 }
 
 export function parseNominatimAddress(
   item: NominatimResult,
   states: readonly string[],
-): {
-  address: string;
-  city: string;
-  state: string;
-  lat: number;
-  lng: number;
-} {
+): ParsedAddress {
   const parts = item.display_name.split(",").map((p) => p.trim());
-  let city = "";
+  const address = parts[0] ?? "";
   let state = "";
+  let city = "";
+  let area = "";
 
-  for (const part of parts) {
-    for (const s of states) {
-      if (part.toLowerCase().includes(s.toLowerCase())) {
-        state = s;
-      }
+  const stateIndex = parts.findIndex((part) =>
+    states.some((s) => part.toLowerCase().includes(s.toLowerCase())),
+  );
+
+  if (stateIndex >= 0) {
+    state =
+      states.find((s) =>
+        parts[stateIndex].toLowerCase().includes(s.toLowerCase()),
+      ) ?? "";
+    if (stateIndex > 0) {
+      city = parts[stateIndex - 1] ?? "";
     }
-    if (!city && part.length > 2 && part !== "Nigeria") {
-      city = part;
+    if (stateIndex > 2) {
+      area = parts[1] ?? "";
+    } else if (stateIndex === 2) {
+      area = parts[1] ?? "";
     }
+  } else if (parts.length > 2) {
+    city = parts[1] ?? "";
+    area = parts.length > 3 ? (parts[2] ?? "") : "";
   }
 
+  const lat = parseFloat(item.lat);
+  const lng = parseFloat(item.lon);
+
   return {
-    address: parts[0] ?? "",
+    address,
+    area,
     city,
     state,
-    lat: parseFloat(item.lat),
-    lng: parseFloat(item.lon),
+    lat,
+    lng,
+    mapUrl: buildMapUrl(lat, lng),
   };
 }
