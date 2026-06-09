@@ -15,7 +15,7 @@ export default async function PmPaymentsPage() {
       .limit(100),
     supabase
       .from("tenant_profiles")
-      .select("id, profiles(full_name, email)")
+      .select("id, profiles!id(full_name, email)")
       .limit(200),
   ]);
 
@@ -30,8 +30,10 @@ export default async function PmPaymentsPage() {
           Rent & payments
         </h1>
         <p className="mt-1 text-sm text-adab-gray-500">
-          Phase 1: manual records. Paystack checkout{" "}
-          {isPaystackConfigured() ? "configured" : "stub — add PAYSTACK_SECRET_KEY"}.
+          Record rent and deposits manually below — no payment keys required.
+          {isPaystackConfigured()
+            ? " Online Paystack checkout is also enabled."
+            : null}
         </p>
       </div>
 
