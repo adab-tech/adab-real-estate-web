@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PostFeaturedToggle } from "@/components/admin/PostFeaturedToggle";
+import { PostQuickActions } from "@/components/admin/PostQuickActions";
 import { requireAdmin } from "@/lib/supabase/auth-server";
 import { mapPostRow, type PostRow } from "@/lib/supabase/posts";
 import { POST_STATUS_LABELS, POST_TYPE_LABELS } from "@/types/post";
@@ -70,7 +71,7 @@ export default async function AdminPostsPage({
                 <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3">Featured</th>
                 <th className="px-4 py-3">Published</th>
-                <th className="px-4 py-3" />
+                <th className="px-4 py-3">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -104,12 +105,7 @@ export default async function AdminPostsPage({
                       : "—"}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <Link
-                      href={`/admin/posts/${post.id}/edit`}
-                      className="font-semibold text-adab-navy-800 hover:text-adab-gold-500"
-                    >
-                      Edit
-                    </Link>
+                    <PostQuickActions post={post} />
                   </td>
                 </tr>
               ))}

@@ -365,14 +365,44 @@ export function PropertyForm({ property, mode }: PropertyFormProps) {
         </button>
 
         {mode === "edit" && property && (
-          <button
-            type="button"
-            onClick={handleDelete}
-            disabled={pending}
-            className="rounded-full border border-red-300 px-6 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50 disabled:opacity-60"
-          >
-            Delete listing
-          </button>
+          <>
+            <button
+              type="button"
+              onClick={async () => {
+                if (
+                  !confirm(
+                    `Retire "${property.title}"? It will be marked ${property.type === "rent" ? "rented" : "sold"} and unfeatured.`,
+                  )
+                ) {
+                  return;
+                }
+                setPending(true);
+                const result = await retirePropertyAction(
+                  property.id,
+                  property.slug,
+                  property.type,
+                );
+                if (result?.error) {
+                  setError(result.error);
+                  setPending(false);
+                } else {
+                  window.location.reload();
+                }
+              }}
+              disabled={pending}
+              className="rounded-full border border-adab-gray-300 px-6 py-2.5 text-sm font-semibold text-adab-navy-800 hover:bg-white disabled:opacity-60"
+            >
+              Retire listing
+            </button>
+            <button
+              type="button"
+              onClick={handleDelete}
+              disabled={pending}
+              className="rounded-full border border-red-300 px-6 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50 disabled:opacity-60"
+            >
+              Delete listing
+            </button>
+          </>
         )}
       </div>
     </form>

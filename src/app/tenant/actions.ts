@@ -96,6 +96,27 @@ export async function signUpTenant(
   redirect("/tenant/dashboard");
 }
 
+export async function resendTenantVerificationEmail(
+  _prev: TenantAuthState,
+  formData: FormData,
+): Promise<TenantAuthState> {
+  const email = String(formData.get("email") ?? "").trim();
+  if (!email) return { error: "Email is required." };
+
+  const supabase = await createSupabaseAuthClient();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? siteConfig.website;
+  const emailRedirectTo = `${siteUrl}/auth/callback?next=/tenant/dashboard`;
+
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email,
+    options: { emailRedirectTo },
+  });
+
+  if (error) return { error: error.message };
+  return { success: "Verification email sent. Check your inbox." };
+}
+
 export async function signOutTenant() {
   const supabase = await createSupabaseAuthClient();
   await supabase.auth.signOut();

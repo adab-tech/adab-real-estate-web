@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   createPostAction,
   deletePostAction,
+  unpublishPostAction,
   updatePostAction,
 } from "@/app/admin/post-actions";
 import { CmsMediaUpload } from "@/components/admin/CmsMediaUpload";
@@ -292,14 +293,32 @@ export function PostForm({ post, mode }: PostFormProps) {
         {mode === "edit" && post && (
           <>
             {post.status === "published" && (
-              <a
-                href={`/updates/${post.slug}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-adab-gray-300 px-6 py-2.5 text-sm font-semibold text-adab-navy-800 hover:bg-white"
-              >
-                View on site
-              </a>
+              <>
+                <a
+                  href={`/updates/${post.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-adab-gray-300 px-6 py-2.5 text-sm font-semibold text-adab-navy-800 hover:bg-white"
+                >
+                  View on site
+                </a>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (!confirm(`Unpublish "${post.title}"?`)) return;
+                    setPending(true);
+                    const result = await unpublishPostAction(post.id, post.slug);
+                    if (result?.error) {
+                      setError(result.error);
+                      setPending(false);
+                    }
+                  }}
+                  disabled={pending}
+                  className="rounded-full border border-adab-gray-300 px-6 py-2.5 text-sm font-semibold text-adab-navy-800 hover:bg-white disabled:opacity-60"
+                >
+                  Unpublish
+                </button>
+              </>
             )}
             <button
               type="button"

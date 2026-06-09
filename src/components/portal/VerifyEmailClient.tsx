@@ -3,18 +3,36 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
-import { resendVerificationEmail } from "@/app/portal/actions";
+import {
+  resendVerificationEmail,
+  type PortalAuthState,
+} from "@/app/portal/actions";
+import type { TenantAuthState } from "@/app/tenant/actions";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
-export function VerifyEmailClient() {
+type VerifyEmailClientProps = {
+  reason?: string;
+  resendAction?: (
+    prev: PortalAuthState | TenantAuthState,
+    formData: FormData,
+  ) => Promise<PortalAuthState | TenantAuthState>;
+  dashboardHref?: string;
+};
+
+export function VerifyEmailClient({
+  reason,
+  resendAction: resendActionProp,
+  dashboardHref = "/portal/dashboard",
+}: VerifyEmailClientProps = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<"loading" | "verified" | "pending">(
     "loading",
   );
   const [error, setError] = useState<string | null>(null);
-  const [resendState, resendAction, resendPending] = useActionState(
-    resendVerificationEmail,
+  const resendAction = resendActionProp ?? resendVerificationEmail;
+  const [resendState, resendFormAction, resendPending] = useActionState(
+    resendAction,
     null,
   );
 
@@ -40,7 +58,7 @@ export function VerifyEmailClient() {
 
       try {
         if (code) {
-          window.location.href = `/auth/callback?code=${encodeURIComponent(code)}&next=${encodeURIComponent("/portal/dashboard")}`;
+          window.location.href = `/auth/callback?code=${encodeURIComponent(code)}&next=${encodeURIComponent(dashboardHref)}`;
           return;
         } else if (tokenHash && type) {
           const otp = await client.auth.verifyOtp({
@@ -55,11 +73,11 @@ export function VerifyEmailClient() {
 
         if (user?.email_confirmed_at) {
           setStatus("verified");
-          router.replace("/portal/dashboard");
+          router.replace(dashboardHref);
           return;
         }
 
-        if (searchParams.get("reason") === "confirm") {
+        if (reason === "confirm" || searchParams.get("reason") === "confirm") {
           setError(
             "Please verify your email. Check your inbox for the confirmation link.",
           );
@@ -77,7 +95,7 @@ export function VerifyEmailClient() {
     }
 
     verify();
-  }, [router, searchParams]);
+  }, [router, searchParams, dashboardHref, reason]);
 
   return (
     <div className="portal-card p-8">
@@ -95,7 +113,7 @@ export function VerifyEmailClient() {
           </p>
           <Link
             className="portal-btn portal-btn-primary mt-6 inline-flex"
-            href="/portal/dashboard"
+            href={dashboardHref}
           >
             Go to dashboard
           </Link>
@@ -138,7 +156,7 @@ export function VerifyEmailClient() {
             {resendState.error}
           </div>
         )}
-        <form action={resendAction} className="mt-4 space-y-3">
+        <form action={resendFormAction} className="mt-4 space-y-3">
           <input
             className="portal-input"
             name="email"

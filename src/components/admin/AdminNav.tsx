@@ -4,9 +4,9 @@ import { signOut } from "@/app/admin/actions";
 const links = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/properties", label: "Properties" },
+  { href: "/admin/pm", label: "Property mgmt" },
   { href: "/admin/posts", label: "Posts" },
   { href: "/admin/inquiries", label: "Inquiries" },
-  { href: "/admin/pm", label: "Property mgmt" },
   { href: "/admin/brand", label: "Brand assets" },
 ];
 

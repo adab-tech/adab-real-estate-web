@@ -26,8 +26,12 @@ export async function createSupabaseAuthClient() {
 
 export function isAdminUser(user: {
   app_metadata?: Record<string, unknown>;
+  user_metadata?: Record<string, unknown>;
 }): boolean {
-  return user.app_metadata?.role === "admin";
+  return (
+    user.app_metadata?.role === "admin" ||
+    user.user_metadata?.role === "admin"
+  );
 }
 
 export async function requireAdmin() {

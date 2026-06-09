@@ -10,9 +10,11 @@ export function ServicePageLayout({ service }: ServicePageLayoutProps) {
   const ctaHref =
     service.slug === "buy" || service.slug === "rent"
       ? "/properties"
-      : service.slug === "property-management"
-        ? "/tenant"
+      : service.slug === "sell"
+        ? "/portal/listings/new"
         : "/contact";
+
+  const isPropertyManagement = service.slug === "property-management";
 
   return (
     <main>
@@ -80,21 +82,22 @@ export function ServicePageLayout({ service }: ServicePageLayoutProps) {
           </section>
         </div>
 
-        {service.slug === "property-management" ? (
+        {isPropertyManagement && (
           <section className="mt-14 rounded-2xl border border-adab-gray-300 bg-white p-8 shadow-[0_4px_24px_rgba(27,42,74,0.08)]">
             <h2 className="font-[family-name:var(--font-display)] text-2xl font-bold text-adab-navy-800">
-              Client & tenant portal
+              Client portal
             </h2>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-adab-navy-700">
-              Tenants and owners under Adab management can submit maintenance
-              requests, apply for onboarding, and track applications online.
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-adab-gray-500">
+              Tenants and property owners under Adab management can sign in to
+              submit maintenance requests, track applications, and view lease
+              details.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href="/tenant/login"
                 className="rounded-full bg-adab-navy-800 px-6 py-3 text-sm font-semibold text-white hover:bg-adab-navy-700"
               >
-                Tenant sign in
+                Tenant login
               </Link>
               <Link
                 href="/tenant/apply?type=management_onboarding"
@@ -106,19 +109,28 @@ export function ServicePageLayout({ service }: ServicePageLayoutProps) {
                 href="/tenant/maintenance"
                 className="rounded-full border border-adab-navy-800 px-6 py-3 text-sm font-semibold text-adab-navy-800 hover:border-adab-gold-500"
               >
-                Report maintenance
+                Maintenance request
               </Link>
             </div>
           </section>
-        ) : null}
+        )}
 
         <div className="mt-14 flex flex-wrap gap-4">
-          <Link
-            href={ctaHref}
-            className="rounded-full bg-adab-gold-500 px-6 py-3 text-sm font-semibold text-adab-navy-900 hover:bg-adab-gold-400"
-          >
-            {service.cta}
-          </Link>
+          {isPropertyManagement ? (
+            <Link
+              href="/tenant/apply?type=management_onboarding"
+              className="rounded-full bg-adab-gold-500 px-6 py-3 text-sm font-semibold text-adab-navy-900 hover:bg-adab-gold-400"
+            >
+              Submit application
+            </Link>
+          ) : (
+            <Link
+              href={ctaHref}
+              className="rounded-full bg-adab-gold-500 px-6 py-3 text-sm font-semibold text-adab-navy-900 hover:bg-adab-gold-400"
+            >
+              {service.cta}
+            </Link>
+          )}
           <a
             href={siteConfig.whatsapp}
             target="_blank"

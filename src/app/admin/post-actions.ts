@@ -151,21 +151,3 @@ export async function unpublishPostAction(postId: string, slug: string) {
   return { success: true };
 }
 
-export async function toggleFeaturedPostAction(
-  postId: string,
-  slug: string,
-  featured: boolean,
-) {
-  const { supabase } = await requireAdmin();
-
-  const { error } = await supabase
-    .from("posts")
-    .update({ featured })
-    .eq("id", postId);
-
-  if (error) return { error: error.message };
-
-  revalidatePostPages(slug);
-  revalidatePath("/admin/posts");
-  return { success: true };
-}
