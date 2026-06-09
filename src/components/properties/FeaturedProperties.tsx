@@ -24,7 +24,19 @@ export async function FeaturedProperties() {
             View all →
           </Link>
         </div>
-        <PropertyGrid properties={featured} />
+        {featured.length > 0 ? (
+          <PropertyGrid properties={featured} />
+        ) : (
+          <p className="py-8 text-center text-adab-gray-500">
+            New listings are being added.{" "}
+            <Link
+              href="/properties"
+              className="font-semibold text-adab-navy-800 hover:text-adab-gold-500"
+            >
+              Browse all properties
+            </Link>
+          </p>
+        )}
       </div>
     </section>
   );
