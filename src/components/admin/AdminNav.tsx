@@ -2,7 +2,9 @@ import Link from "next/link";
 import { signOut } from "@/app/admin/actions";
 
 const links = [
+  { href: "/admin", label: "Dashboard" },
   { href: "/admin/properties", label: "Properties" },
+  { href: "/admin/posts", label: "Posts" },
   { href: "/admin/inquiries", label: "Inquiries" },
   { href: "/admin/brand", label: "Brand assets" },
 ];
@@ -12,7 +14,7 @@ export function AdminNav({ email }: { email: string }) {
     <header className="border-b border-adab-gray-300 bg-adab-navy-800 text-white">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
         <div className="flex items-center gap-6">
-          <Link href="/admin/properties" className="font-display text-lg font-bold">
+          <Link href="/admin" className="font-display text-lg font-bold">
             Adab Admin
           </Link>
           <nav className="flex gap-4 text-sm">

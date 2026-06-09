@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PRODUCTION_URL } from "@/lib/domain";
 import { formatPropertyPrice } from "@/lib/format";
 import { siteConfig } from "@/lib/site-config";
+import type { Post } from "@/types/post";
 import type { Property } from "@/types/property";
 
 export function getSiteUrl(): string {
@@ -111,6 +112,62 @@ export function buildOrganizationJsonLd() {
       contactType: "customer service",
       areaServed: "NG",
       availableLanguage: "English",
+    },
+  };
+}
+
+export function buildPostMetadata(post: Post): Metadata {
+  const url = absoluteUrl(`/updates/${post.slug}`);
+  const description = post.excerpt || post.title;
+
+  return {
+    title: post.title,
+    description,
+    keywords: post.tags.length > 0 ? post.tags : undefined,
+    openGraph: {
+      type: "article",
+      url,
+      title: post.title,
+      description,
+      publishedTime: post.publishedAt ?? undefined,
+      tags: post.tags.length > 0 ? post.tags : undefined,
+      images: post.coverImage
+        ? [{ url: post.coverImage, alt: post.title }]
+        : [{ url: absoluteUrl(siteConfig.ogImage), alt: post.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description,
+      images: post.coverImage ? [post.coverImage] : undefined,
+    },
+    alternates: { canonical: url },
+  };
+}
+
+export function buildArticleJsonLd(post: Post) {
+  const url = absoluteUrl(`/updates/${post.slug}`);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt || post.title,
+    url,
+    datePublished: post.publishedAt ?? post.createdAt,
+    dateModified: post.updatedAt,
+    image: post.coverImage ? [post.coverImage] : undefined,
+    author: {
+      "@type": "Organization",
+      name: siteConfig.name,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      logo: {
+        "@type": "ImageObject",
+        url: absoluteUrl(siteConfig.logo),
+      },
     },
   };
 }

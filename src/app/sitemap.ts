@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllPropertySlugs } from "@/lib/properties";
+import { getAllPublishedPostSlugs } from "@/lib/supabase/posts";
 import { getSiteUrl } from "@/lib/seo";
 
 export const dynamic = "force-static";
@@ -34,6 +35,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${base}/updates`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
   ];
 
   const slugs = await getAllPropertySlugs();
@@ -58,5 +65,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...serviceRoutes, ...propertyRoutes];
+  const postSlugs = await getAllPublishedPostSlugs();
+  const postRoutes: MetadataRoute.Sitemap = postSlugs.map((slug) => ({
+    url: `${base}/updates/${slug}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
+  }));
+
+  return [...staticRoutes, ...serviceRoutes, ...propertyRoutes, ...postRoutes];
 }

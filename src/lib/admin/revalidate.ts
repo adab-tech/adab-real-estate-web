@@ -9,3 +9,13 @@ export function revalidatePropertyPages(slug: string, oldSlug?: string) {
     revalidatePath(`/properties/${oldSlug}`);
   }
 }
+
+export function revalidatePostPages(slug: string, oldSlug?: string) {
+  revalidatePath("/");
+  revalidatePath("/updates");
+  revalidatePath(`/updates/${slug}`);
+
+  if (oldSlug && oldSlug !== slug) {
+    revalidatePath(`/updates/${oldSlug}`);
+  }
+}
