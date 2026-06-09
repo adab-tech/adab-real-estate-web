@@ -42,6 +42,14 @@ export function formatSupabaseError(
   } else if (error.code === "23505") {
     parts.push("A listing with a similar title already exists. Change the title and try again.");
   } else if (
+    error.code === "23502" &&
+    message.includes('column "id"')
+  ) {
+    parts.push(
+      "The database is missing a default for listing IDs.",
+      "Ask your admin to run supabase/fix-properties-id.sql in the Supabase SQL Editor.",
+    );
+  } else if (
     message.includes("Bucket not found") ||
     message.includes("property-images")
   ) {

@@ -437,3 +437,23 @@ create index if not exists posts_featured_idx on public.posts (featured)
 alter table public.properties drop constraint if exists properties_price_period_check;
 alter table public.properties add constraint properties_price_period_check
   check (price_period is null or price_period in ('year', 'month', 'negotiable'));
+
+-- ---------------------------------------------------------------------------
+-- Properties: id default when client omits id (legacy text PK has no default)
+-- ---------------------------------------------------------------------------
+do $$
+declare
+  col_udt text;
+begin
+  select udt_name into col_udt
+  from information_schema.columns
+  where table_schema = 'public'
+    and table_name = 'properties'
+    and column_name = 'id';
+
+  if col_udt = 'uuid' then
+    alter table public.properties alter column id set default gen_random_uuid();
+  elsif col_udt in ('text', 'varchar', 'character varying') then
+    alter table public.properties alter column id set default gen_random_uuid()::text;
+  end if;
+end $$;

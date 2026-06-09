@@ -75,6 +75,9 @@ export async function createPropertyAction(formData: FormData) {
 
   const property = toProperty(parsed.data);
   const row = mapPropertyToRow(property);
+  if (!row.id?.trim()) {
+    row.id = crypto.randomUUID();
+  }
 
   const { error } = await supabase.from("properties").insert(row);
   if (error) return { error: error.message };

@@ -187,7 +187,8 @@ export function ListingForm() {
         .single();
 
       if (result.error?.code === "23505") {
-        payload.slug = slugifyListing(form.title);
+        payload.id = crypto.randomUUID();
+        payload.slug = `${slugifyListing(form.title)}-${Date.now().toString(36)}`;
         result = await client
           .from("properties")
           .insert(payload)
