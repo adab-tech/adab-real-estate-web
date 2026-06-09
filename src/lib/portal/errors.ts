@@ -22,7 +22,20 @@ export function formatSupabaseError(
     return err instanceof Error ? err.message : fallback;
   }
 
-  const parts = [message];
+  if (
+    error.code === "23502" &&
+    message.includes('column "id"')
+  ) {
+    return [
+      "We could not save your listing because listing IDs are not configured in the database.",
+      "Ask your admin to run supabase/fix-properties-id.sql in the Supabase SQL Editor.",
+    ].join(" ");
+  }
+
+  const parts =
+    error.code === "23502"
+      ? ["A required field is missing. Check all fields and try again."]
+      : [message];
 
   if (error.code === "23514") {
     parts.push(
@@ -40,14 +53,8 @@ export function formatSupabaseError(
       SCHEMA_HINT,
     );
   } else if (error.code === "23505") {
-    parts.push("A listing with a similar title already exists. Change the title and try again.");
-  } else if (
-    error.code === "23502" &&
-    message.includes('column "id"')
-  ) {
     parts.push(
-      "The database is missing a default for listing IDs.",
-      "Ask your admin to run supabase/fix-properties-id.sql in the Supabase SQL Editor.",
+      "A listing with a similar title already exists. Change the title and try again.",
     );
   } else if (
     message.includes("Bucket not found") ||
@@ -65,7 +72,7 @@ export function formatSupabaseError(
       "Your account may not have lister permissions.",
       SCHEMA_HINT,
     );
-  } else if (error.details) {
+  } else if (error.code !== "23502" && error.details) {
     parts.push(error.details);
   }
 

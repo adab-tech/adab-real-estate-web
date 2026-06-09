@@ -11,6 +11,11 @@
 create extension if not exists "pgcrypto";
 
 -- ---------------------------------------------------------------------------
+-- Properties id default (portal inserts omit id on legacy tables)
+-- ---------------------------------------------------------------------------
+alter table public.properties alter column id set default gen_random_uuid();
+
+-- ---------------------------------------------------------------------------
 -- Profiles + properties columns (legacy upgrade)
 -- ---------------------------------------------------------------------------
 create table if not exists public.profiles (

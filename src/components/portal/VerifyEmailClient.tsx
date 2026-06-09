@@ -3,26 +3,24 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
-import {
-  resendVerificationEmail,
-  type PortalAuthState,
-} from "@/app/portal/actions";
-import type { TenantAuthState } from "@/app/tenant/actions";
+import { resendVerificationEmail, type PortalAuthState } from "@/app/portal/actions";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
 type VerifyEmailClientProps = {
   reason?: string;
-  resendAction?: (
-    prev: PortalAuthState | TenantAuthState,
-    formData: FormData,
-  ) => Promise<PortalAuthState | TenantAuthState>;
   dashboardHref?: string;
+  resendAction?: (
+    prev: PortalAuthState,
+    formData: FormData,
+  ) => Promise<PortalAuthState>;
+  portalLabel?: string;
 };
 
 export function VerifyEmailClient({
   reason,
-  resendAction: resendActionProp,
   dashboardHref = "/portal/dashboard",
+  resendAction = resendVerificationEmail,
+  portalLabel = "listing",
 }: VerifyEmailClientProps = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -30,48 +28,44 @@ export function VerifyEmailClient({
     "loading",
   );
   const [error, setError] = useState<string | null>(null);
-  const resendAction = resendActionProp ?? resendVerificationEmail;
-  const [resendState, resendFormAction, resendPending] = useActionState(
+  const [resendState, submitResend, resendPending] = useActionState(
     resendAction,
     null,
   );
 
   useEffect(() => {
-    async function verify() {
-      const client = createSupabaseBrowserClient();
-      const tokenHash = searchParams.get("token_hash");
-      const type = searchParams.get("type");
-      const code = searchParams.get("code");
-      const errorCode = searchParams.get("error");
-      const errorMessage = searchParams.get("message");
+    const tokenHash = searchParams.get("token_hash");
+    const type = searchParams.get("type");
+    const code = searchParams.get("code");
+    const errorCode = searchParams.get("error");
+    const errorMessage = searchParams.get("message");
 
-      if (errorCode) {
-        setError(
-          errorMessage ||
-            (errorCode === "expired"
-              ? "This verification link has expired. Sign in and request a new confirmation email below."
-              : "This verification link is invalid or has expired. Request a new one below."),
-        );
-        setStatus("pending");
-        return;
-      }
+    if (errorCode) {
+      setError(
+        errorMessage ||
+          "This verification link is invalid or has expired. Request a new one below.",
+      );
+      setStatus("pending");
+      return;
+    }
 
+    // PKCE code exchange must run on the server callback where verifier cookies are stored.
+    if (code || (tokenHash && type)) {
+      const params = new URLSearchParams();
+      if (code) params.set("code", code);
+      if (tokenHash) params.set("token_hash", tokenHash);
+      if (type) params.set("type", type);
+      params.set("next", dashboardHref);
+      window.location.replace(`/auth/callback?${params.toString()}`);
+      return;
+    }
+
+    async function checkSession() {
       try {
-        if (code) {
-          window.location.href = `/auth/callback?code=${encodeURIComponent(code)}&next=${encodeURIComponent(dashboardHref)}`;
-          return;
-        } else if (tokenHash && type) {
-          const otp = await client.auth.verifyOtp({
-            token_hash: tokenHash,
-            type: type as "signup" | "email" | "recovery" | "invite",
-          });
-          if (otp.error) throw otp.error;
-        }
-
+        const client = createSupabaseBrowserClient();
         const { data } = await client.auth.getSession();
-        const user = data.session?.user;
 
-        if (user?.email_confirmed_at) {
+        if (data.session?.user?.email_confirmed_at) {
           setStatus("verified");
           router.replace(dashboardHref);
           return;
@@ -94,7 +88,7 @@ export function VerifyEmailClient({
       }
     }
 
-    verify();
+    checkSession();
   }, [router, searchParams, dashboardHref, reason]);
 
   return (
@@ -123,14 +117,11 @@ export function VerifyEmailClient({
       {status === "pending" && (
         <>
           <h2 className="font-display text-2xl font-bold text-adab-navy-800">
-            {searchParams.get("error") === "expired"
-              ? "Link expired"
-              : "Verify your email"}
+            Verify your email
           </h2>
           <p className="mt-3 text-sm text-adab-gray-500">
-            {searchParams.get("error") === "expired"
-              ? "Verification links expire after a short time for security. Request a fresh link below to finish setting up your account."
-              : "We sent a confirmation link to your inbox. Open it to activate your account and start listing properties."}
+            We sent a confirmation link to your inbox. Open it to activate your
+            account and start listing properties.
           </p>
         </>
       )}
@@ -156,7 +147,7 @@ export function VerifyEmailClient({
             {resendState.error}
           </div>
         )}
-        <form action={resendFormAction} className="mt-4 space-y-3">
+        <form action={submitResend} className="mt-4 space-y-3">
           <input
             className="portal-input"
             name="email"
