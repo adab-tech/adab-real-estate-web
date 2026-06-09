@@ -1,6 +1,7 @@
 "use server";
 
 import { sendListingApprovedEmail } from "@/lib/email/listing-approved";
+import { revalidatePropertyPages } from "@/lib/admin/revalidate";
 import { requirePortalAdmin } from "@/lib/portal/profile";
 
 export type ReviewListingResult = {
@@ -46,6 +47,10 @@ export async function approveListing(id: string): Promise<ReviewListingResult> {
 
   if (update.error) {
     return { error: update.error.message };
+  }
+
+  if (property.data.slug) {
+    revalidatePropertyPages(property.data.slug);
   }
 
   const ownerEmail = owner?.email?.trim();

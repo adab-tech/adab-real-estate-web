@@ -30,7 +30,9 @@ export function VerifyEmailClient() {
       if (errorCode) {
         setError(
           errorMessage ||
-            "This verification link is invalid or has expired. Request a new one below.",
+            (errorCode === "expired"
+              ? "This verification link has expired. Sign in and request a new confirmation email below."
+              : "This verification link is invalid or has expired. Request a new one below."),
         );
         setStatus("pending");
         return;
@@ -103,11 +105,14 @@ export function VerifyEmailClient() {
       {status === "pending" && (
         <>
           <h2 className="font-display text-2xl font-bold text-adab-navy-800">
-            Verify your email
+            {searchParams.get("error") === "expired"
+              ? "Link expired"
+              : "Verify your email"}
           </h2>
           <p className="mt-3 text-sm text-adab-gray-500">
-            We sent a confirmation link to your inbox. Open it to activate your
-            account and start listing properties.
+            {searchParams.get("error") === "expired"
+              ? "Verification links expire after a short time for security. Request a fresh link below to finish setting up your account."
+              : "We sent a confirmation link to your inbox. Open it to activate your account and start listing properties."}
           </p>
         </>
       )}

@@ -10,12 +10,34 @@ function verifyEmailErrorUrl(origin: string, message: string) {
   return url;
 }
 
+function resolveNextPath(
+  type: string | null,
+  requested: string | null,
+): string {
+  if (type === "recovery") return "/portal/dashboard";
+  const next = requested ?? "/portal/dashboard";
+  if (next.startsWith("/") && !next.startsWith("//")) return next;
+  return "/portal/dashboard";
+}
+
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type");
-  const next = searchParams.get("next") ?? "/portal/dashboard";
+  const next = resolveNextPath(type, searchParams.get("next"));
+
+  const authError = searchParams.get("error");
+  const errorCode = searchParams.get("error_code");
+  const errorDescription = searchParams.get("error_description");
+  if (authError || errorCode) {
+    const message =
+      errorDescription ||
+      (errorCode === "otp_expired"
+        ? "This link has expired. Request a new verification email."
+        : authError || "Authentication link is invalid or has expired.");
+    return NextResponse.redirect(verifyEmailErrorUrl(origin, message));
+  }
 
   const cookieStore = await cookies();
   const supabase = createServerClient(getSupabaseUrl(), getSupabaseAnonKey(), {

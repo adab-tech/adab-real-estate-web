@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { formatNaira, statusLabel } from "@/lib/portal/format";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
@@ -56,7 +57,14 @@ export function DashboardListings() {
 
   if (listings === null) {
     return (
-      <p className="text-sm text-adab-gray-500">Loading listings…</p>
+      <div className="space-y-3" aria-busy="true" aria-label="Loading listings">
+        {[0, 1].map((key) => (
+          <div
+            key={key}
+            className="h-16 animate-pulse rounded-lg bg-adab-cream"
+          />
+        ))}
+      </div>
     );
   }
 
@@ -66,9 +74,21 @@ export function DashboardListings() {
 
   if (!listings.length) {
     return (
-      <p className="text-sm text-adab-gray-500">
-        No listings yet. Create your first property.
-      </p>
+      <div className="py-6 text-center">
+        <p className="font-[family-name:var(--font-display)] text-lg font-semibold text-adab-navy-800">
+          No listings yet
+        </p>
+        <p className="mx-auto mt-2 max-w-sm text-sm text-adab-gray-500">
+          List your first property on Adab.ng. Submitted listings are reviewed
+          by our team before going live on the public site.
+        </p>
+        <Link
+          href="/portal/listings/new"
+          className="portal-btn portal-btn-primary mt-6 inline-flex"
+        >
+          + Add your first listing
+        </Link>
+      </div>
     );
   }
 

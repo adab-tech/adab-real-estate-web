@@ -2,14 +2,15 @@ import Link from "next/link";
 import { FeaturedProperties } from "@/components/properties/FeaturedProperties";
 import { siteConfig } from "@/lib/site-config";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export default function Home() {
   return (
     <main>
       <section className="relative overflow-hidden bg-adab-navy-800 text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,162,39,0.18),transparent_55%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(15,26,46,0.2),rgba(15,26,46,0.85))]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,162,39,0.22),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(27,42,74,0.6),transparent_45%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(15,26,46,0.15),rgba(15,26,46,0.9))]" />
         <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
           <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-adab-gold-500">
             Nigeria&apos;s trusted property partner
@@ -19,7 +20,7 @@ export default function Home() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/75">
             {siteConfig.tagline}. We connect buyers, sellers, and renters with
-            verified properties across Nigeria&apos;s top cities.
+            verified properties across Lagos, Abuja, Port Harcourt, and beyond.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <Link
@@ -34,7 +35,29 @@ export default function Home() {
             >
               Talk to an agent
             </Link>
+            <Link
+              href="/portal"
+              className="rounded-full border border-adab-gold-500/40 px-6 py-3 text-sm font-semibold text-adab-gold-400 transition-colors hover:border-adab-gold-500 hover:bg-adab-gold-500/10"
+            >
+              List your property
+            </Link>
           </div>
+          <dl className="mt-14 grid max-w-2xl grid-cols-3 gap-6 border-t border-white/10 pt-10">
+            {[
+              { label: "Cities covered", value: "15+" },
+              { label: "Verified listings", value: "Live" },
+              { label: "Agent support", value: "24/7" },
+            ].map((item) => (
+              <div key={item.label}>
+                <dt className="text-xs font-medium uppercase tracking-wide text-white/50">
+                  {item.label}
+                </dt>
+                <dd className="mt-1 font-[family-name:var(--font-display)] text-2xl font-bold text-adab-gold-500">
+                  {item.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 

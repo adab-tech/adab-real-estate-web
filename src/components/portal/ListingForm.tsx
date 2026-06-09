@@ -92,7 +92,14 @@ export function ListingForm() {
           contentType: file.type,
         });
 
-      if (upload.error) throw upload.error;
+      if (upload.error) {
+        throw new Error(
+          formatSupabaseError(
+            upload.error,
+            `Unable to upload ${file.name}. Check your connection and try again.`,
+          ),
+        );
+      }
 
       const publicUrl = client.storage
         .from("property-images")
@@ -173,11 +180,20 @@ export function ListingForm() {
         status,
       };
 
-      const result = await client
+      let result = await client
         .from("properties")
         .insert(payload)
         .select("id, slug, status")
         .single();
+
+      if (result.error?.code === "23505") {
+        payload.slug = slugifyListing(form.title);
+        result = await client
+          .from("properties")
+          .insert(payload)
+          .select("id, slug, status")
+          .single();
+      }
 
       if (result.error) throw result.error;
 

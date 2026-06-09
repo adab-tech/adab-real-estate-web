@@ -14,8 +14,24 @@
 2. Open **SQL Editor** and run, in order:
    - **Fresh project:** `supabase/schema.sql` → `supabase/seed.sql` → `supabase/portal-schema.sql`
    - **Existing project** (portal save fails with status/RLS errors): run **`supabase/fix-all.sql`** once — it upgrades legacy `properties` tables, fixes status constraints (`pending_review`, `draft`, etc.), adds `owner_id`, profiles, RLS, and the `property-images` storage bucket.
+   - **Portal admin queue:** after `hello@adab.ng` registers and confirms email, run **`supabase/seed-admin.sql`** once to promote that account to admin (required for `/portal/admin` approvals).
 3. Copy **Project URL** and **anon key** from Settings → API
 4. Optional: copy **service_role** key for server-side writes
+5. After the first admin registers via `/portal/register` and confirms email, run **`supabase/seed-admin.sql`** once to promote `hello@adab.ng` (or edit the email in that file first).
+
+### Supabase Auth redirect URLs
+
+In Supabase → **Authentication** → **URL Configuration**, set:
+
+| Setting | Value |
+|---------|-------|
+| **Site URL** | `https://adab.ng` |
+| **Redirect URLs** (add each) | `https://adab.ng/auth/callback` |
+| | `https://adab.ng/portal/verify-email` |
+| | `https://adab-real-estate-web.vercel.app/auth/callback` (preview) |
+| | `http://localhost:3000/auth/callback` (local dev) |
+
+Email confirmation links use `/auth/callback?next=/portal/dashboard`. The callback route handles both `code` (PKCE) and `token_hash` + `type=signup` (magic link) flows.
 
 ### Environment variables
 
@@ -26,7 +42,7 @@
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Public API key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Recommended | Server inquiry inserts |
 
-When Supabase is connected and `properties` is seeded, the site reads listings from the database. If Supabase is unavailable, it falls back to static seed data in `src/data/properties.ts`.
+When Supabase is connected, the site merges **published** portal listings (`status = published`) with static seed data in `src/data/properties.ts` (database entries win on slug conflicts). Pages revalidate every 60 seconds. If Supabase is unavailable, only the static seed is shown.
 
 ---
 
@@ -82,6 +98,11 @@ Quick steps:
 - [ ] `/sitemap.xml` lists `adab.ng` URLs
 - [ ] WhatsApp opens **+234 812 827 2287**
 - [ ] `/portal/admin` listing approval sends lister email (Vercel logs)
+- [ ] `/portal/admin` approval makes listing visible on `/properties` within ~1 minute (cache revalidation)
+- [ ] Portal admin promoted via `supabase/seed-admin.sql` (if using `hello@adab.ng`)
+- [ ] Admin promoted via `supabase/seed-admin.sql` can access `/portal/admin`
+- [ ] Approved portal listing appears on `/properties` within ~60s
+- [ ] Email verification works via `/auth/callback` (expired links show friendly resend UI)
 
 ---
 

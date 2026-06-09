@@ -16,7 +16,11 @@ import {
 import { buildListingJsonLd, buildPropertyMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
 
-export const revalidate = 300;
+const PLACEHOLDER_IMAGE = "/brand/property-placeholder.svg";
+
+export const revalidate = 60;
+
+export const dynamicParams = true;
 
 type PropertyDetailPageProps = {
   params: Promise<{ slug: string }>;
@@ -42,6 +46,9 @@ export default async function PropertyDetailPage({
 
   if (!property) notFound();
 
+  const mainImage = property.images[0] || PLACEHOLDER_IMAGE;
+  const galleryImages = property.images.slice(1);
+
   const whatsappText = encodeURIComponent(
     `Hi Adab, I'm interested in: ${property.title} (${formatPropertyPrice(property.priceNGN, property.type, property.pricePeriod)})`,
   );
@@ -66,7 +73,7 @@ export default async function PropertyDetailPage({
           <div>
             <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-adab-cream">
               <Image
-                src={property.images[0]}
+                src={mainImage}
                 alt={property.title}
                 fill
                 className="object-cover"
@@ -75,9 +82,9 @@ export default async function PropertyDetailPage({
               />
             </div>
 
-            {property.images.length > 1 ? (
+            {galleryImages.length > 0 ? (
               <div className="mt-4 grid grid-cols-3 gap-3">
-                {property.images.slice(1).map((src) => (
+                {galleryImages.map((src) => (
                   <div
                     key={src}
                     className="relative aspect-[4/3] overflow-hidden rounded-xl bg-adab-cream"

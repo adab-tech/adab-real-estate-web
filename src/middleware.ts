@@ -56,6 +56,8 @@ export async function middleware(request: NextRequest) {
     },
   });
 
+  // Refresh session cookies on protected routes (Supabase SSR pattern).
+  await supabase.auth.getSession();
   const {
     data: { user },
   } = await supabase.auth.getUser();

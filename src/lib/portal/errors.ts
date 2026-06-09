@@ -41,6 +41,22 @@ export function formatSupabaseError(
     );
   } else if (error.code === "23505") {
     parts.push("A listing with a similar title already exists. Change the title and try again.");
+  } else if (
+    message.includes("Bucket not found") ||
+    message.includes("property-images")
+  ) {
+    parts.push(
+      "Image storage is not configured.",
+      "Ask your admin to run supabase/fix-all.sql to create the property-images bucket.",
+    );
+  } else if (
+    message.includes("new row violates row-level security") ||
+    message.includes("permission denied")
+  ) {
+    parts.push(
+      "Your account may not have lister permissions.",
+      SCHEMA_HINT,
+    );
   } else if (error.details) {
     parts.push(error.details);
   }

@@ -17,9 +17,7 @@ export async function fetchPropertiesFromSupabase(): Promise<Property[] | null> 
     return null;
   }
 
-  if (!data?.length) return null;
-
-  return (data as PropertyRow[]).map(mapPropertyRow);
+  return ((data ?? []) as PropertyRow[]).map(mapPropertyRow);
 }
 
 export async function fetchPropertyBySlugFromSupabase(

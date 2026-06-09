@@ -4,6 +4,7 @@ import {
   fetchPropertiesFromSupabase,
   fetchPropertyBySlugFromSupabase,
 } from "@/lib/supabase/properties";
+import { isSupabaseConfigured } from "@/lib/supabase/server";
 import type { ListingType, Property, PropertyFilters } from "@/types/property";
 
 function sortProperties(list: Property[]): Property[] {
@@ -18,23 +19,32 @@ function getStaticProperties(): Property[] {
 }
 
 export const getAllProperties = cache(async (): Promise<Property[]> => {
-  const fromDb = await fetchPropertiesFromSupabase();
-  if (fromDb?.length) return fromDb;
+  if (isSupabaseConfigured()) {
+    const fromDb = await fetchPropertiesFromSupabase();
+    if (fromDb !== null) return sortProperties(fromDb);
+    return [];
+  }
   return getStaticProperties();
 });
 
 export async function getFeaturedProperties(limit = 3): Promise<Property[]> {
   const all = await getAllProperties();
-  return all
-    .filter((p) => p.featured && p.status === "available")
-    .slice(0, limit);
+  const available = all.filter((p) => p.status === "available");
+  const featured = available.filter((p) => p.featured);
+  if (featured.length >= limit) return featured.slice(0, limit);
+
+  const featuredSlugs = new Set(featured.map((p) => p.slug));
+  const recent = available.filter((p) => !featuredSlugs.has(p.slug));
+  return [...featured, ...recent].slice(0, limit);
 }
 
 export async function getPropertyBySlug(
   slug: string,
 ): Promise<Property | undefined> {
-  const fromDb = await fetchPropertyBySlugFromSupabase(slug);
-  if (fromDb) return fromDb;
+  if (isSupabaseConfigured()) {
+    const fromDb = await fetchPropertyBySlugFromSupabase(slug);
+    return fromDb ?? undefined;
+  }
   return staticProperties.find((p) => p.slug === slug);
 }
 
