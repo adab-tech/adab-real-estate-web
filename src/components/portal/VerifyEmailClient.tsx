@@ -38,9 +38,8 @@ export function VerifyEmailClient() {
 
       try {
         if (code) {
-          const { error: exchangeError } =
-            await client.auth.exchangeCodeForSession(code);
-          if (exchangeError) throw exchangeError;
+          window.location.href = `/auth/callback?code=${encodeURIComponent(code)}&next=${encodeURIComponent("/portal/dashboard")}`;
+          return;
         } else if (tokenHash && type) {
           const otp = await client.auth.verifyOtp({
             token_hash: tokenHash,

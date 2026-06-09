@@ -140,6 +140,7 @@ export function ListingForm() {
         form.status === "draft" ? "draft" : "pending_review";
 
       const payload = {
+        id: crypto.randomUUID(),
         owner_id: userId,
         slug: slugifyListing(form.title),
         title: form.title.trim(),
