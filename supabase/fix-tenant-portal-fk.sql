@@ -11,13 +11,7 @@
 
 create extension if not exists "pgcrypto";
 
--- Triggers (ignore if tables missing)
-drop trigger if exists rent_payments_set_updated_at on public.rent_payments;
-drop trigger if exists maintenance_requests_set_updated_at on public.maintenance_requests;
-drop trigger if exists leases_set_updated_at on public.leases;
-drop trigger if exists management_agreements_set_updated_at on public.management_agreements;
-
--- Child tables first (FK to leases / properties)
+-- Child tables first (FK to leases / properties; CASCADE drops triggers)
 drop table if exists public.rent_payments cascade;
 drop table if exists public.maintenance_requests cascade;
 drop table if exists public.leases cascade;
