@@ -1,18 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useState, type FormEvent } from "react";
+import { signInPortal } from "@/app/portal/actions";
 import {
-  resendVerificationEmail,
-  signInPortal,
-} from "@/app/portal/actions";
+  portalEmailRedirectTo,
+  resendVerificationWithBrowserClient,
+} from "@/lib/auth/client-auth";
 
 export function LoginForm() {
   const [state, formAction, pending] = useActionState(signInPortal, null);
-  const [resendState, resendAction, resendPending] = useActionState(
-    resendVerificationEmail,
-    null,
-  );
+  const [resendState, setResendState] = useState<{
+    error?: string;
+    success?: string;
+  } | null>(null);
+  const [resendPending, setResendPending] = useState(false);
   const [showResend, setShowResend] = useState(false);
   const [email, setEmail] = useState("");
 
@@ -21,6 +23,27 @@ export function LoginForm() {
       setShowResend(true);
     }
   }, [state?.error]);
+
+  async function handleResend(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setResendPending(true);
+    setResendState(null);
+
+    const formData = new FormData(event.currentTarget);
+    const resendEmail = String(formData.get("email") ?? email).trim();
+    if (!resendEmail) {
+      setResendState({ error: "Email is required." });
+      setResendPending(false);
+      return;
+    }
+
+    const result = await resendVerificationWithBrowserClient({
+      email: resendEmail,
+      emailRedirectTo: portalEmailRedirectTo(),
+    });
+    setResendState(result);
+    setResendPending(false);
+  }
 
   const error = state?.error;
 
@@ -91,7 +114,7 @@ export function LoginForm() {
               {resendState.success}
             </div>
           )}
-          <form action={resendAction} className="mt-3 space-y-3">
+          <form onSubmit={handleResend} className="mt-3 space-y-3">
             <input
               className="portal-input"
               name="email"

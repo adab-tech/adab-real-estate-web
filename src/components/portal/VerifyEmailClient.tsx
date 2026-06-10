@@ -2,25 +2,23 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useActionState, useEffect, useState } from "react";
-import { resendVerificationEmail, type PortalAuthState } from "@/app/portal/actions";
+import { useEffect, useState, type FormEvent } from "react";
+import {
+  portalEmailRedirectTo,
+  resendVerificationWithBrowserClient,
+  tenantEmailRedirectTo,
+} from "@/lib/auth/client-auth";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
 type VerifyEmailClientProps = {
   reason?: string;
   dashboardHref?: string;
-  resendAction?: (
-    prev: PortalAuthState,
-    formData: FormData,
-  ) => Promise<PortalAuthState>;
   portalLabel?: string;
 };
 
 export function VerifyEmailClient({
   reason,
   dashboardHref = "/portal/dashboard",
-  resendAction = resendVerificationEmail,
-  portalLabel = "listing",
 }: VerifyEmailClientProps = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -28,10 +26,15 @@ export function VerifyEmailClient({
     "loading",
   );
   const [error, setError] = useState<string | null>(null);
-  const [resendState, submitResend, resendPending] = useActionState(
-    resendAction,
-    null,
-  );
+  const [resendState, setResendState] = useState<{
+    error?: string;
+    success?: string;
+  } | null>(null);
+  const [resendPending, setResendPending] = useState(false);
+
+  const emailRedirectTo = dashboardHref.startsWith("/tenant")
+    ? tenantEmailRedirectTo()
+    : portalEmailRedirectTo();
 
   useEffect(() => {
     const tokenHash = searchParams.get("token_hash");
@@ -49,7 +52,6 @@ export function VerifyEmailClient({
       return;
     }
 
-    // PKCE code exchange must run on the server callback where verifier cookies are stored.
     if (code || (tokenHash && type)) {
       const params = new URLSearchParams();
       if (code) params.set("code", code);
@@ -91,6 +93,27 @@ export function VerifyEmailClient({
     checkSession();
   }, [router, searchParams, dashboardHref, reason]);
 
+  async function handleResend(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setResendPending(true);
+    setResendState(null);
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") ?? "").trim();
+    if (!email) {
+      setResendState({ error: "Email is required." });
+      setResendPending(false);
+      return;
+    }
+
+    const result = await resendVerificationWithBrowserClient({
+      email,
+      emailRedirectTo,
+    });
+    setResendState(result);
+    setResendPending(false);
+  }
+
   return (
     <div className="portal-card p-8">
       {status === "loading" && (
@@ -120,8 +143,8 @@ export function VerifyEmailClient({
             Verify your email
           </h2>
           <p className="mt-3 text-sm text-adab-gray-500">
-            We sent a confirmation link to your inbox. Open it to activate your
-            account and start listing properties.
+            We sent a confirmation link to your inbox. Open it in this browser
+            to activate your account.
           </p>
         </>
       )}
@@ -147,7 +170,7 @@ export function VerifyEmailClient({
             {resendState.error}
           </div>
         )}
-        <form action={submitResend} className="mt-4 space-y-3">
+        <form onSubmit={handleResend} className="mt-4 space-y-3">
           <input
             className="portal-input"
             name="email"

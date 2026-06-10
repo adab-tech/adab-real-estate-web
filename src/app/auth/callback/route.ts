@@ -1,10 +1,16 @@
 import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { getSupabaseAnonKey, getSupabaseUrl } from "@/lib/supabase/env";
 
-function verifyEmailErrorUrl(origin: string, message: string) {
-  const url = new URL("/portal/verify-email", origin);
+function verifyEmailErrorUrl(
+  origin: string,
+  message: string,
+  next: string,
+): URL {
+  const verifyPath = next.startsWith("/tenant")
+    ? "/tenant/verify-email"
+    : "/portal/verify-email";
+  const url = new URL(verifyPath, origin);
   url.searchParams.set("error", "expired");
   url.searchParams.set("message", message);
   return url;
@@ -20,7 +26,7 @@ function resolveNextPath(
   return "/portal/dashboard";
 }
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
   const tokenHash = searchParams.get("token_hash");
@@ -36,45 +42,66 @@ export async function GET(request: Request) {
       (errorCode === "otp_expired"
         ? "This link has expired. Request a new verification email."
         : authError || "Authentication link is invalid or has expired.");
-    return NextResponse.redirect(verifyEmailErrorUrl(origin, message));
+    return NextResponse.redirect(verifyEmailErrorUrl(origin, message, next));
   }
 
-  const cookieStore = await cookies();
-  const supabase = createServerClient(getSupabaseUrl(), getSupabaseAnonKey(), {
-    cookies: {
-      getAll() {
-        return cookieStore.getAll();
-      },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value, options }) => {
-          cookieStore.set(name, value, options);
-        });
-      },
-    },
-  });
-
   if (code) {
+    const redirectUrl = new URL(next, origin);
+    let response = NextResponse.redirect(redirectUrl);
+
+    const supabase = createServerClient(getSupabaseUrl(), getSupabaseAnonKey(), {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            response.cookies.set(name, value, options);
+          });
+        },
+      },
+    });
+
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (error) {
       return NextResponse.redirect(
-        verifyEmailErrorUrl(origin, error.message),
+        verifyEmailErrorUrl(origin, error.message, next),
       );
     }
-    return NextResponse.redirect(new URL(next, origin));
+    return response;
   }
 
   if (tokenHash && type) {
+    const redirectUrl = new URL(next, origin);
+    let response = NextResponse.redirect(redirectUrl);
+
+    const supabase = createServerClient(getSupabaseUrl(), getSupabaseAnonKey(), {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            response.cookies.set(name, value, options);
+          });
+        },
+      },
+    });
+
     const { error } = await supabase.auth.verifyOtp({
       token_hash: tokenHash,
       type: type as "signup" | "email" | "recovery" | "invite",
     });
     if (error) {
       return NextResponse.redirect(
-        verifyEmailErrorUrl(origin, error.message),
+        verifyEmailErrorUrl(origin, error.message, next),
       );
     }
-    return NextResponse.redirect(new URL(next, origin));
+    return response;
   }
 
-  return NextResponse.redirect(new URL("/portal/verify-email", origin));
+  const fallback = next.startsWith("/tenant")
+    ? "/tenant/verify-email"
+    : "/portal/verify-email";
+  return NextResponse.redirect(new URL(fallback, origin));
 }

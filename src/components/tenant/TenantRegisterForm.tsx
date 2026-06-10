@@ -1,11 +1,55 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
-import { signUpTenant } from "@/app/tenant/actions";
+import { useRouter } from "next/navigation";
+import { useState, type FormEvent } from "react";
+import {
+  signUpWithBrowserClient,
+  tenantEmailRedirectTo,
+} from "@/lib/auth/client-auth";
 
 export function TenantRegisterForm() {
-  const [state, formAction, pending] = useActionState(signUpTenant, null);
+  const router = useRouter();
+  const [pending, setPending] = useState(false);
+  const [state, setState] = useState<{ error?: string; success?: string } | null>(
+    null,
+  );
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPending(true);
+    setState(null);
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") ?? "").trim();
+    const password = String(formData.get("password") ?? "");
+    const fullName = String(formData.get("full_name") ?? "").trim();
+    const phone = String(formData.get("phone") ?? "").trim();
+
+    if (!email || !password || !fullName) {
+      setState({ error: "Name, email, and password are required." });
+      setPending(false);
+      return;
+    }
+
+    const result = await signUpWithBrowserClient({
+      email,
+      password,
+      emailRedirectTo: tenantEmailRedirectTo(),
+      metadata: {
+        full_name: fullName,
+        phone,
+        portal_role: "tenant",
+      },
+    });
+
+    setState(result);
+    setPending(false);
+
+    if (result?.success && !result.error) {
+      router.push("/tenant/verify-email");
+    }
+  }
 
   return (
     <div className="portal-card p-8">
@@ -26,7 +70,7 @@ export function TenantRegisterForm() {
         </div>
       )}
 
-      <form action={formAction} className="mt-6 space-y-4">
+      <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         <div>
           <label className="portal-label" htmlFor="full_name">
             Full name
