@@ -1,7 +1,8 @@
 -- Fix: property_id uuid vs properties.id text mismatch
 --
 -- Symptom: tenant-portal.sql fails with FK type error when creating leases,
--- management_agreements, maintenance_requests, or tenant_applications.
+-- management_agreements, or maintenance_requests.
+-- Rental applications use pm_applications (see fix-tenant-applications-mismatch.sql).
 --
 -- Run in Supabase SQL Editor (safe for partial/failed tenant-portal runs):
 --   1. supabase/fix-tenant-portal-fk.sql   (this file)

@@ -408,6 +408,7 @@ create table if not exists public.leases (
   id uuid primary key default gen_random_uuid(),
   tenant_id uuid not null references public.profiles (id) on delete cascade,
   property_id text references public.properties (id) on delete set null,
+  property_title text not null default '',
   rent_ngn bigint,
   rent_period text check (rent_period is null or rent_period in ('month', 'year')),
   lease_start date,

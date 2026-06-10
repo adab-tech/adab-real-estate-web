@@ -107,7 +107,7 @@ export async function updateTenantKycStatus(
   }
 
   const { error } = await supabase
-    .from("profiles")
+    .from("tenant_profiles")
     .update(updates)
     .eq("id", id);
 

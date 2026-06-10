@@ -15,7 +15,9 @@ export default async function PmTenantsPage() {
 
   const { data, error } = await supabase
     .from("tenant_profiles")
-    .select("id, kyc_status, profiles!id(full_name, email, phone)")
+    .select(
+      "id, kyc_status, profiles!tenant_profiles_id_fkey(full_name, email, phone)",
+    )
     .order("created_at", { ascending: false })
     .limit(100);
 

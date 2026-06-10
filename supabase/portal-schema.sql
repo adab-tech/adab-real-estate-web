@@ -131,6 +131,24 @@ update public.properties set featured = false where featured is null;
 update public.properties set created_at = now() where created_at is null;
 update public.properties set updated_at = now() where updated_at is null;
 
+-- Legacy static CMS required published_at; portal review clears it for listers.
+do $$
+begin
+  if exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'properties'
+      and column_name = 'published_at'
+      and udt_name = 'date'
+  ) then
+    alter table public.properties
+      alter column published_at type timestamptz
+      using published_at::timestamptz;
+  end if;
+end $$;
+
+alter table public.properties alter column published_at drop not null;
+
 update public.properties
 set status = 'published'
 where status is not null

@@ -15,7 +15,9 @@ export default async function PmTenantDetailPage({
 
   const { data, error } = await supabase
     .from("tenant_profiles")
-    .select("id, kyc_status, kyc_notes, verified_at, profiles!id(full_name, email, phone)")
+    .select(
+      "id, kyc_status, kyc_notes, verified_at, profiles!tenant_profiles_id_fkey(full_name, email, phone)",
+    )
     .eq("id", id)
     .maybeSingle();
 

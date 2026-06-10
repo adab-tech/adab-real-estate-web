@@ -46,13 +46,26 @@ export async function submitRentalApplication(
     notes: String(formData.get("notes") ?? "").trim() || undefined,
   };
 
+  const extraDetails = {
+    current_address: form_data.current_address,
+    desired_move_in_date: form_data.desired_move_in_date,
+    employment_status: form_data.employment_status,
+    monthly_income_ngn: form_data.monthly_income_ngn,
+    employer: form_data.employer,
+    references: form_data.references,
+    notes: form_data.notes,
+  };
+
   const supabase = await createSupabaseAuthClient();
-  const { error } = await supabase.from("tenant_applications").insert({
-    tenant_id: session.user.id,
+  const { error } = await supabase.from("pm_applications").insert({
+    applicant_id: session.user.id,
     application_type: "rental",
-    property_slug: form_data.property_slug ?? null,
+    full_name: fullName,
+    email,
+    phone,
+    property_interest: form_data.property_slug ?? null,
+    message: JSON.stringify(extraDetails),
     status: "submitted",
-    form_data,
   });
 
   if (error) return { error: error.message };

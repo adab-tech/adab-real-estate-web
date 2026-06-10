@@ -11,7 +11,7 @@ type ApplicationRow = {
   id: string;
   application_type: string;
   status: string;
-  property_slug: string | null;
+  property_interest: string | null;
   created_at: string;
 };
 
@@ -32,9 +32,9 @@ export default async function TenantDashboardPage() {
 
   const [applicationsRes, maintenanceRes, leasesRes] = await Promise.all([
     supabase
-      .from("tenant_applications")
-      .select("id, application_type, status, property_slug, created_at")
-      .eq("tenant_id", user.id)
+      .from("pm_applications")
+      .select("id, application_type, status, property_interest, created_at")
+      .eq("applicant_id", user.id)
       .order("created_at", { ascending: false })
       .limit(10),
     supabase
@@ -44,8 +44,8 @@ export default async function TenantDashboardPage() {
       .order("created_at", { ascending: false })
       .limit(10),
     supabase
-      .from("tenant_leases")
-      .select("id, property_title, status, next_rent_due")
+      .from("leases")
+      .select("id, property_title, status, lease_end")
       .eq("tenant_id", user.id)
       .order("created_at", { ascending: false })
       .limit(5),
@@ -115,7 +115,7 @@ export default async function TenantDashboardPage() {
                 <li key={app.id} className="flex flex-wrap justify-between gap-2 py-3 text-sm">
                   <span className="font-medium capitalize text-adab-navy-800">
                     {app.application_type.replace("_", " ")}
-                    {app.property_slug ? ` · ${app.property_slug}` : ""}
+                    {app.property_interest ? ` · ${app.property_interest}` : ""}
                   </span>
                   <span className="capitalize text-adab-gray-500">{app.status}</span>
                 </li>
@@ -164,12 +164,12 @@ export default async function TenantDashboardPage() {
             <ul className="mt-4 divide-y divide-adab-gray-300">
               {leases.map((lease) => (
                 <li key={lease.id} className="py-3 text-sm">
-                  <p className="font-medium text-adab-navy-800">{lease.property_title}</p>
+                  <p className="font-medium text-adab-navy-800">
+                    {lease.property_title || "Property"}
+                  </p>
                   <p className="text-adab-gray-500 capitalize">
                     {lease.status}
-                    {lease.next_rent_due
-                      ? ` · Next rent due ${lease.next_rent_due}`
-                      : ""}
+                    {lease.lease_end ? ` · Ends ${lease.lease_end}` : ""}
                   </p>
                 </li>
               ))}

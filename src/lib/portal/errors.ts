@@ -8,6 +8,11 @@ type SupabaseLikeError = {
 const SCHEMA_HINT =
   "Ask your admin to run supabase/fix-all.sql in the Supabase SQL Editor.";
 
+function missingColumnFromNotNullError(message: string): string | null {
+  const match = message.match(/column "([^"]+)"/i);
+  return match?.[1] ?? null;
+}
+
 export function formatSupabaseError(
   err: unknown,
   fallback = "Something went wrong.",
@@ -32,9 +37,22 @@ export function formatSupabaseError(
     ].join(" ");
   }
 
+  const missingColumn =
+    error.code === "23502" ? missingColumnFromNotNullError(message) : null;
+
   const parts =
     error.code === "23502"
-      ? ["A required field is missing. Check all fields and try again."]
+      ? missingColumn === "published_at"
+        ? [
+            "Listings awaiting review cannot set a publish date yet.",
+            "Ask your admin to run supabase/fix-published-at.sql in the Supabase SQL Editor.",
+          ]
+        : missingColumn
+          ? [
+              `A required database field is missing: ${missingColumn}.`,
+              "Check all fields and try again.",
+            ]
+          : ["A required field is missing. Check all fields and try again."]
       : [message];
 
   if (error.code === "23514") {

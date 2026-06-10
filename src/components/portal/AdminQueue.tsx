@@ -56,7 +56,7 @@ export function AdminQueue() {
     const result = await client
       .from("properties")
       .select(
-        "id, slug, title, type, status, price_ngn, location, images, description, created_at, owner_id, profiles(full_name, email, lister_type)",
+        "id, slug, title, type, status, price_ngn, location, images, description, created_at, owner_id, profiles!owner_id(full_name, email, lister_type)",
       )
       .eq("status", "pending_review")
       .order("created_at", { ascending: true });

@@ -15,7 +15,7 @@ export default async function PmPaymentsPage() {
       .limit(100),
     supabase
       .from("tenant_profiles")
-      .select("id, profiles!id(full_name, email)")
+      .select("id, profiles!tenant_profiles_id_fkey(full_name, email)")
       .limit(200),
   ]);
 
