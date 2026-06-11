@@ -2,7 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseAuthClient } from "@/lib/supabase/auth-server";
 
 export type TenantProfile = {
-  role: "tenant" | "admin" | "lister";
+  role: "tenant" | "client" | "admin" | "lister";
   full_name: string | null;
   phone: string | null;
   kyc_status: string;
@@ -32,7 +32,11 @@ export async function requireTenantUser() {
   if (!user.email_confirmed_at) return { user, verified: false as const };
 
   const profile = await getTenantProfile(user.id);
-  if (profile?.role !== "tenant" && profile?.role !== "admin") {
+  if (
+    profile?.role !== "tenant" &&
+    profile?.role !== "client" &&
+    profile?.role !== "admin"
+  ) {
     return null;
   }
 
@@ -64,7 +68,8 @@ export async function ensureTenantProfile(
   const { error } = await supabase.from("profiles").insert({
     id: user.id,
     email: user.email ?? "",
-    full_name: String(meta.full_name ?? ""),
+    full_name: String(meta.full_name ?? "") || null,
+    company_name: null,
     phone: (meta.phone as string | undefined) ?? null,
     lister_type: null,
     role,

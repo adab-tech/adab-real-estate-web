@@ -11,10 +11,30 @@
 ## 1. Supabase (database + CMS)
 
 1. Create a project at [supabase.com](https://supabase.com)
-2. Open **SQL Editor** and run, in order:
-   - **Fresh project:** `supabase/schema.sql` → `supabase/seed.sql` → `supabase/portal-schema.sql`
-   - **Existing project** (portal save fails with status/RLS errors): run **`supabase/fix-all.sql`** once — it upgrades legacy `properties` tables, fixes status constraints (`pending_review`, `draft`, etc.), adds `owner_id`, profiles, RLS, and the `property-images` storage bucket.
-   - **Portal admin queue:** after `hello@adab.ng` registers and confirms email, run **`supabase/seed-admin.sql`** once to promote that account to admin (required for `/portal/admin` approvals).
+2. Open **SQL Editor** and run scripts in this order:
+
+   | Order | Script | When |
+   |-------|--------|------|
+   | 1 | `supabase/schema.sql` | Fresh project only |
+   | 2 | `supabase/seed.sql` | Fresh project only |
+   | 3 | `supabase/portal-schema.sql` | Fresh project (lister portal) |
+   | — | **`supabase/fix-all.sql`** | **Existing project** — upgrades legacy tables, RLS, storage (run once instead of 1–3 if upgrading) |
+   | 4 | `supabase/cms-posts.sql` | Posts / announcements CMS |
+   | 5 | `supabase/tenant-portal.sql` | Tenant portal, PM tables, rent payments |
+   | 6 | `supabase/analytics.sql` | Anonymous page-view analytics (`/admin/analytics`) |
+   | 7 | `supabase/seed-admin.sql` | After `hello@adab.ng` registers — promotes to admin |
+   | 8 | `supabase/grant-full-admin.sql` | If `/admin` or JWT admin checks fail |
+
+   **Fix scripts** (run only when needed):
+
+   | Script | Purpose |
+   |--------|---------|
+   | `fix-properties-id.sql` | Listing save / UUID id errors |
+   | `fix-tenant-portal-fk.sql` | Tenant PM foreign-key mismatches |
+   | `fix-tenant-applications-mismatch.sql` | `pm_applications` schema drift |
+   | `fix-missing-profiles.sql` | Backfill profiles for auth users (FK on applications) |
+   | `fix-is-admin-jwt.sql` | Admins cannot see pending listings |
+   | `fix-published-at.sql` | Missing `published_at` on approved listings |
 3. Copy **Project URL** and **anon key** from Settings → API
 4. Optional: copy **service_role** key for server-side writes
 5. After the first admin registers via `/portal/register` and confirms email, run **`supabase/seed-admin.sql`** once to promote `hello@adab.ng` (or edit the email in that file first).
@@ -41,8 +61,10 @@ Email confirmation links use `/auth/callback?next=/portal/dashboard`. The callba
 | `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Public API key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Recommended | Server inquiry inserts |
-| `PAYSTACK_SECRET_KEY` | Optional | Paystack server API |
+| `PAYSTACK_SECRET_KEY` | Optional | Paystack server API + webhook signature |
 | `PAYSTACK_PUBLIC_KEY` / `NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY` | Optional | Paystack checkout |
+| `FLUTTERWAVE_SECRET_KEY` | Optional | Flutterwave stub (Phase 2) |
+| `FLUTTERWAVE_PUBLIC_KEY` / `NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY` | Optional | Flutterwave stub (Phase 2) |
 
 When Supabase is connected, the site merges **published** portal listings (`status = published`) with static seed data in `src/data/properties.ts` (database entries win on slug conflicts). Pages revalidate every 60 seconds. If Supabase is unavailable, only the static seed is shown.
 
@@ -81,7 +103,9 @@ Property inquiries, tenant applications, and listing approvals sync to Zoho CRM 
 | `ZOHO_REFRESH_TOKEN` | Yes (for CRM) | Long-lived refresh token (CRM scopes) |
 | `ZOHO_API_DOMAIN` | Optional | `zoho.com` (default), `zoho.eu`, `zoho.in`, etc. |
 
-Check status at `/admin/settings` after deploy. Run `supabase/grant-full-admin.sql` if the admin panel is inaccessible.
+Check status at `/admin/settings` after deploy. Full setup guide: [ZOHO-CRM-SETUP.md](./ZOHO-CRM-SETUP.md). Run `supabase/grant-full-admin.sql` if the admin panel is inaccessible.
+
+**Paystack webhook:** `https://adab.ng/api/payments/paystack/webhook` (validates `x-paystack-signature` when `PAYSTACK_SECRET_KEY` is set).
 
 ---
 

@@ -48,6 +48,21 @@ export async function getIntegrationStatuses(): Promise<IntegrationStatus[]> {
       docs: "https://dashboard.paystack.com/#/settings/developers",
     },
     {
+      id: "flutterwave",
+      name: "Flutterwave (alternative payments)",
+      configured: Boolean(
+        process.env.FLUTTERWAVE_SECRET_KEY &&
+          (process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY ||
+            process.env.FLUTTERWAVE_PUBLIC_KEY),
+      ),
+      envVars: [
+        "FLUTTERWAVE_SECRET_KEY",
+        "FLUTTERWAVE_PUBLIC_KEY",
+        "NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY",
+      ],
+      docs: "https://dashboard.flutterwave.com/settings/developers",
+    },
+    {
       id: "zoho",
       name: "Zoho CRM",
       configured: zohoConfigured,

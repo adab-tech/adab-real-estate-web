@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { IntegrationStatusPanel } from "@/components/admin/IntegrationStatusPanel";
 import { getIntegrationStatuses } from "@/lib/integrations";
 import { requireAdmin } from "@/lib/supabase/auth-server";
@@ -22,6 +23,19 @@ export default async function AdminSettingsPage() {
 
       <section className="rounded-2xl border border-adab-gray-300 bg-white p-5 text-sm text-adab-gray-600">
         <h2 className="font-semibold text-adab-navy-800">Zoho CRM setup</h2>
+        <p className="mt-2">
+          Step-by-step guide:{" "}
+          <a
+            href="https://github.com/adab-tech/adab-real-estate-web/blob/master/docs/ZOHO-CRM-SETUP.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-adab-gold-600 hover:text-adab-gold-500"
+          >
+            ZOHO-CRM-SETUP.md
+          </a>{" "}
+          (in repo <code className="rounded bg-adab-gray-200 px-1 text-xs">docs/</code>
+          ).
+        </p>
         <ol className="mt-3 list-decimal space-y-2 pl-5">
           <li>
             Create a Zoho CRM Server-based application and generate a refresh
@@ -58,6 +72,25 @@ export default async function AdminSettingsPage() {
             for EU).
           </li>
         </ol>
+      </section>
+
+      <section className="rounded-2xl border border-adab-gray-300 bg-white p-5 text-sm text-adab-gray-600">
+        <h2 className="font-semibold text-adab-navy-800">Paystack webhook</h2>
+        <p className="mt-2">
+          When online rent payments are enabled, register this URL in Paystack →
+          Settings → Webhooks:
+        </p>
+        <p className="mt-2">
+          <code className="block rounded bg-adab-gray-200 px-2 py-1 text-xs">
+            {process.env.NEXT_PUBLIC_SITE_URL ?? "https://adab.ng"}
+            /api/payments/paystack/webhook
+          </code>
+        </p>
+        <p className="mt-2 text-xs text-adab-gray-500">
+          Webhook requests are rejected unless the{" "}
+          <code className="rounded bg-adab-gray-200 px-1">x-paystack-signature</code>{" "}
+          header matches <code className="rounded bg-adab-gray-200 px-1">PAYSTACK_SECRET_KEY</code>.
+        </p>
       </section>
     </div>
   );

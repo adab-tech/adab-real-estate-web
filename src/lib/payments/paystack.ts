@@ -1,4 +1,4 @@
-import { createHmac } from "crypto";
+import { createHmac, timingSafeEqual } from "crypto";
 
 export type PaystackInitParams = {
   email: string;
@@ -74,7 +74,13 @@ export function verifyPaystackSignature(
   if (!secret || !signature) return false;
 
   const hash = createHmac("sha512", secret).update(rawBody).digest("hex");
-  return hash === signature;
+  if (hash.length !== signature.length) return false;
+
+  try {
+    return timingSafeEqual(Buffer.from(hash), Buffer.from(signature));
+  } catch {
+    return false;
+  }
 }
 
 export type PaystackWebhookEvent = {
