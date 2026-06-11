@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { requireAdminMutationClient } from "@/lib/supabase/admin-mutations";
 import { requireAdmin } from "@/lib/supabase/auth-server";
 
 export type PmActionState = { error?: string; success?: string } | null;
@@ -10,17 +11,27 @@ export async function updateApplicationStatus(
   status: string,
   adminNotes?: string,
 ): Promise<PmActionState> {
-  const { supabase } = await requireAdmin();
+  const { supabase, user } = await requireAdminMutationClient();
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("pm_applications")
     .update({
       status,
       admin_notes: adminNotes ?? null,
+      reviewed_by: user.id,
+      reviewed_at: new Date().toISOString(),
     })
-    .eq("id", id);
+    .eq("id", id)
+    .select("id, status")
+    .maybeSingle();
 
   if (error) return { error: error.message };
+  if (!data || data.status !== status) {
+    return {
+      error:
+        "Application update did not persist. Run supabase/fix-admin-approve-actions.sql in Supabase.",
+    };
+  }
 
   revalidatePath("/admin/pm/applications");
   return { success: "Application updated." };

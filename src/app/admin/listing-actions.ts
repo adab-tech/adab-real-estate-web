@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { sendListingApprovedEmail } from "@/lib/email/listing-approved";
 import { revalidatePropertyPages } from "@/lib/admin/revalidate";
 import { syncApprovedListingToCrm } from "@/lib/crm";
-import { requireAdmin } from "@/lib/supabase/auth-server";
+import { requireAdminMutationClient } from "@/lib/supabase/admin-mutations";
 
 export type ReviewListingResult = {
   error?: string;
@@ -13,7 +13,7 @@ export type ReviewListingResult = {
 };
 
 export async function approveListing(id: string): Promise<ReviewListingResult> {
-  const { supabase } = await requireAdmin();
+  const { supabase, user } = await requireAdminMutationClient();
 
   const property = await supabase
     .from("properties")
@@ -37,13 +37,21 @@ export async function approveListing(id: string): Promise<ReviewListingResult> {
 
   const update = await supabase
     .from("properties")
-    .update({ status: "published" })
+    .update({ status: "published", reviewed_by: user.id })
     .eq("id", id)
+    .eq("status", "pending_review")
     .select("id, status")
-    .single();
+    .maybeSingle();
 
   if (update.error) {
     return { error: update.error.message };
+  }
+
+  if (!update.data || update.data.status !== "published") {
+    return {
+      error:
+        "Approval did not persist. Run supabase/fix-admin-approve-actions.sql in Supabase, then sign out and back in.",
+    };
   }
 
   if (property.data.slug) {
@@ -93,21 +101,29 @@ export async function rejectListing(
   id: string,
   reason: string,
 ): Promise<ReviewListingResult> {
-  const { supabase } = await requireAdmin();
+  const { supabase, user } = await requireAdminMutationClient();
 
   const result = await supabase
     .from("properties")
     .update({
       status: "rejected",
       rejection_reason: reason || "Listing needs changes before approval.",
+      reviewed_by: user.id,
     })
     .eq("id", id)
     .eq("status", "pending_review")
     .select("id, status")
-    .single();
+    .maybeSingle();
 
   if (result.error) {
     return { error: result.error.message };
+  }
+
+  if (!result.data || result.data.status !== "rejected") {
+    return {
+      error:
+        "Rejection did not persist. Run supabase/fix-admin-approve-actions.sql in Supabase, then sign out and back in.",
+    };
   }
 
   revalidatePath("/admin/listings/pending");

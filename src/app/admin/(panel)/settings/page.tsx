@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { IntegrationStatusPanel } from "@/components/admin/IntegrationStatusPanel";
 import { getIntegrationStatuses } from "@/lib/integrations";
 import { requireAdmin } from "@/lib/supabase/auth-server";
@@ -90,6 +89,24 @@ export default async function AdminSettingsPage() {
           Webhook requests are rejected unless the{" "}
           <code className="rounded bg-adab-gray-200 px-1">x-paystack-signature</code>{" "}
           header matches <code className="rounded bg-adab-gray-200 px-1">PAYSTACK_SECRET_KEY</code>.
+        </p>
+      </section>
+
+      <section className="rounded-2xl border border-dashed border-adab-gray-300 bg-adab-cream/50 p-5 text-sm text-adab-gray-600">
+        <h2 className="font-semibold text-adab-navy-800">Flutterwave (Phase 2)</h2>
+        <p className="mt-2">
+          Alternative payment provider — env vars are listed above in integration
+          status. Checkout and webhooks are not wired yet; Paystack is the
+          active path for tenant rent payments.
+        </p>
+        <p className="mt-2 text-xs text-adab-gray-500">
+          Set{" "}
+          <code className="rounded bg-adab-gray-200 px-1">FLUTTERWAVE_SECRET_KEY</code>{" "}
+          and{" "}
+          <code className="rounded bg-adab-gray-200 px-1">
+            NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY
+          </code>{" "}
+          when Phase 2 checkout is implemented.
         </p>
       </section>
     </div>

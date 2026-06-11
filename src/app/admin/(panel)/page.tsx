@@ -127,9 +127,31 @@ export default async function AdminDashboardPage() {
         </p>
       </div>
 
-      {kanoPending.length > 0 ? (
+      {(pendingListingCount ?? 0) > 0 ? (
         <div
           className="rounded-2xl border border-amber-300 bg-amber-50 p-5"
+          role="alert"
+        >
+          <p className="font-semibold text-amber-900">
+            {pendingListingCount} pending listing
+            {pendingListingCount === 1 ? "" : "s"} awaiting review
+          </p>
+          <p className="mt-1 text-sm text-amber-800">
+            Approve or reject lister submissions before they appear on the public
+            site.
+          </p>
+          <Link
+            href="/admin/listings/pending"
+            className="mt-3 inline-block text-sm font-semibold text-amber-900 underline hover:text-amber-700"
+          >
+            Open pending queue →
+          </Link>
+        </div>
+      ) : null}
+
+      {kanoPending.length > 0 ? (
+        <div
+          className="rounded-2xl border border-amber-200 bg-amber-50/80 p-5"
           role="alert"
         >
           <p className="font-semibold text-amber-900">

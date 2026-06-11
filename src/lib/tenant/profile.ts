@@ -49,9 +49,14 @@ export async function ensureTenantProfile(
   user: {
     id: string;
     email?: string | null;
+    email_confirmed_at?: string | null;
     user_metadata?: Record<string, unknown>;
   },
 ): Promise<{ error?: string }> {
+  if (!user.email_confirmed_at) {
+    return { error: "Please verify your email before continuing." };
+  }
+
   const { data: existing } = await supabase
     .from("profiles")
     .select("id")

@@ -1,8 +1,10 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { sendListingApprovedEmail } from "@/lib/email/listing-approved";
 import { revalidatePropertyPages } from "@/lib/admin/revalidate";
 import { syncApprovedListingToCrm } from "@/lib/crm";
+import { requireAdminMutationClient } from "@/lib/supabase/admin-mutations";
 import { requirePortalAdmin } from "@/lib/portal/profile";
 
 export type ReviewListingResult = {
@@ -17,7 +19,7 @@ export async function approveListing(id: string): Promise<ReviewListingResult> {
     return { error: "You must be signed in as an admin." };
   }
 
-  const { supabase } = session;
+  const { supabase, user } = await requireAdminMutationClient();
 
   const property = await supabase
     .from("properties")
@@ -41,18 +43,29 @@ export async function approveListing(id: string): Promise<ReviewListingResult> {
 
   const update = await supabase
     .from("properties")
-    .update({ status: "published" })
+    .update({ status: "published", reviewed_by: user.id })
     .eq("id", id)
+    .eq("status", "pending_review")
     .select("id, status")
-    .single();
+    .maybeSingle();
 
   if (update.error) {
     return { error: update.error.message };
   }
 
+  if (!update.data || update.data.status !== "published") {
+    return {
+      error:
+        "Approval did not persist. Run supabase/fix-admin-approve-actions.sql in Supabase, then sign out and back in.",
+    };
+  }
+
   if (property.data.slug) {
     revalidatePropertyPages(property.data.slug);
   }
+
+  revalidatePath("/portal/admin");
+  revalidatePath("/admin/listings/pending");
 
   const ownerEmail = owner?.email?.trim();
   let emailSent = false;
@@ -104,22 +117,33 @@ export async function rejectListing(
     return { error: "You must be signed in as an admin." };
   }
 
-  const { supabase } = session;
+  const { supabase, user } = await requireAdminMutationClient();
 
   const result = await supabase
     .from("properties")
     .update({
       status: "rejected",
       rejection_reason: reason || "Listing needs changes before approval.",
+      reviewed_by: user.id,
     })
     .eq("id", id)
     .eq("status", "pending_review")
     .select("id, status")
-    .single();
+    .maybeSingle();
 
   if (result.error) {
     return { error: result.error.message };
   }
+
+  if (!result.data || result.data.status !== "rejected") {
+    return {
+      error:
+        "Rejection did not persist. Run supabase/fix-admin-approve-actions.sql in Supabase, then sign out and back in.",
+    };
+  }
+
+  revalidatePath("/portal/admin");
+  revalidatePath("/admin/listings/pending");
 
   return {
     success: "Listing rejected. The lister can revise and resubmit.",
