@@ -34,15 +34,34 @@ export function isAdminUser(user: {
   );
 }
 
-export async function requireAdmin() {
+/** Resolves an admin session from JWT metadata or profiles.role. */
+export async function resolveAdminSession() {
   const supabase = await createSupabaseAuthClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user || !isAdminUser(user)) {
-    redirect("/admin/login");
+  if (!user) return null;
+
+  if (isAdminUser(user)) {
+    return { supabase, user };
   }
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (profile?.role !== "admin") return null;
+
   return { supabase, user };
+}
+
+export async function requireAdmin() {
+  const session = await resolveAdminSession();
+  if (!session) {
+    redirect("/admin/login");
+  }
+  return session;
 }

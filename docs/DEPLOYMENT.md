@@ -41,6 +41,8 @@ Email confirmation links use `/auth/callback?next=/portal/dashboard`. The callba
 | `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Public API key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Recommended | Server inquiry inserts |
+| `PAYSTACK_SECRET_KEY` | Optional | Paystack server API |
+| `PAYSTACK_PUBLIC_KEY` / `NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY` | Optional | Paystack checkout |
 
 When Supabase is connected, the site merges **published** portal listings (`status = published`) with static seed data in `src/data/properties.ts` (database entries win on slug conflicts). Pages revalidate every 60 seconds. If Supabase is unavailable, only the static seed is shown.
 
@@ -67,6 +69,19 @@ When an admin publishes a listing from `/portal/admin`, listers receive a confir
 Add both in Vercel → **Settings** → **Environment Variables** (Production). Verify the `adab.ng` sending domain in the Resend dashboard.
 
 **Smoke test:** Approve a listing in `/portal/admin`, then check Vercel function logs for a successful send.
+
+### Zoho CRM (leads & deals)
+
+Property inquiries, tenant applications, and listing approvals sync to Zoho CRM when configured. Submissions succeed without Zoho; CRM errors are logged server-side only.
+
+| Variable | Required | Purpose |
+|----------|----------|---------|
+| `ZOHO_CLIENT_ID` | Yes (for CRM) | Zoho API Console client ID |
+| `ZOHO_CLIENT_SECRET` | Yes (for CRM) | Zoho client secret |
+| `ZOHO_REFRESH_TOKEN` | Yes (for CRM) | Long-lived refresh token (CRM scopes) |
+| `ZOHO_API_DOMAIN` | Optional | `zoho.com` (default), `zoho.eu`, `zoho.in`, etc. |
+
+Check status at `/admin/settings` after deploy. Run `supabase/grant-full-admin.sql` if the admin panel is inaccessible.
 
 ---
 

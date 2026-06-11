@@ -1,9 +1,10 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { sendListingApprovedEmail } from "@/lib/email/listing-approved";
 import { revalidatePropertyPages } from "@/lib/admin/revalidate";
 import { syncApprovedListingToCrm } from "@/lib/crm";
-import { requirePortalAdmin } from "@/lib/portal/profile";
+import { requireAdmin } from "@/lib/supabase/auth-server";
 
 export type ReviewListingResult = {
   error?: string;
@@ -12,12 +13,7 @@ export type ReviewListingResult = {
 };
 
 export async function approveListing(id: string): Promise<ReviewListingResult> {
-  const session = await requirePortalAdmin();
-  if (!session) {
-    return { error: "You must be signed in as an admin." };
-  }
-
-  const { supabase } = session;
+  const { supabase } = await requireAdmin();
 
   const property = await supabase
     .from("properties")
@@ -54,11 +50,14 @@ export async function approveListing(id: string): Promise<ReviewListingResult> {
     revalidatePropertyPages(property.data.slug);
   }
 
+  revalidatePath("/admin/listings/pending");
+  revalidatePath("/admin/properties");
+  revalidatePath("/portal/admin");
+
   const ownerEmail = owner?.email?.trim();
   let emailSent = false;
 
   if (ownerEmail && property.data.slug) {
-    // Await email send before returning — admin UI reflects delivery status.
     const emailResult = await sendListingApprovedEmail({
       to: ownerEmail,
       listerName: owner?.full_name?.trim() ?? "",
@@ -74,11 +73,6 @@ export async function approveListing(id: string): Promise<ReviewListingResult> {
         error: emailResult.error,
       });
     }
-  } else if (!ownerEmail) {
-    console.warn(
-      "[approveListing] No lister email on profile — approval email skipped.",
-      { propertyId: id, ownerId: property.data.owner_id },
-    );
   }
 
   void syncApprovedListingToCrm({
@@ -99,12 +93,7 @@ export async function rejectListing(
   id: string,
   reason: string,
 ): Promise<ReviewListingResult> {
-  const session = await requirePortalAdmin();
-  if (!session) {
-    return { error: "You must be signed in as an admin." };
-  }
-
-  const { supabase } = session;
+  const { supabase } = await requireAdmin();
 
   const result = await supabase
     .from("properties")
@@ -121,7 +110,15 @@ export async function rejectListing(
     return { error: result.error.message };
   }
 
+  revalidatePath("/admin/listings/pending");
+  revalidatePath("/admin/properties");
+  revalidatePath("/portal/admin");
+
   return {
     success: "Listing rejected. The lister can revise and resubmit.",
   };
 }
+
+/** Aliases used by PendingListingsPanel */
+export const approveListingAdmin = approveListing;
+export const rejectListingAdmin = rejectListing;

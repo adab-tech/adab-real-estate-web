@@ -1,4 +1,7 @@
-import { createSupabaseAuthClient } from "@/lib/supabase/auth-server";
+import {
+  createSupabaseAuthClient,
+  resolveAdminSession,
+} from "@/lib/supabase/auth-server";
 
 export type PortalProfile = {
   role: "lister" | "admin";
@@ -33,6 +36,17 @@ export async function requirePortalUser() {
 }
 
 export async function requirePortalAdmin() {
+  const adminSession = await resolveAdminSession();
+  if (adminSession) {
+    const profile = await getPortalProfile(adminSession.user.id);
+    return {
+      user: adminSession.user,
+      profile: profile ?? { role: "admin" as const, full_name: null },
+      verified: true as const,
+      supabase: adminSession.supabase,
+    };
+  }
+
   const session = await requirePortalUser();
   if (!session?.verified || session.profile?.role !== "admin") return null;
   return session;

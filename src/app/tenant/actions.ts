@@ -2,7 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { syncTenantApplicationToCrm } from "@/lib/crm";
 import { createSupabaseAuthClient } from "@/lib/supabase/auth-server";
+import { ensureTenantProfile } from "@/lib/tenant/profile";
 import type { ApplicationType } from "@/types/tenant-portal";
 
 export type TenantAuthState = { error?: string; success?: string } | null;
@@ -99,6 +101,13 @@ export async function submitApplication(
     return { error: "Name, email, and phone are required." };
   }
 
+  if (user) {
+    const profileResult = await ensureTenantProfile(supabase, user);
+    if (profileResult.error) {
+      return { error: profileResult.error };
+    }
+  }
+
   const propertyInterest = String(formData.get("property_interest") ?? "").trim();
   const message = String(formData.get("message") ?? "").trim();
 
@@ -114,6 +123,15 @@ export async function submitApplication(
   });
 
   if (error) return { error: error.message };
+
+  void syncTenantApplicationToCrm({
+    fullName,
+    email,
+    phone,
+    applicationType,
+    propertyInterest: propertyInterest || null,
+    message: message || null,
+  });
 
   revalidatePath("/admin/pm/applications");
   return {

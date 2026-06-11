@@ -3,11 +3,15 @@ import { signOut } from "@/app/admin/actions";
 
 const links = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/listings/pending", label: "Pending listings" },
   { href: "/admin/properties", label: "Properties" },
   { href: "/admin/pm", label: "Property mgmt" },
+  { href: "/admin/pm/applications", label: "Applications" },
   { href: "/admin/posts", label: "Posts" },
+  { href: "/admin/analytics", label: "Analytics" },
   { href: "/admin/inquiries", label: "Inquiries" },
-  { href: "/admin/brand", label: "Brand assets" },
+  { href: "/admin/settings", label: "Settings" },
+  { href: "/admin/brand", label: "Brand" },
 ];
 
 export function AdminNav({ email }: { email: string }) {

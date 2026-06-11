@@ -1,4 +1,5 @@
 import { requireAdmin } from "@/lib/supabase/auth-server";
+import { PmApplicationActions } from "@/components/admin/PmApplicationActions";
 import { PmStatusSelect } from "@/components/admin/PmStatusSelect";
 import { updateApplicationStatus } from "@/app/admin/pm-actions";
 import {
@@ -89,6 +90,7 @@ export default async function PmApplicationsPage() {
                       )}
                       action={updateApplicationStatus}
                     />
+                    <PmApplicationActions id={app.id} status={app.status} />
                   </td>
                   <td className="px-4 py-3 text-adab-gray-500">
                     {new Date(app.created_at).toLocaleDateString("en-NG")}
