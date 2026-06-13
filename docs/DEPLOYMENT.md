@@ -63,8 +63,9 @@ Email confirmation links use `/auth/callback?next=/portal/dashboard`. The callba
 | `SUPABASE_SERVICE_ROLE_KEY` | Recommended | Server inquiry inserts |
 | `PAYSTACK_SECRET_KEY` | Optional | Paystack server API + webhook signature |
 | `PAYSTACK_PUBLIC_KEY` / `NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY` | Optional | Paystack checkout |
-| `FLUTTERWAVE_SECRET_KEY` | Optional | Flutterwave stub (Phase 2) |
-| `FLUTTERWAVE_PUBLIC_KEY` / `NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY` | Optional | Flutterwave stub (Phase 2) |
+| `FLUTTERWAVE_SECRET_KEY` | Optional | Flutterwave server API (Phase 2) |
+| `FLUTTERWAVE_PUBLIC_KEY` / `NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY` | Optional | Flutterwave checkout (Phase 2) |
+| `FLUTTERWAVE_WEBHOOK_SECRET` | Optional | Flutterwave webhook `verif-hash` (dashboard secret hash) |
 
 When Supabase is connected, the site merges **published** portal listings (`status = published`) with static seed data in `src/data/properties.ts` (database entries win on slug conflicts). Pages revalidate every 60 seconds. If Supabase is unavailable, only the static seed is shown.
 
@@ -106,6 +107,8 @@ Property inquiries, tenant applications, and listing approvals sync to Zoho CRM 
 Check status at `/admin/settings` after deploy. Full setup guide: [ZOHO-CRM-SETUP.md](./ZOHO-CRM-SETUP.md). Run `supabase/grant-full-admin.sql` if the admin panel is inaccessible.
 
 **Paystack webhook:** `https://adab.ng/api/payments/paystack/webhook` (validates `x-paystack-signature` when `PAYSTACK_SECRET_KEY` is set).
+
+**Flutterwave webhook (Phase 2 scaffold):** `https://adab.ng/api/payments/flutterwave/webhook` (validates `verif-hash` when `FLUTTERWAVE_WEBHOOK_SECRET` is set). Checkout UI not wired yet.
 
 ---
 

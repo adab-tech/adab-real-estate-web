@@ -1,4 +1,11 @@
 @import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+/*
+ * Responsive breakpoints (mobile-first) — see tailwind.config.ts for full strategy.
+ * phone: 360px | tablet: 768px | desktop: 991px | wide: 1200px
+ * Containers use max-w-site (1200px) via .site-container or max-w-site utility.
+ */
 
 :root {
   --adab-navy-900: #0f1a2e;
@@ -16,6 +23,13 @@
 }
 
 @theme inline {
+  --breakpoint-phone: 360px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 991px;
+  --breakpoint-wide: 1200px;
+
+  --max-width-site: 1200px;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
@@ -33,10 +47,23 @@
   --font-display: var(--font-display);
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-body), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+.site-container {
+  @apply mx-auto w-full max-w-site px-3 phone:px-4 tablet:px-6 wide:px-8;
+}
+
+.touch-target {
+  @apply inline-flex min-h-11 min-w-11 items-center justify-center;
 }
 
 .adab-nigeria-flag img {

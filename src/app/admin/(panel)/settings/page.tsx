@@ -23,7 +23,7 @@ export default async function AdminSettingsPage() {
       <section className="rounded-2xl border border-adab-gray-300 bg-white p-5 text-sm text-adab-gray-600">
         <h2 className="font-semibold text-adab-navy-800">Zoho CRM setup</h2>
         <p className="mt-2">
-          Step-by-step guide:{" "}
+          Full guide:{" "}
           <a
             href="https://github.com/adab-tech/adab-real-estate-web/blob/master/docs/ZOHO-CRM-SETUP.md"
             target="_blank"
@@ -32,8 +32,15 @@ export default async function AdminSettingsPage() {
           >
             ZOHO-CRM-SETUP.md
           </a>{" "}
-          (in repo <code className="rounded bg-adab-gray-200 px-1 text-xs">docs/</code>
-          ).
+          ·{" "}
+          <a
+            href="https://api-console.zoho.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-adab-gold-600 hover:text-adab-gold-500"
+          >
+            Zoho API Console
+          </a>
         </p>
         <ol className="mt-3 list-decimal space-y-2 pl-5">
           <li>
@@ -74,10 +81,29 @@ export default async function AdminSettingsPage() {
       </section>
 
       <section className="rounded-2xl border border-adab-gray-300 bg-white p-5 text-sm text-adab-gray-600">
-        <h2 className="font-semibold text-adab-navy-800">Paystack webhook</h2>
+        <h2 className="font-semibold text-adab-navy-800">Paystack</h2>
         <p className="mt-2">
-          When online rent payments are enabled, register this URL in Paystack →
-          Settings → Webhooks:
+          <a
+            href="https://dashboard.paystack.com/#/settings/developers"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-adab-gold-600 hover:text-adab-gold-500"
+          >
+            Paystack dashboard → Developers
+          </a>{" "}
+          · add{" "}
+          <code className="rounded bg-adab-gray-200 px-1 text-xs">
+            PAYSTACK_SECRET_KEY
+          </code>{" "}
+          and{" "}
+          <code className="rounded bg-adab-gray-200 px-1 text-xs">
+            NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY
+          </code>{" "}
+          in Vercel.
+        </p>
+        <p className="mt-3 font-medium text-adab-navy-800">Webhook URL</p>
+        <p className="mt-1">
+          Paystack → Settings → Webhooks:
         </p>
         <p className="mt-2">
           <code className="block rounded bg-adab-gray-200 px-2 py-1 text-xs">
@@ -86,27 +112,46 @@ export default async function AdminSettingsPage() {
           </code>
         </p>
         <p className="mt-2 text-xs text-adab-gray-500">
-          Webhook requests are rejected unless the{" "}
+          Validates{" "}
           <code className="rounded bg-adab-gray-200 px-1">x-paystack-signature</code>{" "}
-          header matches <code className="rounded bg-adab-gray-200 px-1">PAYSTACK_SECRET_KEY</code>.
+          against <code className="rounded bg-adab-gray-200 px-1">PAYSTACK_SECRET_KEY</code>.
         </p>
       </section>
 
       <section className="rounded-2xl border border-dashed border-adab-gray-300 bg-adab-cream/50 p-5 text-sm text-adab-gray-600">
         <h2 className="font-semibold text-adab-navy-800">Flutterwave (Phase 2)</h2>
         <p className="mt-2">
-          Alternative payment provider — env vars are listed above in integration
-          status. Checkout and webhooks are not wired yet; Paystack is the
-          active path for tenant rent payments.
+          <a
+            href="https://dashboard.flutterwave.com/settings/developers"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-adab-gold-600 hover:text-adab-gold-500"
+          >
+            Flutterwave dashboard → Developers
+          </a>{" "}
+          · checkout UI not wired yet; Paystack remains the active rent path.
+        </p>
+        <p className="mt-3 font-medium text-adab-navy-800">Webhook URL (scaffold)</p>
+        <p className="mt-1">
+          Flutterwave → Settings → Webhooks — set the secret hash to match{" "}
+          <code className="rounded bg-adab-gray-200 px-1 text-xs">
+            FLUTTERWAVE_WEBHOOK_SECRET
+          </code>{" "}
+          in Vercel:
+        </p>
+        <p className="mt-2">
+          <code className="block rounded bg-adab-gray-200 px-2 py-1 text-xs">
+            {process.env.NEXT_PUBLIC_SITE_URL ?? "https://adab.ng"}
+            /api/payments/flutterwave/webhook
+          </code>
         </p>
         <p className="mt-2 text-xs text-adab-gray-500">
-          Set{" "}
-          <code className="rounded bg-adab-gray-200 px-1">FLUTTERWAVE_SECRET_KEY</code>{" "}
-          and{" "}
+          Env vars:{" "}
+          <code className="rounded bg-adab-gray-200 px-1">FLUTTERWAVE_SECRET_KEY</code>,{" "}
           <code className="rounded bg-adab-gray-200 px-1">
             NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY
-          </code>{" "}
-          when Phase 2 checkout is implemented.
+          </code>,{" "}
+          <code className="rounded bg-adab-gray-200 px-1">FLUTTERWAVE_WEBHOOK_SECRET</code>.
         </p>
       </section>
     </div>

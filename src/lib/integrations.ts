@@ -59,6 +59,7 @@ export async function getIntegrationStatuses(): Promise<IntegrationStatus[]> {
         "FLUTTERWAVE_SECRET_KEY",
         "FLUTTERWAVE_PUBLIC_KEY",
         "NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY",
+        "FLUTTERWAVE_WEBHOOK_SECRET",
       ],
       docs: "https://dashboard.flutterwave.com/settings/developers",
     },

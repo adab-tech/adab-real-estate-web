@@ -26,7 +26,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${plusJakarta.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-adab-cream text-adab-navy-900">
+      <body className="flex min-h-full flex-col overflow-x-hidden bg-adab-cream text-adab-navy-900">
         {children}
       </body>
     </html>
