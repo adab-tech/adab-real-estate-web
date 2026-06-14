@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { formatNaira, statusLabel } from "@/lib/portal/format";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { ListingShareActions } from "@/components/share/ListingShareActions";
 
 type Listing = {
   id: string;
@@ -100,21 +101,32 @@ export function DashboardListings() {
           .join(", ");
 
         return (
-          <div className="portal-listing-row" key={item.id}>
-            <div>
-              <p className="font-semibold text-adab-navy-800">{item.title}</p>
-              <p className="text-sm text-adab-gray-500">
-                {place} · {formatNaira(item.price_ngn)}
-              </p>
-              {item.rejection_reason && (
-                <p className="mt-1 text-xs text-red-700">
-                  Rejected: {item.rejection_reason}
+          <div
+            className="portal-listing-row flex-col items-stretch gap-3"
+            key={item.id}
+          >
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <p className="font-semibold text-adab-navy-800">{item.title}</p>
+                <p className="text-sm text-adab-gray-500">
+                  {place} · {formatNaira(item.price_ngn)}
                 </p>
-              )}
+                {item.rejection_reason && (
+                  <p className="mt-1 text-xs text-red-700">
+                    Rejected: {item.rejection_reason}
+                  </p>
+                )}
+              </div>
+              <span className={`portal-badge portal-badge-${item.status}`}>
+                {statusLabel(item.status)}
+              </span>
             </div>
-            <span className={`portal-badge portal-badge-${item.status}`}>
-              {statusLabel(item.status)}
-            </span>
+            <ListingShareActions
+              slug={item.slug}
+              title={item.title}
+              status={item.status}
+              compact
+            />
           </div>
         );
       })}

@@ -4,6 +4,8 @@ import { formatPropertyPrice } from "@/lib/format";
 import { siteConfig } from "@/lib/site-config";
 import type { Post } from "@/types/post";
 import type { Property } from "@/types/property";
+import type { PublicListerProfile } from "@/lib/lister/profile";
+import { getListerDisplayName } from "@/lib/lister/profile";
 
 export function getSiteUrl(): string {
   const url = process.env.NEXT_PUBLIC_SITE_URL;
@@ -204,5 +206,39 @@ export function buildListingJsonLd(property: Property) {
       latitude: property.location.lat,
       longitude: property.location.lng,
     },
+  };
+}
+export function buildListerMetadata(
+  profile: PublicListerProfile,
+  properties: Property[],
+): Metadata {
+  const displayName = getListerDisplayName(profile);
+  const url = absoluteUrl(`/l/${profile.publicUsername}`);
+  const count = properties.length;
+  const description =
+    count === 0
+      ? `${displayName} on Adab.ng - Nigerian property listings.`
+      : `Browse ${count} ${count === 1 ? "property" : "properties"} listed by ${displayName} on Adab.ng.`;
+  const image = properties[0]?.images[0];
+
+  return {
+    title: displayName,
+    description,
+    openGraph: {
+      type: "profile",
+      url,
+      title: `${displayName} | ${siteConfig.shortName}`,
+      description,
+      images: image
+        ? [{ url: image, alt: displayName }]
+        : [{ url: absoluteUrl(siteConfig.ogImage), alt: displayName }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: displayName,
+      description,
+      images: image ? [image] : undefined,
+    },
+    alternates: { canonical: url },
   };
 }

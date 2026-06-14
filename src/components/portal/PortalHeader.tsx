@@ -110,6 +110,9 @@ export function PortalHeader({
                   Approvals
                 </Link>
               )}
+              <Link href="/portal/settings" className="portal-btn portal-btn-ghost min-h-11">
+                Profile
+              </Link>
               <Link href="/portal/listings/new" className="portal-btn portal-btn-primary min-h-11">
                 + New listing
               </Link>
