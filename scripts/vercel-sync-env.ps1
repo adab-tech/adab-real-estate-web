@@ -15,6 +15,44 @@ function Write-Info([string]$Message) {
   Write-Host $Message
 }
 
+# Native stderr (e.g. npm devdir warnings) must not terminate when $ErrorActionPreference is Stop.
+function Invoke-VercelCli {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string[]]$ArgumentList
+  )
+  $prev = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  try {
+    $output = & npx --yes vercel @ArgumentList 2>&1
+    return [PSCustomObject]@{
+      Output   = $output
+      ExitCode = $LASTEXITCODE
+    }
+  } finally {
+    $ErrorActionPreference = $prev
+  }
+}
+
+function Invoke-VercelEnvAdd {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Name,
+    [Parameter(Mandatory = $true)]
+    [string]$EnvName,
+    [Parameter(Mandatory = $true)]
+    [string]$Value
+  )
+  $prev = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  try {
+    $Value | & npx --yes vercel env add $Name $EnvName --force 2>&1 | Out-Null
+    return $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $prev
+  }
+}
+
 if (-not (Test-Path $envLocal)) {
   Write-Info "No .env.local found at $envLocal"
   Write-Info "Create it with: npx vercel env pull .env.local"
@@ -55,12 +93,13 @@ if ($localVars.Count -eq 0) {
 
 Push-Location $projectRoot
 try {
-  $lsRaw = & npx --yes vercel env ls $Environment 2>&1
-  if ($LASTEXITCODE -ne 0) {
+  $lsResult = Invoke-VercelCli -ArgumentList @("env", "ls", $Environment)
+  if ($lsResult.ExitCode -ne 0) {
     Write-Info "Vercel CLI failed. Run: npx vercel login"
-    Write-Info ($lsRaw | Out-String).Trim()
+    Write-Info ($lsResult.Output | Out-String).Trim()
     exit 1
   }
+  $lsRaw = $lsResult.Output
 
   $existing = [System.Collections.Generic.HashSet[string]]::new(
     [System.StringComparer]::OrdinalIgnoreCase
@@ -92,9 +131,8 @@ try {
     }
 
     Write-Info "Adding $name to $Environment..."
-    $value = $entry.Value
-    $value | & npx --yes vercel env add $name $Environment --force 2>&1 | Out-Null
-    if ($LASTEXITCODE -ne 0) {
+    $addCode = Invoke-VercelEnvAdd -Name $name -EnvName $Environment -Value $entry.Value
+    if ($addCode -ne 0) {
       Write-Info "Failed to add $name. Check Vercel login and project link."
       exit 1
     }
