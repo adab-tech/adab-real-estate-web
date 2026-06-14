@@ -1,6 +1,8 @@
 "use server";
 
+import { sendAdminInquiryAlert } from "@/lib/email/admin-alert";
 import { sendInquiryConfirmationEmail } from "@/lib/email/inquiry-received";
+import { guardPublicForm } from "@/lib/security/form-guard";
 import { inquirySchema } from "@/lib/validations/inquiry";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -10,6 +12,14 @@ export async function submitInquiry(
   _prev: InquiryFormState,
   formData: FormData,
 ): Promise<InquiryFormState> {
+  const guard = await guardPublicForm(formData, {
+    rateLimitKey: "inquiry",
+    rateLimit: 8,
+  });
+  if (!guard.ok) {
+    return { error: guard.error };
+  }
+
   const parsed = inquirySchema.safeParse({
     name: formData.get("name"),
     phone: formData.get("phone"),
@@ -53,6 +63,17 @@ export async function submitInquiry(
       console.error("[submitInquiry] confirmation email failed:", err);
     });
   }
+
+  void sendAdminInquiryAlert({
+    name: data.name,
+    phone: data.phone,
+    email: data.email,
+    message: data.message,
+    source: data.source,
+    propertySlug: data.propertySlug,
+  }).catch((err) => {
+    console.error("[submitInquiry] admin alert failed:", err);
+  });
 
   return { success: "Inquiry received. Opening WhatsApp…" };
 }

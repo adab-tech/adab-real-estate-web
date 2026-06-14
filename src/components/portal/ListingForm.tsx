@@ -9,6 +9,7 @@ import {
 } from "@/lib/portal/constants";
 import { slugifyListing } from "@/lib/portal/format";
 import { AddressAutocomplete } from "@/components/portal/AddressAutocomplete";
+import { AiDescriptionButton } from "@/components/portal/AiDescriptionButton";
 import { ensureListerProfile, requirePortalSession } from "@/lib/portal/ensure-profile";
 import { formatSupabaseError } from "@/lib/portal/errors";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
@@ -262,6 +263,10 @@ export function ListingForm() {
             required
             value={form.description}
             onChange={(e) => updateField("description", e.target.value)}
+          />
+          <AiDescriptionButton
+            form={form}
+            onGenerated={(description) => updateField("description", description)}
           />
         </div>
 

@@ -1,0 +1,46 @@
+---
+description: Adab Real Estate brand colors, typography, and asset conventions
+globs:
+  - src/components/**
+  - src/app/**
+  - public/brand/**
+alwaysApply: false
+---
+
+# Adab branding
+
+## Colors (Tailwind tokens)
+
+| Token | Hex | Usage |
+|-------|-----|-------|
+| `adab-navy-800` | `#1B2A4A` | Primary text, buttons |
+| `adab-navy-900` | `#0F1A2E` | Dark backgrounds |
+| `adab-gold-500` | `#C9A227` | Accents, CTAs |
+| `adab-cream` | `#F8F6F1` | Page background |
+| `adab-gray-300/500` | — | Borders, secondary text |
+
+## Typography
+
+- Display: Plus Jakarta Sans (`font-display`)
+- Body: Inter (`font-body` / default)
+
+## Logo & assets
+
+- Primary logo: `/brand/logo.png`
+- Favicon: `/brand/favicon.ico`
+- OG image: `/brand/og-image.png`
+- Brand kit ZIP: `/brand/adab-brand-kit.zip`
+- Office templates: `/brand/downloads/office/` (business card, letterhead, flyer, email signature)
+
+## UI patterns
+
+- Rounded corners: `rounded-xl` inputs, `rounded-2xl` cards, `rounded-full` buttons
+- Shadows: `shadow-[0_4px_24px_rgba(27,42,74,0.08)]` on cards
+- Buttons: navy primary on public site, gold accent for highlights
+- Portal/admin: use `portal-*` CSS classes
+
+## Do not
+
+- Use generic blue/purple gradients off-brand
+- Replace CAC seal with Adab logo (CAC is registration display only)
+- Hardcode phone/email — use `siteConfig` from `@/lib/site-config`

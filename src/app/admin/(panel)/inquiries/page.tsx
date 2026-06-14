@@ -1,3 +1,5 @@
+import { InquiryAiPanel } from "@/components/admin/InquiryAiPanel";
+import { InquiriesCsvExport } from "@/components/admin/InquiriesCsvExport";
 import { requireAdmin } from "@/lib/supabase/auth-server";
 
 type InquiryRow = {
@@ -27,16 +29,28 @@ export default async function AdminInquiriesPage() {
   }
 
   const inquiries = (data ?? []) as InquiryRow[];
+  const csvRows = inquiries.map((inquiry) => ({
+    name: inquiry.name,
+    phone: inquiry.phone,
+    email: inquiry.email ?? "",
+    message: inquiry.message,
+    source: inquiry.source,
+    property_slug: inquiry.property_slug ?? "",
+    created_at: new Date(inquiry.created_at).toISOString(),
+  }));
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-2xl font-bold text-adab-navy-800">
-          Inquiries
-        </h1>
-        <p className="mt-1 text-sm text-adab-gray-500">
-          Recent leads from the website contact forms
-        </p>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="font-display text-2xl font-bold text-adab-navy-800">
+            Inquiries
+          </h1>
+          <p className="mt-1 text-sm text-adab-gray-500">
+            Recent leads from the website contact forms
+          </p>
+        </div>
+        <InquiriesCsvExport rows={csvRows} />
       </div>
 
       {inquiries.length === 0 ? (
@@ -73,6 +87,7 @@ export default async function AdminInquiriesPage() {
                   ? ` · Property: ${inquiry.property_slug}`
                   : ""}
               </p>
+              <InquiryAiPanel inquiry={inquiry} />
             </article>
           ))}
         </div>

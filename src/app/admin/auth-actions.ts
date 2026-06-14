@@ -1,7 +1,12 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createSupabaseAuthClient } from "@/lib/supabase/auth-server";
+import {
+  checkRateLimit,
+  rateLimitKeyFromHeaders,
+} from "@/lib/security/rate-limit";
 
 export type SignInState = { error?: string } | null;
 
@@ -9,6 +14,16 @@ export async function signInAdmin(
   _prevState: SignInState,
   formData: FormData,
 ): Promise<SignInState> {
+  const headerStore = await headers();
+  const rateLimit = await checkRateLimit(
+    rateLimitKeyFromHeaders(headerStore, "admin-login"),
+    10,
+    "1 m",
+  );
+  if (!rateLimit.ok) {
+    return { error: "Too many login attempts. Please try again later." };
+  }
+
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
   const next = String(formData.get("next") ?? "/admin/properties");

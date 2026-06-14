@@ -2,6 +2,8 @@
 
 import { useActionState, useTransition } from "react";
 import { submitInquiry, type InquiryFormState } from "@/app/inquiry-actions";
+import { HoneypotField } from "@/components/security/HoneypotField";
+import { TurnstileWidget } from "@/components/security/TurnstileWidget";
 import { siteConfig } from "@/lib/site-config";
 
 type InquiryFormProps = {
@@ -63,7 +65,7 @@ export function InquiryForm({
 
   return (
     <form
-      className="space-y-4"
+      className="relative space-y-4"
       noValidate
       onSubmit={(event) => {
         event.preventDefault();
@@ -86,6 +88,7 @@ export function InquiryForm({
       <input type="hidden" name="propertyId" value={propertyId ?? ""} />
       <input type="hidden" name="propertySlug" value={propertySlug ?? ""} />
       <input type="hidden" name="source" value={source} />
+      <HoneypotField />
 
       <Field label="Full name" name="name" type="text" required />
       <Field
@@ -116,6 +119,8 @@ export function InquiryForm({
           className="w-full rounded-xl border border-adab-gray-300 px-4 py-3 text-sm text-adab-navy-800 outline-none transition-colors focus:border-adab-gold-500"
         />
       </div>
+
+      <TurnstileWidget />
 
       <button
         type="submit"

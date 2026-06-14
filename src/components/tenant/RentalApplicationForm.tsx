@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { submitRentalApplication } from "@/app/tenant/application-actions";
+import { HoneypotField } from "@/components/security/HoneypotField";
+import { TurnstileWidget } from "@/components/security/TurnstileWidget";
 
 type RentalApplicationFormProps = {
   defaultEmail?: string;
@@ -42,7 +44,8 @@ export function RentalApplicationForm({
       )}
 
       {!state?.success && (
-        <form action={formAction} className="mt-6 space-y-4">
+        <form action={formAction} className="relative mt-6 space-y-4">
+          <HoneypotField />
           <div className="grid gap-4 tablet:grid-cols-2">
             <div>
               <label className="portal-label" htmlFor="full_name">
@@ -172,6 +175,8 @@ export function RentalApplicationForm({
             </label>
             <textarea className="portal-textarea min-h-20" id="notes" name="notes" />
           </div>
+
+          <TurnstileWidget />
 
           <button
             className="portal-btn portal-btn-primary"

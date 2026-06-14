@@ -1,0 +1,52 @@
+---
+description: Supabase auth, RLS, and database patterns for Adab Real Estate
+globs:
+  - src/lib/supabase/**
+  - src/app/**/actions.ts
+  - src/app/**/*-actions.ts
+  - src/app/api/**
+alwaysApply: false
+---
+
+# Adab Supabase rules
+
+## Clients
+
+| Client | File | Use |
+|--------|------|-----|
+| Browser | `createSupabaseBrowserClient()` | Portal/tenant client components |
+| Auth (SSR) | `createSupabaseAuthClient()` | Server actions with user session |
+| Service | `getSupabaseServerClient()` | Public inserts (inquiries), webhooks |
+| Admin mutation | `requireAdminMutationClient()` | Admin write actions |
+
+## Auth roles
+
+- `admin` — CMS, PM panel, brand downloads
+- `lister` / portal users — list properties via portal
+- `tenant` / `client` — tenant portal, applications
+
+Admin check: JWT metadata `role=admin` OR `profiles.role = admin`.
+
+## Key tables
+
+- `properties` — listings (portal + admin CMS)
+- `inquiries` — contact form leads
+- `pm_applications` — tenant/PM applications
+- `profiles` — user metadata and roles
+- `page_views` — first-party analytics
+
+## Patterns
+
+- Always validate input with Zod before insert/update
+- Use `revalidatePath` after admin mutations
+- Service role for server-side writes that bypass RLS
+- Never expose `SUPABASE_SERVICE_ROLE_KEY` to client
+
+## SQL migrations
+
+Reference SQL lives in sibling repo `adab-ng-site/supabase/`. Run manually in Supabase SQL Editor — not auto-applied by this app.
+
+## Redirect URLs (production)
+
+- Site URL: `https://adab.ng`
+- Callbacks: `https://adab.ng/auth/callback`, `https://adab.ng/portal/verify-email`

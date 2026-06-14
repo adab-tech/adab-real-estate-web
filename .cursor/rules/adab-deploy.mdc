@@ -1,0 +1,23 @@
+---
+description: Adab Real Estate deploy, Vercel, and production workflow
+globs:
+alwaysApply: true
+---
+
+# Adab deploy rules
+
+- **Deploy repo:** `adab-real-estate-web` only — not `adab-ng-site`
+- **Production:** https://adab.ng via Vercel scope `adab-techs-projects`
+- **Branch:** `master` is production
+- Run `npm run build` before every deploy; fix all errors
+- Never commit `.env.local` or API keys
+- Add new env vars to `.env.example` with comments
+- Deploy command: `npx vercel deploy --prod --yes --scope adab-techs-projects`
+- Do not re-add Zoho CRM integration
+
+## Pre-deploy checklist
+
+1. Build passes locally
+2. Env vars set in Vercel dashboard (see `.env.example`)
+3. Supabase redirect URLs include `https://adab.ng/auth/callback`
+4. Commit message describes user-facing change, not file list

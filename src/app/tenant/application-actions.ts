@@ -1,7 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { sendAdminApplicationAlert } from "@/lib/email/admin-alert";
 import { createSupabaseAuthClient } from "@/lib/supabase/auth-server";
+import { guardPublicForm } from "@/lib/security/form-guard";
 import { ensureTenantProfile, requireTenantUser } from "@/lib/tenant/profile";
 import type { RentalApplicationData } from "@/types/tenant";
 
@@ -11,6 +13,14 @@ export async function submitRentalApplication(
   _prev: ApplicationFormState,
   formData: FormData,
 ): Promise<ApplicationFormState> {
+  const guard = await guardPublicForm(formData, {
+    rateLimitKey: "rental-application",
+    rateLimit: 5,
+  });
+  if (!guard.ok) {
+    return { error: guard.error };
+  }
+
   const session = await requireTenantUser();
   if (!session?.verified) {
     return { error: "Please sign in to submit an application." };
@@ -74,6 +84,15 @@ export async function submitRentalApplication(
   });
 
   if (error) return { error: error.message };
+
+  void sendAdminApplicationAlert({
+    fullName,
+    email,
+    phone,
+    propertySlug: form_data.property_slug ?? null,
+  }).catch((err) => {
+    console.error("[submitRentalApplication] admin alert failed:", err);
+  });
 
   revalidatePath("/tenant/dashboard");
   revalidatePath("/admin/applications");

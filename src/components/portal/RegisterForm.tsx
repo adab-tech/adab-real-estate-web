@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { validateRegistrationGate } from "@/app/auth/register-gate";
+import { HoneypotField } from "@/components/security/HoneypotField";
+import { TurnstileWidget } from "@/components/security/TurnstileWidget";
 import {
   portalEmailRedirectTo,
   signUpWithBrowserClient,
@@ -21,6 +24,13 @@ export function RegisterForm() {
     setState(null);
 
     const formData = new FormData(event.currentTarget);
+    const gate = await validateRegistrationGate(formData);
+    if (gate?.error) {
+      setState({ error: gate.error });
+      setPending(false);
+      return;
+    }
+
     const email = String(formData.get("email") ?? "").trim();
     const password = String(formData.get("password") ?? "");
     const fullName = String(formData.get("full_name") ?? "").trim();
@@ -73,7 +83,8 @@ export function RegisterForm() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+      <form onSubmit={handleSubmit} className="relative mt-6 space-y-4">
+        <HoneypotField />
         <div>
           <label className="portal-label" htmlFor="full_name">
             Full name
@@ -150,6 +161,7 @@ export function RegisterForm() {
             autoComplete="new-password"
           />
         </div>
+        <TurnstileWidget />
         <button
           className="portal-btn portal-btn-primary w-full"
           type="submit"

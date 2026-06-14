@@ -71,6 +71,61 @@ export const brandAssets: BrandAsset[] = [
   },
 ];
 
+export const officeTemplates: BrandAsset[] = [
+  {
+    id: "business-card",
+    name: "Business Card",
+    description: "Print-ready business card template for Adab staff.",
+    preview: "/brand/logo.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/office/business-card.html",
+        format: "HTML",
+      },
+    ],
+  },
+  {
+    id: "email-signature",
+    name: "Email Signature",
+    description: "Branded email signature block for Outlook and Gmail.",
+    preview: "/brand/logo.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/office/email-signature.html",
+        format: "HTML",
+      },
+    ],
+  },
+  {
+    id: "letterhead",
+    name: "Letterhead",
+    description: "Official letterhead template for correspondence.",
+    preview: "/brand/logo.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/office/letterhead.html",
+        format: "HTML",
+      },
+    ],
+  },
+  {
+    id: "property-flyer",
+    name: "Property Flyer",
+    description: "Promotional property listing flyer template.",
+    preview: "/brand/og-image.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/office/property-flyer.html",
+        format: "HTML",
+      },
+    ],
+  },
+];
+
 export const brandColors = [
   { name: "Adab Navy", hex: "#1B2A4A", class: "bg-adab-navy-800" },
   { name: "Adab Navy Dark", hex: "#0F1A2E", class: "bg-adab-navy-900" },

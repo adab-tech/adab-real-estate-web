@@ -3,6 +3,7 @@ import {
   brandAssets,
   brandColors,
   brandKitZip,
+  officeTemplates,
 } from "@/lib/brand-assets";
 
 function DownloadIcon() {
@@ -132,6 +133,50 @@ export function BrandDownloads() {
                       key={file.href}
                       href={file.href}
                       download
+                      className="inline-flex items-center gap-1.5 rounded-full border border-adab-navy-800/15 bg-adab-cream px-3 py-1.5 text-xs font-semibold text-adab-navy-800 transition-colors hover:border-adab-gold-500 hover:bg-adab-gold-500/10"
+                    >
+                      <DownloadIcon />
+                      {file.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="mb-6 font-display text-lg font-bold text-adab-navy-800">
+          Office & promotional templates
+        </h2>
+        <div className="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-4">
+          {officeTemplates.map((asset) => (
+            <article
+              key={asset.id}
+              className="flex flex-col overflow-hidden rounded-2xl border border-adab-gray-300/60 bg-white shadow-sm"
+            >
+              <div className="flex h-28 items-center justify-center bg-adab-cream p-4">
+                <Image
+                  src={asset.preview}
+                  alt={asset.name}
+                  width={120}
+                  height={48}
+                  className="max-h-16 w-auto object-contain"
+                />
+              </div>
+              <div className="flex flex-1 flex-col p-5">
+                <h3 className="font-semibold text-adab-navy-800">{asset.name}</h3>
+                <p className="mt-1 flex-1 text-sm text-adab-gray-500">
+                  {asset.description}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {asset.files.map((file) => (
+                    <a
+                      key={file.href}
+                      href={file.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 rounded-full border border-adab-navy-800/15 bg-adab-cream px-3 py-1.5 text-xs font-semibold text-adab-navy-800 transition-colors hover:border-adab-gold-500 hover:bg-adab-gold-500/10"
                     >
                       <DownloadIcon />

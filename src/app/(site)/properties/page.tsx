@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/layout/PageHeader";
+import { NaturalLanguagePropertySearch } from "@/components/properties/NaturalLanguagePropertySearch";
 import { PropertyFilter } from "@/components/properties/PropertyFilter";
 import { PropertyGrid } from "@/components/properties/PropertyGrid";
 import { PropertySearch } from "@/components/properties/PropertySearch";
@@ -33,6 +34,7 @@ export default async function PropertiesPage({
         description="Search verified properties for sale and rent across Nigeria."
       />
       <div className="site-container space-y-8 py-10">
+        <NaturalLanguagePropertySearch />
         <PropertySearch filters={filters} />
 
         <div className="flex flex-wrap items-center justify-between gap-4">

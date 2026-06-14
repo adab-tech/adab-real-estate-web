@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { AnalyticsScripts } from "@/components/analytics/AnalyticsScripts";
+import { LiveChat } from "@/components/chat/LiveChat";
 import { buildDefaultMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -34,6 +36,8 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col overflow-x-hidden bg-adab-cream text-adab-navy-900">
         {children}
+        <AnalyticsScripts />
+        <LiveChat />
       </body>
     </html>
   );

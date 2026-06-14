@@ -1,6 +1,7 @@
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { PageViewBeacon } from "@/components/analytics/PageViewBeacon";
+import { WhatsAppFab } from "@/components/chat/WhatsAppFab";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildOrganizationJsonLd } from "@/lib/seo";
 
@@ -16,6 +17,7 @@ export default function SiteLayout({
       <Header />
       <div className="flex flex-1 flex-col">{children}</div>
       <Footer />
+      <WhatsAppFab />
     </>
   );
 }

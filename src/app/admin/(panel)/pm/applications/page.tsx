@@ -1,8 +1,10 @@
-import { requireAdmin } from "@/lib/supabase/auth-server";
+import { ApplicationAiSummary } from "@/components/admin/ApplicationAiSummary";
+import { ApplicationsCsvExport } from "@/components/admin/ApplicationsCsvExport";
 import { PmApplicationActions } from "@/components/admin/PmApplicationActions";
 import { PmStatusSelect } from "@/components/admin/PmStatusSelect";
 import { ResponsiveTable } from "@/components/admin/ResponsiveTable";
 import { updateApplicationStatus } from "@/app/admin/pm-actions";
+import { requireAdmin } from "@/lib/supabase/auth-server";
 import {
   APPLICATION_STATUS_LABELS,
   APPLICATION_TYPE_LABELS,
@@ -17,6 +19,7 @@ type ApplicationRow = {
   email: string;
   phone: string;
   property_interest: string | null;
+  message: string | null;
   status: ApplicationStatus;
   created_at: string;
 };
@@ -27,7 +30,7 @@ export default async function PmApplicationsPage() {
   const { data, error } = await supabase
     .from("pm_applications")
     .select(
-      "id, application_type, full_name, email, phone, property_interest, status, created_at",
+      "id, application_type, full_name, email, phone, property_interest, message, status, created_at",
     )
     .order("created_at", { ascending: false })
     .limit(100);
@@ -39,12 +42,24 @@ export default async function PmApplicationsPage() {
   }
 
   const applications = (data ?? []) as ApplicationRow[];
+  const csvRows = applications.map((app) => ({
+    full_name: app.full_name,
+    email: app.email,
+    phone: app.phone,
+    application_type: APPLICATION_TYPE_LABELS[app.application_type],
+    property_interest: app.property_interest ?? "",
+    status: APPLICATION_STATUS_LABELS[app.status],
+    created_at: new Date(app.created_at).toISOString(),
+  }));
 
   return (
     <div className="space-y-4">
-      <h2 className="font-display text-xl font-bold text-adab-navy-800">
-        Applications
-      </h2>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h2 className="font-display text-xl font-bold text-adab-navy-800">
+          Applications
+        </h2>
+        <ApplicationsCsvExport rows={csvRows} />
+      </div>
 
       {applications.length === 0 ? (
         <p className="rounded-2xl border border-adab-gray-300 bg-white p-8 text-sm text-adab-gray-500">
@@ -74,6 +89,7 @@ export default async function PmApplicationsPage() {
                     <p className="text-xs text-adab-gray-500">
                       {app.email} · {app.phone}
                     </p>
+                    <ApplicationAiSummary application={app} />
                   </td>
                   <td className="px-4 py-3">
                     {APPLICATION_TYPE_LABELS[app.application_type]}

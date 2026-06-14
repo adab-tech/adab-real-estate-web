@@ -2,7 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { sendAdminApplicationAlert } from "@/lib/email/admin-alert";
 import { createSupabaseAuthClient } from "@/lib/supabase/auth-server";
+import { guardPublicForm } from "@/lib/security/form-guard";
 import { ensureTenantProfile } from "@/lib/tenant/profile";
 import type { ApplicationType } from "@/types/tenant-portal";
 
@@ -65,6 +67,14 @@ export async function submitApplication(
   _prev: TenantAuthState,
   formData: FormData,
 ): Promise<TenantAuthState> {
+  const guard = await guardPublicForm(formData, {
+    rateLimitKey: "application",
+    rateLimit: 5,
+  });
+  if (!guard.ok) {
+    return { error: guard.error };
+  }
+
   const applicationType = String(
     formData.get("application_type") ?? "rental",
   ) as ApplicationType;
@@ -122,6 +132,15 @@ export async function submitApplication(
   });
 
   if (error) return { error: error.message };
+
+  void sendAdminApplicationAlert({
+    fullName,
+    email,
+    phone,
+    propertySlug: propertyInterest || null,
+  }).catch((err) => {
+    console.error("[submitApplication] admin alert failed:", err);
+  });
 
   revalidatePath("/admin/pm/applications");
   return {
