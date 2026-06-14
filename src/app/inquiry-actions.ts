@@ -1,6 +1,7 @@
 "use server";
 
 import { syncPropertyInquiryToCrm } from "@/lib/crm";
+import { sendInquiryConfirmationEmail } from "@/lib/email/inquiry-received";
 import { inquirySchema } from "@/lib/validations/inquiry";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -52,6 +53,16 @@ export async function submitInquiry(
     propertySlug: data.propertySlug,
     source: data.source,
   });
+
+  if (data.email) {
+    void sendInquiryConfirmationEmail({
+      to: data.email,
+      name: data.name,
+      propertySlug: data.propertySlug,
+    }).catch((err) => {
+      console.error("[submitInquiry] confirmation email failed:", err);
+    });
+  }
 
   return { success: "Inquiry received. Opening WhatsApp…" };
 }

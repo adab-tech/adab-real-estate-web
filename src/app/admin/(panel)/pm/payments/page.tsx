@@ -1,8 +1,11 @@
 import { PmNav } from "@/components/admin/PmNav";
-import { recordManualPaymentForm } from "@/app/admin/pm-actions";
+import {
+  createPendingPaymentForm,
+  recordManualPaymentForm,
+} from "@/app/admin/pm-actions";
 import { requireAdmin } from "@/lib/supabase/auth-server";
+import { isPaystackConfigured } from "@/lib/payments/paystack";
 import { PAYMENT_STATUS_LABELS } from "@/types/tenant-portal";
-import { isPaystackConfigured } from "@/lib/paystack/stub";
 
 export default async function PmPaymentsPage() {
   const { supabase } = await requireAdmin();
@@ -30,14 +33,89 @@ export default async function PmPaymentsPage() {
           Rent & payments
         </h1>
         <p className="mt-1 text-sm text-adab-gray-500">
-          Record rent and deposits manually below — no payment keys required.
+          Create a pending invoice for online Paystack checkout, or record a
+          bank/cash payment manually.
           {isPaystackConfigured()
-            ? " Online Paystack checkout is also enabled."
-            : null}
+            ? " Paystack checkout is enabled for tenants."
+            : " Add Paystack keys in Vercel to enable online checkout."}
         </p>
       </div>
 
       <PmNav activePath="/admin/pm/payments" />
+
+      <section className="rounded-2xl border border-adab-gray-300 bg-white p-6 shadow-[0_4px_24px_rgba(27,42,74,0.08)]">
+        <h2 className="font-display text-lg font-bold text-adab-navy-800">
+          Create pending invoice (Paystack)
+        </h2>
+        <form action={createPendingPaymentForm} className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="portal-label" htmlFor="pending_tenant_id">
+              Tenant
+            </label>
+            <select
+              className="portal-select"
+              id="pending_tenant_id"
+              name="tenant_id"
+              required
+            >
+              <option value="">Select tenant</option>
+              {(tenants ?? []).map((t) => {
+                const profile = t.profiles as {
+                  full_name?: string;
+                  email?: string;
+                } | null;
+                return (
+                  <option key={t.id} value={t.id}>
+                    {profile?.full_name ?? profile?.email ?? t.id}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div>
+            <label className="portal-label" htmlFor="pending_amount_ngn">
+              Amount (NGN)
+            </label>
+            <input
+              className="portal-input"
+              id="pending_amount_ngn"
+              name="amount_ngn"
+              type="number"
+              min={1}
+              required
+            />
+          </div>
+          <div>
+            <label className="portal-label" htmlFor="pending_payment_type">
+              Type
+            </label>
+            <select
+              className="portal-select"
+              id="pending_payment_type"
+              name="payment_type"
+            >
+              <option value="rent">Rent</option>
+              <option value="deposit">Deposit</option>
+              <option value="service_charge">Service charge</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label className="portal-label" htmlFor="pending_notes">
+              Notes
+            </label>
+            <input className="portal-input" id="pending_notes" name="notes" />
+          </div>
+          <div className="sm:col-span-2">
+            <button
+              type="submit"
+              className="rounded-full bg-adab-navy-800 px-5 py-2.5 text-sm font-semibold text-white hover:bg-adab-navy-700"
+            >
+              Create pending invoice
+            </button>
+          </div>
+        </form>
+      </section>
 
       <section className="rounded-2xl border border-adab-gray-300 bg-white p-6 shadow-[0_4px_24px_rgba(27,42,74,0.08)]">
         <h2 className="font-display text-lg font-bold text-adab-navy-800">

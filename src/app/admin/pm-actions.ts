@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { sendApplicationStatusEmail } from "@/lib/email/application-status";
 import { requireAdminMutationClient } from "@/lib/supabase/admin-mutations";
 import { requireAdmin } from "@/lib/supabase/auth-server";
 
@@ -12,6 +13,12 @@ export async function updateApplicationStatus(
   adminNotes?: string,
 ): Promise<PmActionState> {
   const { supabase, user } = await requireAdminMutationClient();
+
+  const { data: existing } = await supabase
+    .from("pm_applications")
+    .select("id, full_name, email, application_type, status")
+    .eq("id", id)
+    .maybeSingle();
 
   const { data, error } = await supabase
     .from("pm_applications")
@@ -31,6 +38,21 @@ export async function updateApplicationStatus(
       error:
         "Application update did not persist. Run supabase/fix-admin-approve-actions.sql in Supabase.",
     };
+  }
+
+  if (
+    existing?.email &&
+    (status === "approved" || status === "rejected" || status === "reviewing")
+  ) {
+    void sendApplicationStatusEmail({
+      to: existing.email,
+      fullName: existing.full_name ?? "Applicant",
+      status,
+      applicationType: existing.application_type ?? "application",
+      adminNotes: adminNotes ?? null,
+    }).catch((err) => {
+      console.error("[updateApplicationStatus] status email failed:", err);
+    });
   }
 
   revalidatePath("/admin/pm/applications");
@@ -133,6 +155,45 @@ export async function recordManualPaymentForm(
   formData: FormData,
 ): Promise<void> {
   await recordManualPayment(null, formData);
+}
+
+export async function createPendingPaymentForm(
+  formData: FormData,
+): Promise<void> {
+  await createPendingPayment(null, formData);
+}
+
+export async function createPendingPayment(
+  _prev: PmActionState,
+  formData: FormData,
+): Promise<PmActionState> {
+  const { supabase, user } = await requireAdmin();
+
+  const tenantId = String(formData.get("tenant_id") ?? "").trim();
+  const leaseId = String(formData.get("lease_id") ?? "").trim();
+  const amountNgn = Number(formData.get("amount_ngn"));
+  const paymentType = String(formData.get("payment_type") ?? "rent");
+  const notes = String(formData.get("notes") ?? "").trim();
+
+  if (!tenantId || !amountNgn || amountNgn <= 0) {
+    return { error: "Tenant and valid amount are required." };
+  }
+
+  const { error } = await supabase.from("rent_payments").insert({
+    tenant_id: tenantId,
+    lease_id: leaseId || null,
+    amount_ngn: amountNgn,
+    payment_type: paymentType,
+    status: "pending",
+    notes: notes || null,
+    recorded_by: user.id,
+  });
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/pm/payments");
+  revalidatePath("/tenant/dashboard");
+  return { success: "Pending payment created. Tenant can pay online when Paystack is configured." };
 }
 
 export async function recordManualPayment(

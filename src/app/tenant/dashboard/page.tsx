@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { PayRentButton } from "@/components/tenant/PayRentButton";
 import { TenantHeader } from "@/components/tenant/TenantHeader";
+import { isPaystackConfigured } from "@/lib/payments/paystack";
 import { requireTenantUser } from "@/lib/tenant/profile";
 
 export const metadata = {
@@ -23,6 +25,14 @@ type MaintenanceRow = {
   created_at: string;
 };
 
+type RentPaymentRow = {
+  id: string;
+  amount_ngn: number;
+  payment_type: string;
+  status: string;
+  created_at: string;
+};
+
 export default async function TenantDashboardPage() {
   const session = await requireTenantUser();
   if (!session) redirect("/tenant/login");
@@ -30,7 +40,7 @@ export default async function TenantDashboardPage() {
 
   const { supabase, user, profile } = session;
 
-  const [applicationsRes, maintenanceRes, leasesRes] = await Promise.all([
+  const [applicationsRes, maintenanceRes, leasesRes, paymentsRes] = await Promise.all([
     supabase
       .from("pm_applications")
       .select("id, application_type, status, property_interest, created_at")
@@ -49,11 +59,20 @@ export default async function TenantDashboardPage() {
       .eq("tenant_id", user.id)
       .order("created_at", { ascending: false })
       .limit(5),
+    supabase
+      .from("rent_payments")
+      .select("id, amount_ngn, payment_type, status, created_at")
+      .eq("tenant_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(10),
   ]);
 
   const applications = (applicationsRes.data ?? []) as ApplicationRow[];
   const maintenance = (maintenanceRes.data ?? []) as MaintenanceRow[];
   const leases = leasesRes.data ?? [];
+  const payments = (paymentsRes.data ?? []) as RentPaymentRow[];
+  const pendingPayments = payments.filter((p) => p.status === "pending");
+  const paystackEnabled = isPaystackConfigured();
 
   return (
     <>
@@ -155,10 +174,37 @@ export default async function TenantDashboardPage() {
           <h2 className="font-display text-xl font-semibold text-adab-navy-800">
             Leases & payments
           </h2>
-          {leases.length === 0 ? (
+          {pendingPayments.length > 0 ? (
+            <ul className="mt-4 divide-y divide-adab-gray-300">
+              {pendingPayments.map((payment) => (
+                <li
+                  key={payment.id}
+                  className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm"
+                >
+                  <div>
+                    <p className="font-medium capitalize text-adab-navy-800">
+                      {payment.payment_type.replace(/_/g, " ")} due
+                    </p>
+                    <p className="text-adab-gray-500">
+                      ₦{Number(payment.amount_ngn).toLocaleString("en-NG")}
+                    </p>
+                  </div>
+                  {paystackEnabled ? (
+                    <PayRentButton
+                      paymentId={payment.id}
+                      amountNgn={Number(payment.amount_ngn)}
+                    />
+                  ) : (
+                    <span className="text-xs text-adab-gray-500">
+                      Contact Adab to pay by transfer
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : leases.length === 0 ? (
             <p className="mt-4 text-sm text-adab-gray-500">
-              No active leases yet. Paystack rent payments will appear here in a
-              future release.
+              No active leases or pending payments yet.
             </p>
           ) : (
             <ul className="mt-4 divide-y divide-adab-gray-300">
@@ -175,6 +221,11 @@ export default async function TenantDashboardPage() {
               ))}
             </ul>
           )}
+          {payments.some((p) => p.status === "paid" || p.status === "manual") ? (
+            <p className="mt-4 text-xs text-adab-gray-500">
+              Recent paid items appear in your payment history once processed.
+            </p>
+          ) : null}
         </section>
       </main>
     </>

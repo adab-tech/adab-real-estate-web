@@ -21,6 +21,22 @@ export default async function AdminSettingsPage() {
       <IntegrationStatusPanel integrations={integrations} />
 
       <section className="rounded-2xl border border-adab-gray-300 bg-white p-5 text-sm text-adab-gray-600">
+        <h2 className="font-semibold text-adab-navy-800">Admin mutations</h2>
+        <p className="mt-2">
+          Listing approval, application review, and payment webhooks use{" "}
+          <code className="rounded bg-adab-gray-200 px-1 text-xs">
+            SUPABASE_SERVICE_ROLE_KEY
+          </code>{" "}
+          when set in Vercel. Without it, admin actions fall back to the signed-in
+          admin JWT (requires{" "}
+          <code className="rounded bg-adab-gray-200 px-1 text-xs">
+            supabase/fix-admin-approve-actions.sql
+          </code>
+          ).
+        </p>
+      </section>
+
+      <section className="rounded-2xl border border-adab-gray-300 bg-white p-5 text-sm text-adab-gray-600">
         <h2 className="font-semibold text-adab-navy-800">Zoho CRM setup</h2>
         <p className="mt-2">
           Full guide:{" "}

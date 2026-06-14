@@ -22,8 +22,19 @@ export async function getIntegrationStatuses(): Promise<IntegrationStatus[]> {
         process.env.NEXT_PUBLIC_SUPABASE_URL &&
           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
       ),
-      envVars: ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY"],
+      envVars: [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        "SUPABASE_SERVICE_ROLE_KEY",
+      ],
       docs: "https://supabase.com/dashboard",
+    },
+    {
+      id: "supabase_service_role",
+      name: "Supabase service role (admin writes)",
+      configured: Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY),
+      envVars: ["SUPABASE_SERVICE_ROLE_KEY"],
+      docs: "https://supabase.com/dashboard/project/_/settings/api",
     },
     {
       id: "resend",
