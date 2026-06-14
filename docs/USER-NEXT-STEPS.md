@@ -2,6 +2,8 @@
 
 Manual setup after deploy. **No secrets in this file** — add values only in Vercel and Supabase dashboards.
 
+For Cursor agents deploying via CLI, see [VERCEL-AGENT-WORKFLOW.md](./VERCEL-AGENT-WORKFLOW.md).
+
 ---
 
 ## 1. Vercel environment variables
@@ -40,7 +42,7 @@ Visit `https://adab.ng/admin/settings` — Zoho row should show **Connected** af
 
 ## 2. Supabase SQL run order
 
-Open **SQL Editor** in your Supabase project. Scripts live in repo `supabase/`.
+Open **SQL Editor** in your Supabase project. Scripts live in repo `supabase/` — see **[supabase/README-RUN-SQL.md](../supabase/README-RUN-SQL.md)** for the full run order.
 
 ### Fresh project
 
