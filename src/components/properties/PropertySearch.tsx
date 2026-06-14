@@ -28,7 +28,7 @@ export async function PropertySearch({ filters }: PropertySearchProps) {
       action="/properties"
       className="rounded-2xl border border-adab-gray-300 bg-white p-5 shadow-[0_4px_24px_rgba(27,42,74,0.08)]"
     >
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
+      <div className="grid gap-4 tablet:grid-cols-2 desktop:grid-cols-6">
         <Field label="Listing type" name="type">
           <select
             id="type"

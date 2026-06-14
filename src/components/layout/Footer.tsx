@@ -7,8 +7,8 @@ export function Footer() {
 
   return (
     <footer className="border-t border-adab-gray-300 bg-adab-navy-900 text-white">
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
+      <div className="site-container py-12">
+        <div className="flex flex-col gap-8 tablet:flex-row tablet:items-start tablet:justify-between">
           <div className="max-w-xs">
             <Image
               src="/brand/nigeria-flag.svg"
@@ -22,13 +22,13 @@ export function Footer() {
             </p>
           </div>
 
-          <div className="flex flex-col items-start gap-2 sm:items-end sm:text-right">
+          <div className="flex flex-col items-start gap-2 tablet:items-end tablet:text-right">
             <Image
               src="/brand/cac-logo.png"
               alt="Corporate Affairs Commission Nigeria"
               width={64}
               height={64}
-              className="h-12 w-12 sm:h-16 sm:w-16"
+              className="h-12 w-12 tablet:h-16 tablet:w-16"
             />
             <p className="text-xs tracking-wide text-white/60">
               Business Name Reg. No. 9590252
@@ -36,7 +36,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 grid gap-10 sm:grid-cols-2">
+        <div className="mt-10 grid gap-10 tablet:grid-cols-2">
           <div>
             <h3 className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-adab-gold-500">
               Quick links
@@ -82,7 +82,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 border-t border-white/10 pt-8">
-          <p className="text-center text-xs text-white/50 sm:text-left">
+          <p className="text-center text-xs text-white/50 tablet:text-left">
             © {year} {siteConfig.name}. All rights reserved.
           </p>
         </div>

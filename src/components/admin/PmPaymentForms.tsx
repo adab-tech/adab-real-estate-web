@@ -51,7 +51,7 @@ export function PmPaymentForms({ tenants, paystackEnabled }: PmPaymentFormsProps
             ? "Tenant will see a Pay online button on their dashboard."
             : "Paystack keys are not set — invoice is stored as pending only."}
         </p>
-        <form action={pendingAction} className="mt-4 grid gap-4 sm:grid-cols-2">
+        <form action={pendingAction} className="mt-4 grid gap-4 tablet:grid-cols-2">
           <div>
             <label className="portal-label" htmlFor="pending_tenant_id">
               Tenant
@@ -104,7 +104,7 @@ export function PmPaymentForms({ tenants, paystackEnabled }: PmPaymentFormsProps
             </label>
             <input className="portal-input" id="pending_notes" name="notes" />
           </div>
-          <div className="sm:col-span-2">
+          <div className="tablet:col-span-2">
             <button
               type="submit"
               disabled={pendingSubmitting}
@@ -121,7 +121,7 @@ export function PmPaymentForms({ tenants, paystackEnabled }: PmPaymentFormsProps
         <h2 className="font-display text-lg font-bold text-adab-navy-800">
           Record manual payment
         </h2>
-        <form action={manualAction} className="mt-4 grid gap-4 sm:grid-cols-2">
+        <form action={manualAction} className="mt-4 grid gap-4 tablet:grid-cols-2">
           <div>
             <label className="portal-label" htmlFor="tenant_id">
               Tenant
@@ -165,7 +165,7 @@ export function PmPaymentForms({ tenants, paystackEnabled }: PmPaymentFormsProps
             </label>
             <input className="portal-input" id="notes" name="notes" />
           </div>
-          <div className="sm:col-span-2">
+          <div className="tablet:col-span-2">
             <button
               type="submit"
               disabled={manualSubmitting}

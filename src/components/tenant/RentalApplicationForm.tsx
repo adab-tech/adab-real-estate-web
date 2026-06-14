@@ -43,7 +43,7 @@ export function RentalApplicationForm({
 
       {!state?.success && (
         <form action={formAction} className="mt-6 space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 tablet:grid-cols-2">
             <div>
               <label className="portal-label" htmlFor="full_name">
                 Full name
@@ -105,7 +105,7 @@ export function RentalApplicationForm({
             <input className="portal-input" id="current_address" name="current_address" />
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 tablet:grid-cols-2">
             <div>
               <label className="portal-label" htmlFor="desired_move_in_date">
                 Desired move-in date
@@ -132,7 +132,7 @@ export function RentalApplicationForm({
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 tablet:grid-cols-2">
             <div>
               <label className="portal-label" htmlFor="monthly_income_ngn">
                 Monthly income (₦)

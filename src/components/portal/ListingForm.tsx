@@ -265,7 +265,7 @@ export function ListingForm() {
           />
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 tablet:grid-cols-2">
           <div>
             <label className="portal-label" htmlFor="type">
               Listing type
@@ -301,7 +301,7 @@ export function ListingForm() {
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 tablet:grid-cols-2">
           <div>
             <label className="portal-label" htmlFor="price_ngn">
               Price (NGN)
@@ -352,7 +352,7 @@ export function ListingForm() {
           }
         />
 
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 tablet:grid-cols-3">
           <div>
             <label className="portal-label" htmlFor="area">
               Area / district
@@ -398,7 +398,7 @@ export function ListingForm() {
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 tablet:grid-cols-3">
           <div>
             <label className="portal-label" htmlFor="beds">
               Bedrooms

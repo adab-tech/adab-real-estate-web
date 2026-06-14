@@ -10,7 +10,7 @@ type TenantHeaderProps = {
 export function TenantHeader({ variant = "simple" }: TenantHeaderProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-adab-gray-300/60 bg-adab-paper/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
+      <div className="site-container flex h-16 items-center justify-between gap-6">
         <Link href="/" className="flex shrink-0 items-center gap-3">
           <Image
             src={siteConfig.logo}
@@ -24,7 +24,7 @@ export function TenantHeader({ variant = "simple" }: TenantHeaderProps) {
 
         {variant === "landing" && (
           <nav
-            className="hidden items-center gap-8 md:flex"
+            className="hidden items-center gap-8 desktop:flex"
             aria-label="Tenant portal navigation"
           >
             <Link

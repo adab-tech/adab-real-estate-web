@@ -29,13 +29,13 @@ export default async function UpdatesPage() {
         description="News, promos, announcements, and releases from Adab Real Estate."
       />
 
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="site-container py-12">
         {posts.length === 0 ? (
           <p className="rounded-2xl border border-adab-gray-300 bg-white p-8 text-center text-sm text-adab-gray-500">
             No updates published yet. Check back soon.
           </p>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-3">
             {posts.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}

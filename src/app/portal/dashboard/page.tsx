@@ -18,7 +18,7 @@ export default async function PortalDashboardPage() {
   return (
     <>
       <PortalHeader variant="dashboard" showAdminLink={isAdmin} />
-      <main className="portal-shell mx-auto w-full max-w-4xl flex-1 px-4 py-12 sm:px-6 lg:px-8">
+      <main className="portal-shell site-container max-w-4xl flex-1 py-12">
         <h1 className="font-display text-3xl font-bold text-adab-navy-800">
           Your listings
         </h1>

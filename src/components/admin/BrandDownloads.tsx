@@ -32,7 +32,7 @@ export function BrandDownloads() {
         </p>
       </div>
 
-      <div className="flex flex-col gap-6 rounded-2xl border border-adab-gray-300/60 bg-white p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+      <div className="flex flex-col gap-6 rounded-2xl border border-adab-gray-300/60 bg-white p-6 tablet:flex-row tablet:items-center tablet:justify-between tablet:p-8">
         <div>
           <h2 className="font-display text-xl font-bold text-adab-navy-800">
             Complete brand kit
@@ -56,7 +56,7 @@ export function BrandDownloads() {
         <h2 className="mb-6 font-display text-lg font-bold text-adab-navy-800">
           Brand colors
         </h2>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 phone:grid-cols-4">
           {brandColors.map((color) => (
             <div
               key={color.hex}
@@ -86,7 +86,7 @@ export function BrandDownloads() {
         <h2 className="mb-6 font-display text-lg font-bold text-adab-navy-800">
           Downloadable assets
         </h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-3">
           {brandAssets.map((asset) => (
             <article
               key={asset.id}

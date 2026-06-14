@@ -92,7 +92,7 @@ export function PropertyForm({ property, mode }: PropertyFormProps) {
 
       <input type="hidden" name="id" value={propertyId} />
 
-      <section className="grid gap-4 sm:grid-cols-2">
+      <section className="grid gap-4 tablet:grid-cols-2">
         <Field label="Title" name="title">
           <input
             id="title"
@@ -119,7 +119,7 @@ export function PropertyForm({ property, mode }: PropertyFormProps) {
           />
         </Field>
 
-        <div className="sm:col-span-2">
+        <div className="tablet:col-span-2">
           <Field label="Description" name="description">
             <textarea
               id="description"
@@ -133,7 +133,7 @@ export function PropertyForm({ property, mode }: PropertyFormProps) {
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-3">
+      <section className="grid gap-4 tablet:grid-cols-3">
         <Field label="Listing type" name="type">
           <select
             id="type"
@@ -225,7 +225,7 @@ export function PropertyForm({ property, mode }: PropertyFormProps) {
         </label>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2">
+      <section className="grid gap-4 tablet:grid-cols-2">
         <Field label="City" name="city">
           <input
             id="city"

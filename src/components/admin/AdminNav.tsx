@@ -17,7 +17,7 @@ const links = [
 export function AdminNav({ email }: { email: string }) {
   return (
     <header className="border-b border-adab-gray-300 bg-adab-navy-800 text-white">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
+      <div className="site-container flex flex-wrap items-center justify-between gap-4 py-4">
         <div className="flex items-center gap-6">
           <Link href="/admin" className="font-display text-lg font-bold">
             Adab Admin

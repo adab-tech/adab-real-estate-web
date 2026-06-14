@@ -49,7 +49,7 @@ export default async function PmTenantDetailPage({
           <p className="text-sm text-adab-gray-500">{profile.phone}</p>
         ) : null}
 
-        <dl className="mt-6 grid gap-4 sm:grid-cols-2 text-sm">
+        <dl className="mt-6 grid gap-4 tablet:grid-cols-2 text-sm">
           <div>
             <dt className="text-xs font-semibold uppercase text-adab-gray-500">
               KYC status

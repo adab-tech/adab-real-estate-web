@@ -58,7 +58,7 @@ export default async function PropertyDetailPage({
     <main>
       <JsonLd data={buildListingJsonLd(property)} />
       <div className="border-b border-adab-gray-300 bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6 lg:px-8">
+        <div className="site-container py-4">
           <Link
             href="/properties"
             className="text-sm font-medium text-adab-gray-500 hover:text-adab-navy-800"
@@ -68,8 +68,8 @@ export default async function PropertyDetailPage({
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
+      <div className="site-container py-10">
+        <div className="grid gap-10 desktop:grid-cols-[1.4fr_1fr]">
           <div>
             <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-adab-cream">
               <Image
@@ -102,7 +102,7 @@ export default async function PropertyDetailPage({
             ) : null}
 
             <div className="mt-8">
-              <h1 className="font-[family-name:var(--font-display)] text-3xl font-bold text-adab-navy-800 sm:text-4xl">
+              <h1 className="font-[family-name:var(--font-display)] text-3xl font-bold text-adab-navy-800 phone:text-4xl">
                 {property.title}
               </h1>
               <p className="mt-2 text-adab-gray-500">
@@ -118,7 +118,7 @@ export default async function PropertyDetailPage({
                 <h2 className="font-[family-name:var(--font-display)] text-lg font-semibold text-adab-navy-800">
                   Features
                 </h2>
-                <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+                <ul className="mt-3 grid gap-2 tablet:grid-cols-2">
                   {property.features.map((feature) => (
                     <li
                       key={feature}

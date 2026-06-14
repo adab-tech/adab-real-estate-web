@@ -18,7 +18,7 @@ export default async function TenantVerifyEmailPage({
   return (
     <>
       <TenantHeader variant="simple" />
-      <main className="portal-shell mx-auto w-full max-w-lg flex-1 px-4 py-12 sm:px-6">
+      <main className="portal-shell site-container max-w-lg flex-1 py-12">
         <VerifyEmailClient
           reason={params.reason}
           dashboardHref="/tenant/dashboard"

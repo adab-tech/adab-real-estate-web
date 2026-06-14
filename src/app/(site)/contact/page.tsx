@@ -11,7 +11,7 @@ export default function ContactPage() {
         title="Contact us"
         description="Reach our team by phone, email, WhatsApp, or the form below."
       />
-      <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8">
+      <div className="site-container grid gap-12 py-16 desktop:grid-cols-2">
         <div>
           <h2 className="font-[family-name:var(--font-display)] text-xl font-semibold text-adab-navy-800">
             Get in touch

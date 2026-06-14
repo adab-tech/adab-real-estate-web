@@ -7,7 +7,7 @@ export async function FeaturedProperties() {
 
   return (
     <section className="bg-adab-cream py-16">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="site-container">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold text-adab-navy-800">

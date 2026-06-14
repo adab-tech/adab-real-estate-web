@@ -47,7 +47,7 @@ export default async function PmPaymentsPage() {
         <h2 className="font-display text-lg font-bold text-adab-navy-800">
           Create pending invoice (Paystack)
         </h2>
-        <form action={createPendingPaymentForm} className="mt-4 grid gap-4 sm:grid-cols-2">
+        <form action={createPendingPaymentForm} className="mt-4 grid gap-4 tablet:grid-cols-2">
           <div>
             <label className="portal-label" htmlFor="pending_tenant_id">
               Tenant
@@ -106,7 +106,7 @@ export default async function PmPaymentsPage() {
             </label>
             <input className="portal-input" id="pending_notes" name="notes" />
           </div>
-          <div className="sm:col-span-2">
+          <div className="tablet:col-span-2">
             <button
               type="submit"
               className="rounded-full bg-adab-navy-800 px-5 py-2.5 text-sm font-semibold text-white hover:bg-adab-navy-700"
@@ -121,7 +121,7 @@ export default async function PmPaymentsPage() {
         <h2 className="font-display text-lg font-bold text-adab-navy-800">
           Record manual payment
         </h2>
-        <form action={recordManualPaymentForm} className="mt-4 grid gap-4 sm:grid-cols-2">
+        <form action={recordManualPaymentForm} className="mt-4 grid gap-4 tablet:grid-cols-2">
           <div>
             <label className="portal-label" htmlFor="tenant_id">
               Tenant
@@ -171,7 +171,7 @@ export default async function PmPaymentsPage() {
             </label>
             <input className="portal-input" id="notes" name="notes" />
           </div>
-          <div className="sm:col-span-2">
+          <div className="tablet:col-span-2">
             <button
               type="submit"
               className="rounded-full bg-adab-gold-500 px-5 py-2.5 text-sm font-semibold text-adab-navy-900 hover:bg-adab-gold-400"

@@ -29,7 +29,7 @@ export default async function TenantMaintenancePage() {
   return (
     <>
       <TenantHeader variant={isTenant ? "dashboard" : "simple"} />
-      <main className="portal-shell mx-auto w-full max-w-lg flex-1 px-4 py-12 sm:px-6">
+      <main className="portal-shell site-container max-w-lg flex-1 py-12">
         <div className="portal-card p-8">
           <h1 className="font-display text-2xl font-bold text-adab-navy-800">
             Maintenance request

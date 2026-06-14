@@ -32,7 +32,7 @@ export default async function PropertiesPage({
         title="Properties"
         description="Search verified properties for sale and rent across Nigeria."
       />
-      <div className="mx-auto max-w-6xl space-y-8 px-4 py-10 sm:px-6 lg:px-8">
+      <div className="site-container space-y-8 py-10">
         <PropertySearch filters={filters} />
 
         <div className="flex flex-wrap items-center justify-between gap-4">

@@ -6,7 +6,7 @@ export function PortalFooter() {
 
   return (
     <footer className="border-t border-adab-gray-300 bg-adab-navy-900 text-white">
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="site-container py-12">
         <div
           className="adab-nigeria-flag mb-4"
           role="img"

@@ -11,11 +11,11 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,162,39,0.22),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(27,42,74,0.6),transparent_45%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(15,26,46,0.15),rgba(15,26,46,0.9))]" />
-        <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+        <div className="relative site-container py-20 tablet:py-28">
           <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-adab-gold-500">
             Nigeria&apos;s trusted property partner
           </p>
-          <h1 className="max-w-3xl font-[family-name:var(--font-display)] text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+          <h1 className="max-w-3xl font-[family-name:var(--font-display)] text-4xl font-bold leading-tight tracking-tight phone:text-5xl desktop:text-6xl">
             Find your next home with confidence
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/75">
@@ -61,7 +61,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+      <section className="site-container py-16">
         <div className="mb-10 text-center">
           <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold text-adab-navy-800">
             What we do
@@ -70,7 +70,7 @@ export default function Home() {
             End-to-end real estate services for the Nigerian market
           </p>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-4">
           {[
             {
               title: "Buy",

@@ -23,7 +23,7 @@ export default async function NewRentalApplicationPage({
   return (
     <>
       <TenantHeader variant="dashboard" />
-      <main className="portal-shell mx-auto w-full max-w-2xl flex-1 px-4 py-12 sm:px-6">
+      <main className="portal-shell site-container max-w-2xl flex-1 py-12">
         <RentalApplicationForm
           defaultEmail={session.user.email ?? ""}
           defaultName={session.profile?.full_name ?? ""}

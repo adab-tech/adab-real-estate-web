@@ -96,7 +96,7 @@ export function PostForm({ post, mode }: PostFormProps) {
         </p>
       )}
 
-      <section className="grid gap-4 sm:grid-cols-2">
+      <section className="grid gap-4 tablet:grid-cols-2">
         <Field label="Title" name="title">
           <input
             id="title"
@@ -123,7 +123,7 @@ export function PostForm({ post, mode }: PostFormProps) {
           />
         </Field>
 
-        <div className="sm:col-span-2">
+        <div className="tablet:col-span-2">
           <Field label="Excerpt" name="excerpt">
             <textarea
               id="excerpt"
@@ -197,7 +197,7 @@ export function PostForm({ post, mode }: PostFormProps) {
           />
         </Field>
 
-        <div className="flex items-end sm:col-span-2">
+        <div className="flex items-end tablet:col-span-2">
           <label className="flex cursor-pointer items-center gap-2 text-sm font-medium text-adab-navy-800">
             <input
               type="checkbox"

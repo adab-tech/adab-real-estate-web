@@ -15,11 +15,11 @@ export default function TenantLandingPage() {
       <main className="portal-shell flex-1">
         <section className="relative overflow-hidden bg-adab-navy-800 text-white">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,162,39,0.15),transparent_50%)]" />
-          <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+          <div className="relative site-container py-20 tablet:py-24">
             <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-adab-gold-500">
               Adab Tenant Portal
             </p>
-            <h1 className="max-w-3xl font-display text-4xl font-bold leading-tight sm:text-5xl">
+            <h1 className="max-w-3xl font-display text-4xl font-bold leading-tight phone:text-5xl">
               Your home, managed with US-standard service
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/75">
@@ -41,8 +41,8 @@ export default function TenantLandingPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="grid gap-6 md:grid-cols-3">
+        <section className="site-container py-16">
+          <div className="grid gap-6 tablet:grid-cols-3">
             <article className="portal-card p-6">
               <h2 className="font-display text-xl font-semibold text-adab-navy-800">
                 Apply to rent

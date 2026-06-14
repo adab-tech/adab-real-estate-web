@@ -56,7 +56,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 
       <PageHeader title={post.title} description={post.excerpt || undefined} />
 
-      <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+      <article className="site-container max-w-3xl py-12">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2 text-sm">
             <span className="rounded-full bg-adab-navy-800 px-3 py-1 text-xs font-semibold text-white">
@@ -107,7 +107,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
         )}
 
         {post.gallery.length > 0 && (
-          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+          <div className="mt-10 grid gap-4 tablet:grid-cols-2">
             {post.gallery.map((url) => (
               <img
                 key={url}

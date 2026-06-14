@@ -128,17 +128,17 @@ export function PendingListingsPanel({
         return (
           <article
             key={item.id}
-            className="flex flex-col gap-4 rounded-2xl border border-adab-gray-300 bg-white p-5 shadow-sm sm:flex-row"
+            className="flex flex-col gap-4 rounded-2xl border border-adab-gray-300 bg-white p-5 shadow-sm tablet:flex-row"
           >
             {item.images?.[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={item.images[0]}
                 alt=""
-                className="h-28 w-full rounded-xl object-cover sm:w-36"
+                className="h-28 w-full rounded-xl object-cover tablet:w-36"
               />
             ) : (
-              <div className="flex h-28 w-full items-center justify-center rounded-xl bg-adab-cream text-xs text-adab-gray-500 sm:w-36">
+              <div className="flex h-28 w-full items-center justify-center rounded-xl bg-adab-cream text-xs text-adab-gray-500 tablet:w-36">
                 No image
               </div>
             )}

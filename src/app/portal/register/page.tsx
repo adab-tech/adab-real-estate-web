@@ -10,7 +10,7 @@ export default function PortalRegisterPage() {
   return (
     <>
       <PortalHeader variant="simple" />
-      <main className="portal-shell mx-auto w-full max-w-lg flex-1 px-4 py-16 sm:px-6">
+      <main className="portal-shell mx-auto w-full max-w-lg flex-1 px-4 py-16 phone:px-6">
         <RegisterForm />
       </main>
     </>

@@ -19,7 +19,7 @@ export function ServicePageLayout({ service }: ServicePageLayoutProps) {
   return (
     <main>
       <div className="border-b border-adab-gray-300 bg-adab-navy-800 text-white">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="site-container py-14">
           <Link
             href="/services"
             className="text-sm text-white/60 hover:text-white"
@@ -35,12 +35,12 @@ export function ServicePageLayout({ service }: ServicePageLayoutProps) {
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="site-container py-16">
         <p className="max-w-3xl text-lg leading-relaxed text-adab-navy-700">
           {service.description}
         </p>
 
-        <div className="mt-12 grid gap-10 lg:grid-cols-2">
+        <div className="mt-12 grid gap-10 desktop:grid-cols-2">
           <section>
             <h2 className="font-[family-name:var(--font-display)] text-2xl font-bold text-adab-navy-800">
               What you get

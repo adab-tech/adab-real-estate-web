@@ -15,7 +15,7 @@ export default async function PortalAdminPage() {
   return (
     <>
       <PortalHeader variant="admin" />
-      <main className="portal-shell mx-auto w-full max-w-5xl flex-1 px-4 py-12 sm:px-6 lg:px-8">
+      <main className="portal-shell mx-auto w-full max-w-5xl flex-1 px-4 py-12 phone:px-6 desktop:px-8">
         <h1 className="font-display text-3xl font-bold text-adab-navy-800">
           Listing approvals
         </h1>

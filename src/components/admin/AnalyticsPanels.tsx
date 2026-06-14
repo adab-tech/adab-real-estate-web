@@ -90,7 +90,7 @@ export function AnalyticsPanels({
 }) {
   return (
     <div className="space-y-8">
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 tablet:grid-cols-3">
         <StatCard
           label="Today"
           views={summary.viewsToday}
@@ -108,7 +108,7 @@ export function AnalyticsPanels({
         />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 desktop:grid-cols-2">
         <BreakdownTable
           title="Geography — country"
           subtitle="Last 7 days"

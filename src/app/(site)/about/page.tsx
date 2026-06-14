@@ -10,7 +10,7 @@ export default function AboutPage() {
         title="About Adab"
         description={siteConfig.description}
       />
-      <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-3xl px-4 py-16 phone:px-6 desktop:px-8">
         <p className="leading-relaxed text-adab-gray-500">
           Adab Real Estate Agency was built to bring transparency, professionalism,
           and local expertise to property transactions across Nigeria. Our team

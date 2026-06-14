@@ -186,7 +186,7 @@ export default async function AdminDashboardPage() {
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-adab-gray-500">
           Needs attention
         </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
           {actionCards.map((card) => (
             <Link
               key={card.href}
@@ -216,7 +216,7 @@ export default async function AdminDashboardPage() {
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-adab-gray-500">
           Content
         </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
           {contentCards.map((card) => (
             <Link
               key={card.href}

@@ -17,7 +17,7 @@ export default async function NewListingPage() {
   return (
     <>
       <PortalHeader variant="simple" />
-      <main className="portal-shell mx-auto w-full max-w-3xl flex-1 px-4 py-12 sm:px-6 lg:px-8">
+      <main className="portal-shell mx-auto w-full max-w-3xl flex-1 px-4 py-12 phone:px-6 desktop:px-8">
         <Link
           href="/portal/dashboard"
           className="text-sm font-semibold text-adab-navy-800 hover:text-adab-gold-500"

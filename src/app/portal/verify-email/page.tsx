@@ -13,7 +13,7 @@ export default function VerifyEmailPage() {
       <PortalHeader
         variant="simple"
       />
-      <main className="portal-shell mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-4 py-16 sm:px-6">
+      <main className="portal-shell mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-4 py-16 phone:px-6">
         <Suspense fallback={<p className="text-sm text-adab-gray-500">Loading…</p>}>
           <VerifyEmailClient />
         </Suspense>

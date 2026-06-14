@@ -84,7 +84,7 @@ export default async function TenantDashboardPage({
   return (
     <>
       <TenantHeader variant="dashboard" />
-      <main className="portal-shell mx-auto w-full max-w-4xl flex-1 px-4 py-12 sm:px-6 lg:px-8">
+      <main className="portal-shell site-container max-w-4xl flex-1 py-12">
         <h1 className="font-display text-3xl font-bold text-adab-navy-800">
           Welcome{profile?.full_name ? `, ${profile.full_name}` : ""}
         </h1>
@@ -99,7 +99,7 @@ export default async function TenantDashboardPage({
           </p>
         ) : null}
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-3">
+        <div className="mt-6 grid gap-4 tablet:grid-cols-3">
           <div className="portal-card p-4">
             <p className="text-xs font-semibold uppercase text-adab-gray-500">
               KYC status
