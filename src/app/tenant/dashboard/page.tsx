@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { PayRentButton } from "@/components/tenant/PayRentButton";
 import { TenantHeader } from "@/components/tenant/TenantHeader";
+import { isOpayConfigured } from "@/lib/payments/opay";
 import { isPaystackConfigured } from "@/lib/payments/paystack";
 import { requireTenantUser } from "@/lib/tenant/profile";
 
@@ -80,6 +81,12 @@ export default async function TenantDashboardPage({
   const payments = (paymentsRes.data ?? []) as RentPaymentRow[];
   const pendingPayments = payments.filter((p) => p.status === "pending");
   const paystackEnabled = isPaystackConfigured();
+  const opayEnabled = isOpayConfigured();
+  const onlinePaymentProviders = [
+    ...(paystackEnabled ? (["paystack"] as const) : []),
+    ...(opayEnabled ? (["opay"] as const) : []),
+  ];
+  const onlinePaymentsEnabled = onlinePaymentProviders.length > 0;
 
   return (
     <>
@@ -94,8 +101,8 @@ export default async function TenantDashboardPage({
 
         {paymentSuccess ? (
           <p className="mt-4 rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-            Payment received — thank you. Your rent status updates once Paystack
-            confirms the transaction (usually within a minute).
+            Payment received — thank you. Your rent status updates once the
+            payment provider confirms the transaction (usually within a minute).
           </p>
         ) : null}
 
@@ -203,10 +210,11 @@ export default async function TenantDashboardPage({
                       ₦{Number(payment.amount_ngn).toLocaleString("en-NG")}
                     </p>
                   </div>
-                  {paystackEnabled ? (
+                  {onlinePaymentsEnabled ? (
                     <PayRentButton
                       paymentId={payment.id}
                       amountNgn={Number(payment.amount_ngn)}
+                      providers={[...onlinePaymentProviders]}
                     />
                   ) : (
                     <span className="text-xs text-adab-gray-500">

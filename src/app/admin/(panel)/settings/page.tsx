@@ -166,6 +166,55 @@ export default async function AdminSettingsPage() {
       </section>
 
       <section className="rounded-2xl border border-dashed border-adab-gray-300 bg-adab-cream/50 p-5 text-sm text-adab-gray-600">
+        <h2 className="font-semibold text-adab-navy-800">OPay (alternative payments)</h2>
+        <p className="mt-2">
+          Full guide:{" "}
+          <a
+            href="https://github.com/adab-tech/adab-real-estate-web/blob/master/docs/OPAY-SETUP.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-adab-gold-600 hover:text-adab-gold-500"
+          >
+            OPAY-SETUP.md
+          </a>{" "}
+          ·{" "}
+          <a
+            href="https://doc.opaycheckout.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-adab-gold-600 hover:text-adab-gold-500"
+          >
+            OPay Checkout docs
+          </a>
+        </p>
+        <p className="mt-2">
+          When configured, tenants can pay pending rent with OPay from{" "}
+          <code className="rounded bg-adab-gray-200 px-1 text-xs">/tenant/dashboard</code>.
+          Paystack remains the primary path when both are set.
+        </p>
+        <p className="mt-3 font-medium text-adab-navy-800">Webhook URL</p>
+        <p className="mt-1">OPay merchant dashboard → Webhooks:</p>
+        <p className="mt-2">
+          <code className="block rounded bg-adab-gray-200 px-2 py-1 text-xs">
+            {process.env.NEXT_PUBLIC_SITE_URL ?? "https://adab.ng"}
+            /api/payments/opay/webhook
+          </code>
+        </p>
+        <p className="mt-2 text-xs text-adab-gray-500">
+          Validates HMAC-SHA512 signature with{" "}
+          <code className="rounded bg-adab-gray-200 px-1">OPAY_PRIVATE_KEY</code>.
+          Success response:{" "}
+          <code className="rounded bg-adab-gray-200 px-1">
+            {"{ \"code\": \"00000\", \"message\": \"SUCCESSFUL\" }"}
+          </code>
+          . Env vars:{" "}
+          <code className="rounded bg-adab-gray-200 px-1">OPAY_MERCHANT_ID</code>,{" "}
+          <code className="rounded bg-adab-gray-200 px-1">OPAY_PUBLIC_KEY</code>,{" "}
+          <code className="rounded bg-adab-gray-200 px-1">OPAY_PRIVATE_KEY</code>.
+        </p>
+      </section>
+
+      <section className="rounded-2xl border border-dashed border-adab-gray-300 bg-adab-cream/50 p-5 text-sm text-adab-gray-600">
         <h2 className="font-semibold text-adab-navy-800">Flutterwave (Phase 2)</h2>
         <p className="mt-2">
           <a

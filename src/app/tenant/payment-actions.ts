@@ -1,6 +1,11 @@
 "use server";
 
 import {
+  generateOpayReference,
+  initOpayTransaction,
+  isOpayConfigured,
+} from "@/lib/payments/opay";
+import {
   generatePaystackReference,
   initPaystackTransaction,
   isPaystackConfigured,
@@ -10,16 +15,35 @@ import { createSupabaseAuthClient } from "@/lib/supabase/auth-server";
 import { requireTenantUser } from "@/lib/tenant/profile";
 
 export type PayRentResult = { error?: string; checkoutUrl?: string };
+export type RentPaymentProvider = "paystack" | "opay";
 
 export async function initiateRentPayment(
   paymentId: string,
+  provider: RentPaymentProvider = "paystack",
 ): Promise<PayRentResult> {
   const session = await requireTenantUser();
   if (!session?.verified) {
     return { error: "Please sign in to pay rent." };
   }
 
-  if (!isPaystackConfigured()) {
+  const paystackReady = isPaystackConfigured();
+  const opayReady = isOpayConfigured();
+
+  if (provider === "paystack" && !paystackReady) {
+    return {
+      error:
+        "Paystack is not enabled. Try OPay or contact Adab to pay by bank transfer.",
+    };
+  }
+
+  if (provider === "opay" && !opayReady) {
+    return {
+      error:
+        "OPay is not enabled. Try Paystack or contact Adab to pay by bank transfer.",
+    };
+  }
+
+  if (!paystackReady && !opayReady) {
     return {
       error:
         "Online payments are not enabled yet. Contact Adab to pay by bank transfer.",
@@ -45,22 +69,44 @@ export async function initiateRentPayment(
     return { error: "Add an email to your profile before paying online." };
   }
 
-  const reference =
-    payment.paystack_reference?.trim() || generatePaystackReference();
+  const metadata = {
+    payment_id: payment.id,
+    tenant_id: session.user.id,
+    payment_type: payment.payment_type,
+  };
 
-  const { checkoutUrl, reference: finalRef } = await initPaystackTransaction({
-    email,
-    amountNgn: Number(payment.amount_ngn),
-    reference,
-    metadata: {
-      payment_id: payment.id,
-      tenant_id: session.user.id,
-      payment_type: payment.payment_type,
-    },
-  });
+  let checkoutUrl: string | null = null;
+  let finalRef = payment.paystack_reference?.trim() ?? "";
+
+  if (provider === "opay") {
+    const reference = finalRef || generateOpayReference();
+    const result = await initOpayTransaction({
+      email,
+      amountNgn: Number(payment.amount_ngn),
+      reference,
+      metadata,
+    });
+    checkoutUrl = result.checkoutUrl;
+    finalRef = result.reference;
+  } else {
+    const reference = finalRef || generatePaystackReference();
+    const result = await initPaystackTransaction({
+      email,
+      amountNgn: Number(payment.amount_ngn),
+      reference,
+      metadata,
+    });
+    checkoutUrl = result.checkoutUrl;
+    finalRef = result.reference;
+  }
 
   if (!checkoutUrl) {
-    return { error: "Could not start Paystack checkout. Try again shortly." };
+    return {
+      error:
+        provider === "opay"
+          ? "Could not start OPay checkout. Try again shortly."
+          : "Could not start Paystack checkout. Try again shortly.",
+    };
   }
 
   const serviceClient = getSupabaseServerClient();

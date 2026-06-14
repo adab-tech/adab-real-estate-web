@@ -1,4 +1,4 @@
-import { checkZohoHealth, isZohoConfigured } from "@/lib/crm";
+﻿import { checkZohoHealth, isZohoConfigured } from "@/lib/crm";
 
 export type IntegrationStatus = {
   id: string;
@@ -73,6 +73,21 @@ export async function getIntegrationStatuses(): Promise<IntegrationStatus[]> {
         "FLUTTERWAVE_WEBHOOK_SECRET",
       ],
       docs: "https://dashboard.flutterwave.com/settings/developers",
+    },
+    {
+      id: "opay",
+      name: "OPay (alternative payments)",
+      configured: Boolean(
+        process.env.OPAY_MERCHANT_ID &&
+          process.env.OPAY_PUBLIC_KEY &&
+          process.env.OPAY_PRIVATE_KEY,
+      ),
+      envVars: [
+        "OPAY_MERCHANT_ID",
+        "OPAY_PUBLIC_KEY",
+        "OPAY_PRIVATE_KEY",
+      ],
+      docs: "https://doc.opaycheckout.com/",
     },
     {
       id: "zoho",
