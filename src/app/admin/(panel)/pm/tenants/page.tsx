@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/supabase/auth-server";
 import { PmStatusSelect } from "@/components/admin/PmStatusSelect";
+import { ResponsiveTable } from "@/components/admin/ResponsiveTable";
 import { updateTenantKycStatus } from "@/app/admin/pm-actions";
 import { KYC_STATUS_LABELS, type KycStatus } from "@/types/tenant-portal";
 
@@ -47,8 +48,7 @@ export default async function PmTenantsPage() {
           No tenant profiles yet. Tenants appear after registration.
         </p>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-adab-gray-300 bg-white shadow-[0_4px_24px_rgba(27,42,74,0.08)]">
-          <table className="w-full text-left text-sm">
+        <ResponsiveTable minWidth="36rem">
             <thead className="border-b border-adab-gray-300 bg-adab-cream/80 text-xs uppercase tracking-wide text-adab-gray-500">
               <tr>
                 <th className="px-4 py-3">Tenant</th>
@@ -94,8 +94,7 @@ export default async function PmTenantsPage() {
                 </tr>
               ))}
             </tbody>
-          </table>
-        </div>
+        </ResponsiveTable>
       )}
     </div>
   );

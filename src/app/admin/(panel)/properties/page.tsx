@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ResponsiveTable } from "@/components/admin/ResponsiveTable";
 import { formatPropertyPrice } from "@/lib/format";
 import { requireAdmin } from "@/lib/supabase/auth-server";
 import { mapPropertyRow, type PropertyRow } from "@/lib/supabase/mappers";
@@ -51,8 +52,7 @@ export default async function AdminPropertiesPage({
         </p>
       )}
 
-      <div className="overflow-hidden rounded-2xl border border-adab-gray-300 bg-white shadow-[0_4px_24px_rgba(27,42,74,0.08)]">
-        <table className="w-full text-left text-sm">
+      <ResponsiveTable minWidth="44rem">
           <thead className="border-b border-adab-gray-300 bg-adab-cream/80 text-xs uppercase tracking-wide text-adab-gray-500">
             <tr>
               <th className="px-4 py-3">Title</th>
@@ -100,8 +100,7 @@ export default async function AdminPropertiesPage({
               </tr>
             ))}
           </tbody>
-        </table>
-      </div>
+      </ResponsiveTable>
     </div>
   );
 }

@@ -7,7 +7,7 @@ export function PageHeader({ title, description }: PageHeaderProps) {
   return (
     <div className="border-b border-adab-gray-300 bg-white">
       <div className="site-container py-12">
-        <h1 className="font-[family-name:var(--font-display)] text-3xl font-bold text-adab-navy-800 phone:text-4xl">
+        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold text-adab-navy-800 phone:text-3xl tablet:text-4xl">
           {title}
         </h1>
         {description ? (

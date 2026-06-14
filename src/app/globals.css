@@ -60,6 +60,36 @@ body {
 
 .site-container {
   @apply mx-auto w-full max-w-site px-3 phone:px-4 tablet:px-6 wide:px-8;
+  padding-left: max(0.75rem, env(safe-area-inset-left));
+  padding-right: max(0.75rem, env(safe-area-inset-right));
+}
+
+@supports (padding: max(0px)) {
+  .site-container {
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
+  }
+
+  @media (min-width: 360px) {
+    .site-container {
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1rem, env(safe-area-inset-right));
+    }
+  }
+
+  @media (min-width: 768px) {
+    .site-container {
+      padding-left: max(1.5rem, env(safe-area-inset-left));
+      padding-right: max(1.5rem, env(safe-area-inset-right));
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .site-container {
+      padding-left: max(2rem, env(safe-area-inset-left));
+      padding-right: max(2rem, env(safe-area-inset-right));
+    }
+  }
 }
 
 .touch-target {

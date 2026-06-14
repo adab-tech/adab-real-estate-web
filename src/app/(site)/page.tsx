@@ -15,7 +15,7 @@ export default function Home() {
           <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-adab-gold-500">
             Nigeria&apos;s trusted property partner
           </p>
-          <h1 className="max-w-3xl font-[family-name:var(--font-display)] text-4xl font-bold leading-tight tracking-tight phone:text-5xl desktop:text-6xl">
+          <h1 className="max-w-3xl font-[family-name:var(--font-display)] text-3xl font-bold leading-tight tracking-tight phone:text-4xl tablet:text-5xl desktop:text-6xl">
             Find your next home with confidence
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/75">
@@ -42,7 +42,7 @@ export default function Home() {
               List your property
             </Link>
           </div>
-          <dl className="mt-14 grid max-w-2xl grid-cols-3 gap-6 border-t border-white/10 pt-10">
+          <dl className="mt-14 grid max-w-2xl grid-cols-1 gap-6 border-t border-white/10 pt-10 phone:grid-cols-3">
             {[
               { label: "Cities covered", value: "15+" },
               { label: "Verified listings", value: "Live" },

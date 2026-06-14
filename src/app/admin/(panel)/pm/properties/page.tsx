@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PmNav } from "@/components/admin/PmNav";
 import { PropertyManagementToggle } from "@/components/admin/PropertyManagementToggle";
+import { ResponsiveTable } from "@/components/admin/ResponsiveTable";
 import { requireAdmin } from "@/lib/supabase/auth-server";
 
 type PropertyPmRow = {
@@ -41,8 +42,7 @@ export default async function PmPropertiesPage() {
 
       <PmNav activePath="/admin/pm/properties" />
 
-      <div className="overflow-hidden rounded-2xl border border-adab-gray-300 bg-white shadow-[0_4px_24px_rgba(27,42,74,0.08)]">
-        <table className="w-full text-left text-sm">
+      <ResponsiveTable minWidth="40rem">
           <thead className="border-b border-adab-gray-300 bg-adab-cream/80 text-xs uppercase tracking-wide text-adab-gray-500">
             <tr>
               <th className="px-4 py-3">Property</th>
@@ -83,8 +83,7 @@ export default async function PmPropertiesPage() {
               </tr>
             ))}
           </tbody>
-        </table>
-      </div>
+      </ResponsiveTable>
     </div>
   );
 }

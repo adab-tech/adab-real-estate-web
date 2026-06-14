@@ -40,6 +40,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
   border-radius: 9999px;
   padding: 0.65rem 1.25rem;
   font-size: 0.875rem;
@@ -198,7 +200,7 @@
   box-shadow: 0 4px 24px rgba(27, 42, 74, 0.08);
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .portal-admin-card {
     grid-template-columns: 10rem 1fr;
   }

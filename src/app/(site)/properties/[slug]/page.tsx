@@ -78,12 +78,12 @@ export default async function PropertyDetailPage({
                 fill
                 className="object-cover"
                 priority
-                sizes="(max-width: 1024px) 100vw, 60vw"
+                sizes="(max-width: 991px) 100vw, 60vw"
               />
             </div>
 
             {galleryImages.length > 0 ? (
-              <div className="mt-4 grid grid-cols-3 gap-3">
+              <div className="mt-4 grid grid-cols-2 gap-3 phone:grid-cols-3">
                 {galleryImages.map((src) => (
                   <div
                     key={src}

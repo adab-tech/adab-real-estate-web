@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/supabase/auth-server";
 import { PmApplicationActions } from "@/components/admin/PmApplicationActions";
 import { PmStatusSelect } from "@/components/admin/PmStatusSelect";
+import { ResponsiveTable } from "@/components/admin/ResponsiveTable";
 import { updateApplicationStatus } from "@/app/admin/pm-actions";
 import {
   APPLICATION_STATUS_LABELS,
@@ -50,8 +51,7 @@ export default async function PmApplicationsPage() {
           No applications yet.
         </p>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-adab-gray-300 bg-white shadow-[0_4px_24px_rgba(27,42,74,0.08)]">
-          <table className="w-full text-left text-sm">
+        <ResponsiveTable minWidth="44rem">
             <thead className="border-b border-adab-gray-300 bg-adab-cream/80 text-xs uppercase tracking-wide text-adab-gray-500">
               <tr>
                 <th className="px-4 py-3">Applicant</th>
@@ -98,8 +98,7 @@ export default async function PmApplicationsPage() {
                 </tr>
               ))}
             </tbody>
-          </table>
-        </div>
+        </ResponsiveTable>
       )}
     </div>
   );
