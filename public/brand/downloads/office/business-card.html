@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adab Business Card</title>
+  <style>
+    @page { size: A4; margin: 10mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: #e8e6e1;
+      color: #1b2a4a;
+      padding-bottom: 2rem;
+    }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #1b2a4a;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.875rem;
+    }
+    .toolbar button {
+      background: #c9a227;
+      color: #1b2a4a;
+      border: none;
+      border-radius: 999px;
+      padding: 0.5rem 1.25rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .sheet {
+      width: 210mm;
+      margin: 1.5rem auto;
+      padding: 10mm;
+      background: #fff;
+      box-shadow: 0 4px 24px rgba(27, 42, 74, 0.12);
+    }
+    .guide {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-bottom: 8mm;
+      padding: 0.5rem;
+      border: 1px dashed #c9a227;
+      border-radius: 8px;
+    }
+    .row {
+      display: flex;
+      justify-content: center;
+      gap: 12mm;
+      margin-bottom: 12mm;
+    }
+    .row-label {
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b7280;
+      margin-bottom: 4mm;
+    }
+    .card {
+      width: 85mm;
+      height: 55mm;
+      border-radius: 3mm;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 2px 8px rgba(27, 42, 74, 0.15);
+    }
+    .card-front {
+      background: #f8f6f1;
+      padding: 5mm 6mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card-front .top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .card-front img { height: 28px; width: auto; }
+    .card-front .gold-bar { width: 24mm; height: 2px; background: #c9a227; margin: 3mm 0; }
+    .card-front .name { font-size: 11pt; font-weight: 700; color: #1b2a4a; }
+    .card-front .title { font-size: 8pt; color: #c9a227; font-weight: 600; margin-top: 1mm; }
+    .card-front .contact { font-size: 7pt; line-height: 1.55; color: #1b2a4a; }
+    .card-front .contact a { color: inherit; text-decoration: none; }
+    .card-back {
+      background: #1b2a4a;
+      color: #fff;
+      padding: 5mm 6mm;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .card-back img { height: 36px; width: auto; filter: brightness(0) invert(1); margin-bottom: 3mm; }
+    .card-back .tagline { font-size: 7pt; color: rgba(255,255,255,0.75); margin-bottom: 3mm; }
+    .card-back .gold { color: #c9a227; font-weight: 600; font-size: 8pt; }
+    .card-back .reg { font-size: 6pt; color: rgba(255,255,255,0.5); margin-top: 3mm; }
+    .crop-marks {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .crop-marks::before,
+    .crop-marks::after {
+      content: "";
+      position: absolute;
+      border: 0.25mm dashed rgba(201, 162, 39, 0.4);
+    }
+    [contenteditable="true"]:focus { outline: 1px dashed #c9a227; }
+    @media print {
+      body { background: #fff; }
+      .toolbar, .guide { display: none; }
+      .sheet { margin: 0; box-shadow: none; padding: 0; }
+      .card { box-shadow: none; }
+      .crop-marks::before, .crop-marks::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <span>Standard 85×55 mm cards · Print front row, flip paper, print back row · Use heavy card stock</span>
+    <button type="button" onclick="window.print()">Print</button>
+  </div>
+
+  <div class="sheet">
+    <p class="guide">
+      <strong>Print guide:</strong> Edit placeholders below. Print the FRONT row on card stock. Flip the sheet on the long edge and print the BACK row aligned to the same position. Trim to 85×55 mm.
+    </p>
+
+    <p class="row-label">Front (side 1)</p>
+    <div class="row">
+      <div class="card card-front">
+        <div class="crop-marks"></div>
+        <div class="top">
+          <img src="/brand/logo.png" alt="Adab" />
+        </div>
+        <div>
+          <div class="gold-bar"></div>
+          <p class="name" contenteditable="true">Your Full Name</p>
+          <p class="title" contenteditable="true">Property Consultant</p>
+        </div>
+        <div class="contact">
+          <div contenteditable="true">+234 812 827 2287</div>
+          <div contenteditable="true">hello@adab.ng</div>
+          <div><a href="https://adab.ng">adab.ng</a></div>
+        </div>
+      </div>
+      <div class="card card-front">
+        <div class="crop-marks"></div>
+        <div class="top">
+          <img src="/brand/logo.png" alt="Adab" />
+        </div>
+        <div>
+          <div class="gold-bar"></div>
+          <p class="name" contenteditable="true">Your Full Name</p>
+          <p class="title" contenteditable="true">Property Consultant</p>
+        </div>
+        <div class="contact">
+          <div contenteditable="true">+234 812 827 2287</div>
+          <div contenteditable="true">hello@adab.ng</div>
+          <div><a href="https://adab.ng">adab.ng</a></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="row-label">Back (side 2 — flip &amp; reprint)</p>
+    <div class="row">
+      <div class="card card-back">
+        <div class="crop-marks"></div>
+        <img src="/brand/logo.png" alt="Adab Real Estate Agency" />
+        <p class="tagline">Trusted property solutions across Nigeria</p>
+        <p class="gold">Buy · Sell · Rent · Manage</p>
+        <p class="reg">CAC Reg. No. RC 9590252</p>
+      </div>
+      <div class="card card-back">
+        <div class="crop-marks"></div>
+        <img src="/brand/logo.png" alt="Adab Real Estate Agency" />
+        <p class="tagline">Trusted property solutions across Nigeria</p>
+        <p class="gold">Buy · Sell · Rent · Manage</p>
+        <p class="reg">CAC Reg. No. RC 9590252</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
