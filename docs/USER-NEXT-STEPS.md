@@ -23,6 +23,26 @@ Project: **adab-real-estate-web** → Settings → Environment Variables (Produc
 
 After adding vars: **Redeploy** production (or trigger a new deploy from the latest `master` commit).
 
+### Production audit (CLI, names only)
+
+Last checked via `npx vercel env ls production` against `.env.example`. **Set on Vercel Production:** `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `RESEND_API_KEY`, `EMAIL_FROM`.
+
+**Missing on Vercel Production** (add in dashboard or `.\scripts\vercel-sync-env.ps1` from a local `.env.local`; never commit values):
+
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `ADMIN_ALERT_EMAIL`
+- `GOOGLE_GENERATIVE_AI_API_KEY`
+- `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`
+- `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`
+- `NEXT_PUBLIC_GA_MEASUREMENT_ID`, `NEXT_PUBLIC_META_PIXEL_ID`
+- `NEXT_PUBLIC_TAWK_PROPERTY_ID`, `NEXT_PUBLIC_CRISP_WEBSITE_ID`
+- `PAYSTACK_SECRET_KEY`, `PAYSTACK_PUBLIC_KEY`, `NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY`
+- `FLUTTERWAVE_SECRET_KEY`, `FLUTTERWAVE_PUBLIC_KEY`, `NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY`, `FLUTTERWAVE_WEBHOOK_SECRET`
+- `OPAY_MERCHANT_ID`, `OPAY_PUBLIC_KEY`, `OPAY_PRIVATE_KEY`
+
+Re-run the audit after changes: `npx vercel env ls production`. See [VERCEL-AGENT-WORKFLOW.md](./VERCEL-AGENT-WORKFLOW.md).
+
+
 ### Paystack webhook (Vercel + Paystack dashboard)
 
 1. Paystack → Settings → **Webhooks**

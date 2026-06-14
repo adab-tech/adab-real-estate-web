@@ -1,4 +1,4 @@
-﻿# Vercel agent workflow — adab-real-estate-web
+# Vercel agent workflow — adab-real-estate-web
 
 How Cursor agents (and you) deploy and inspect this project with the Vercel CLI. **Secrets stay in the Vercel dashboard** — see [USER-NEXT-STEPS.md](./USER-NEXT-STEPS.md) for env var names.
 
@@ -37,7 +37,8 @@ Known production project (from Git integration): **adab-real-estate-web** — ID
 | Sync missing vars from `.env.local` to Vercel | `.\scripts\vercel-sync-env.ps1` (never logs values) |
 | Production deploy | `npx vercel deploy --prod` |
 | Preview deploy | `npx vercel deploy` |
-| Inspect latest deployment | `npx vercel ls` |
+| List deployments | `npx vercel ls` |
+| Inspect one deployment | `npx vercel inspect <deployment-url>` |
 
 Agents **cannot** complete `vercel login` or first-time `vercel link` without your session. Use a **Vercel token** only in CI or if you explicitly configure `VERCEL_TOKEN` in the environment (never commit it).
 
