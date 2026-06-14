@@ -1,6 +1,4 @@
-﻿import { checkZohoHealth, isZohoConfigured } from "@/lib/crm";
-
-export type IntegrationStatus = {
+﻿export type IntegrationStatus = {
   id: string;
   name: string;
   configured: boolean;
@@ -11,9 +9,6 @@ export type IntegrationStatus = {
 };
 
 export async function getIntegrationStatuses(): Promise<IntegrationStatus[]> {
-  const zohoConfigured = isZohoConfigured();
-  const zohoHealth = zohoConfigured ? await checkZohoHealth() : null;
-
   return [
     {
       id: "supabase",
@@ -88,22 +83,6 @@ export async function getIntegrationStatuses(): Promise<IntegrationStatus[]> {
         "OPAY_PRIVATE_KEY",
       ],
       docs: "https://doc.opaycheckout.com/",
-    },
-    {
-      id: "zoho",
-      name: "Zoho CRM",
-      configured: zohoConfigured,
-      connected: zohoHealth?.connected,
-      connectionError: zohoHealth?.connected
-        ? undefined
-        : zohoHealth?.message,
-      envVars: [
-        "ZOHO_CLIENT_ID",
-        "ZOHO_CLIENT_SECRET",
-        "ZOHO_REFRESH_TOKEN",
-        "ZOHO_API_DOMAIN",
-      ],
-      docs: "https://api-console.zoho.com/",
     },
   ];
 }

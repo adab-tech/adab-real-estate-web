@@ -20,10 +20,6 @@ Project: **adab-real-estate-web** → Settings → Environment Variables (Produc
 | `EMAIL_FROM` | For emails | e.g. `Adab Real Estate <hello@adab.ng>` |
 | `PAYSTACK_SECRET_KEY` | For rent pay | Server API + webhook signature |
 | `NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY` | For rent pay | Public key (test or live) |
-| `ZOHO_CLIENT_ID` | For CRM | Zoho API Console |
-| `ZOHO_CLIENT_SECRET` | For CRM | Zoho API Console |
-| `ZOHO_REFRESH_TOKEN` | For CRM | CRM scopes — see `docs/ZOHO-CRM-SETUP.md` |
-| `ZOHO_API_DOMAIN` | Optional | `zoho.com` (default), `zoho.eu`, etc. |
 
 After adding vars: **Redeploy** production (or trigger a new deploy from the latest `master` commit).
 
@@ -33,10 +29,6 @@ After adding vars: **Redeploy** production (or trigger a new deploy from the lat
 2. URL: `https://adab.ng/api/payments/paystack/webhook`
 3. Events: `charge.success` (minimum)
 4. Signature uses `PAYSTACK_SECRET_KEY` — must match the key in Vercel
-
-### Zoho health check
-
-Visit `https://adab.ng/admin/settings` — Zoho row should show **Connected** after OAuth vars are set.
 
 ---
 
@@ -85,7 +77,6 @@ Authentication → URL Configuration:
 | PM application | `/admin/pm/applications` | Approve/Reject shows feedback |
 | Analytics | Browse `/`, `/properties` then `/admin/analytics` | Views increase (needs `analytics.sql` + service role) |
 | Rent pay | Admin creates pending payment → tenant `/tenant/dashboard` → Pay | Paystack checkout → return with success banner |
-| Zoho | Submit contact or tenant application | New lead in Zoho CRM (if configured) |
 
 ---
 

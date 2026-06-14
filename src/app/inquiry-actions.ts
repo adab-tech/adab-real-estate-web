@@ -1,6 +1,5 @@
 "use server";
 
-import { syncPropertyInquiryToCrm } from "@/lib/crm";
 import { sendInquiryConfirmationEmail } from "@/lib/email/inquiry-received";
 import { inquirySchema } from "@/lib/validations/inquiry";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
@@ -44,15 +43,6 @@ export async function submitInquiry(
       console.error("[submitInquiry] DB insert failed:", error.message);
     }
   }
-
-  void syncPropertyInquiryToCrm({
-    name: data.name,
-    email: data.email,
-    phone: data.phone,
-    message: data.message,
-    propertySlug: data.propertySlug,
-    source: data.source,
-  });
 
   if (data.email) {
     void sendInquiryConfirmationEmail({

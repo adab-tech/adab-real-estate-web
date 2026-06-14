@@ -37,66 +37,6 @@ export default async function AdminSettingsPage() {
       </section>
 
       <section className="rounded-2xl border border-adab-gray-300 bg-white p-5 text-sm text-adab-gray-600">
-        <h2 className="font-semibold text-adab-navy-800">Zoho CRM setup</h2>
-        <p className="mt-2">
-          Full guide:{" "}
-          <a
-            href="https://github.com/adab-tech/adab-real-estate-web/blob/master/docs/ZOHO-CRM-SETUP.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold text-adab-gold-600 hover:text-adab-gold-500"
-          >
-            ZOHO-CRM-SETUP.md
-          </a>{" "}
-          ·{" "}
-          <a
-            href="https://api-console.zoho.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold text-adab-gold-600 hover:text-adab-gold-500"
-          >
-            Zoho API Console
-          </a>
-        </p>
-        <ol className="mt-3 list-decimal space-y-2 pl-5">
-          <li>
-            Create a Zoho CRM Server-based application and generate a refresh
-            token with CRM scopes.
-          </li>
-          <li>
-            Add{" "}
-            <code className="rounded bg-adab-gray-200 px-1 text-xs">
-              ZOHO_CLIENT_ID
-            </code>
-            ,{" "}
-            <code className="rounded bg-adab-gray-200 px-1 text-xs">
-              ZOHO_CLIENT_SECRET
-            </code>
-            , and{" "}
-            <code className="rounded bg-adab-gray-200 px-1 text-xs">
-              ZOHO_REFRESH_TOKEN
-            </code>{" "}
-            in Vercel.
-          </li>
-          <li>
-            Set{" "}
-            <code className="rounded bg-adab-gray-200 px-1 text-xs">
-              ZOHO_API_DOMAIN
-            </code>{" "}
-            to your data centre (default{" "}
-            <code className="rounded bg-adab-gray-200 px-1 text-xs">
-              zoho.com
-            </code>
-            ; use{" "}
-            <code className="rounded bg-adab-gray-200 px-1 text-xs">
-              zoho.eu
-            </code>{" "}
-            for EU).
-          </li>
-        </ol>
-      </section>
-
-      <section className="rounded-2xl border border-adab-gray-300 bg-white p-5 text-sm text-adab-gray-600">
         <h2 className="font-semibold text-adab-navy-800">Paystack (rent payments)</h2>
         <p className="mt-2">
           Active tenant checkout path. Tenants pay pending rent from{" "}

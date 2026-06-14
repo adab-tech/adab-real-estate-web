@@ -93,19 +93,6 @@ Add both in Vercel → **Settings** → **Environment Variables** (Production). 
 
 **Smoke test:** Approve a listing in `/portal/admin`, then check Vercel function logs for a successful send.
 
-### Zoho CRM (leads & deals)
-
-Property inquiries, tenant applications, and listing approvals sync to Zoho CRM when configured. Submissions succeed without Zoho; CRM errors are logged server-side only.
-
-| Variable | Required | Purpose |
-|----------|----------|---------|
-| `ZOHO_CLIENT_ID` | Yes (for CRM) | Zoho API Console client ID |
-| `ZOHO_CLIENT_SECRET` | Yes (for CRM) | Zoho client secret |
-| `ZOHO_REFRESH_TOKEN` | Yes (for CRM) | Long-lived refresh token (CRM scopes) |
-| `ZOHO_API_DOMAIN` | Optional | `zoho.com` (default), `zoho.eu`, `zoho.in`, etc. |
-
-Check status at `/admin/settings` after deploy. Full setup guide: [ZOHO-CRM-SETUP.md](./ZOHO-CRM-SETUP.md). Run `supabase/grant-full-admin.sql` if the admin panel is inaccessible.
-
 **Paystack webhook:** `https://adab.ng/api/payments/paystack/webhook` (validates `x-paystack-signature` when `PAYSTACK_SECRET_KEY` is set).
 
 **Flutterwave webhook (Phase 2 scaffold):** `https://adab.ng/api/payments/flutterwave/webhook` (validates `verif-hash` when `FLUTTERWAVE_WEBHOOK_SECRET` is set). Checkout UI not wired yet.

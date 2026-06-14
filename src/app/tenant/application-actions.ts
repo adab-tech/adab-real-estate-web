@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { syncTenantApplicationToCrm } from "@/lib/crm";
 import { createSupabaseAuthClient } from "@/lib/supabase/auth-server";
 import { ensureTenantProfile, requireTenantUser } from "@/lib/tenant/profile";
 import type { RentalApplicationData } from "@/types/tenant";
@@ -75,15 +74,6 @@ export async function submitRentalApplication(
   });
 
   if (error) return { error: error.message };
-
-  void syncTenantApplicationToCrm({
-    fullName,
-    email,
-    phone,
-    applicationType: "rental",
-    propertyInterest: form_data.property_slug ?? null,
-    message: JSON.stringify(extraDetails),
-  });
 
   revalidatePath("/tenant/dashboard");
   revalidatePath("/admin/applications");

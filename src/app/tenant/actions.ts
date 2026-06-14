@@ -2,7 +2,6 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { syncTenantApplicationToCrm } from "@/lib/crm";
 import { createSupabaseAuthClient } from "@/lib/supabase/auth-server";
 import { ensureTenantProfile } from "@/lib/tenant/profile";
 import type { ApplicationType } from "@/types/tenant-portal";
@@ -123,15 +122,6 @@ export async function submitApplication(
   });
 
   if (error) return { error: error.message };
-
-  void syncTenantApplicationToCrm({
-    fullName,
-    email,
-    phone,
-    applicationType,
-    propertyInterest: propertyInterest || null,
-    message: message || null,
-  });
 
   revalidatePath("/admin/pm/applications");
   return {

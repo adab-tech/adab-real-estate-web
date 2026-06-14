@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { sendListingApprovedEmail } from "@/lib/email/listing-approved";
 import { revalidatePropertyPages } from "@/lib/admin/revalidate";
-import { syncApprovedListingToCrm } from "@/lib/crm";
 import { requireAdminMutationClient } from "@/lib/supabase/admin-mutations";
 
 export type ReviewListingResult = {
@@ -82,14 +81,6 @@ export async function approveListing(id: string): Promise<ReviewListingResult> {
       });
     }
   }
-
-  void syncApprovedListingToCrm({
-    title: property.data.title,
-    slug: property.data.slug ?? id,
-    priceNgn: Number(property.data.price_ngn ?? 0),
-    listerEmail: ownerEmail,
-    listerName: owner?.full_name?.trim(),
-  });
 
   return {
     success: "Listing approved and published.",
