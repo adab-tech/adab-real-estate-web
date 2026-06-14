@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { syncApplicationReviewToCrm } from "@/lib/crm";
 import { sendApplicationStatusEmail } from "@/lib/email/application-status";
 import { requireAdminMutationClient } from "@/lib/supabase/admin-mutations";
 import { requireAdmin } from "@/lib/supabase/auth-server";
@@ -16,7 +17,7 @@ export async function updateApplicationStatus(
 
   const { data: existing } = await supabase
     .from("pm_applications")
-    .select("id, full_name, email, application_type, status")
+    .select("id, full_name, email, application_type, status, property_interest")
     .eq("id", id)
     .maybeSingle();
 
@@ -52,6 +53,20 @@ export async function updateApplicationStatus(
       adminNotes: adminNotes ?? null,
     }).catch((err) => {
       console.error("[updateApplicationStatus] status email failed:", err);
+    });
+  }
+
+  if (
+    existing?.email &&
+    (status === "approved" || status === "rejected")
+  ) {
+    void syncApplicationReviewToCrm({
+      fullName: existing.full_name ?? "Applicant",
+      email: existing.email,
+      applicationType: existing.application_type ?? "application",
+      status,
+      propertyInterest: existing.property_interest,
+      adminNotes: adminNotes ?? null,
     });
   }
 

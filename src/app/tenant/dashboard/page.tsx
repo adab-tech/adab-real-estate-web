@@ -33,7 +33,14 @@ type RentPaymentRow = {
   created_at: string;
 };
 
-export default async function TenantDashboardPage() {
+export default async function TenantDashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ payment?: string }>;
+}) {
+  const { payment } = await searchParams;
+  const paymentSuccess = payment === "success";
+
   const session = await requireTenantUser();
   if (!session) redirect("/tenant/login");
   if (!session.verified) redirect("/tenant/verify-email?reason=confirm");
@@ -84,6 +91,13 @@ export default async function TenantDashboardPage() {
         <p className="mt-2 text-sm text-adab-gray-500">
           Manage applications, maintenance, and leases from one place.
         </p>
+
+        {paymentSuccess ? (
+          <p className="mt-4 rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+            Payment received — thank you. Your rent status updates once Paystack
+            confirms the transaction (usually within a minute).
+          </p>
+        ) : null}
 
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
           <div className="portal-card p-4">

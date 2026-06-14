@@ -24,8 +24,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ received: true });
   }
 
-  const reference = event.data?.reference;
-  if (!reference) {
+  if (event.data?.status && event.data.status !== "success") {
+    return NextResponse.json({ received: true });
+  }
+
+  const reference = event.data?.reference?.trim();
+  const paymentId = event.data?.metadata?.payment_id?.trim();
+  if (!reference && !paymentId) {
     return NextResponse.json({ error: "Missing reference" }, { status: 400 });
   }
 
@@ -37,17 +42,37 @@ export async function POST(request: Request) {
     );
   }
 
-  const { error } = await supabase
-    .from("rent_payments")
-    .update({
-      status: "paid",
-      paid_at: new Date().toISOString(),
-    })
-    .eq("paystack_reference", reference);
+  const paidAt = new Date().toISOString();
+  const updates = { status: "paid", paid_at: paidAt };
 
-  if (error) {
-    console.error("[paystack webhook] update failed:", error.message);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  let updateError: string | null = null;
+
+  if (reference) {
+    const { error } = await supabase
+      .from("rent_payments")
+      .update(updates)
+      .eq("paystack_reference", reference)
+      .eq("status", "pending");
+
+    if (error) updateError = error.message;
+  }
+
+  if (paymentId && !updateError) {
+    const { error } = await supabase
+      .from("rent_payments")
+      .update({
+        ...updates,
+        paystack_reference: reference ?? null,
+      })
+      .eq("id", paymentId)
+      .eq("status", "pending");
+
+    if (error) updateError = error.message;
+  }
+
+  if (updateError) {
+    console.error("[paystack webhook] update failed:", updateError);
+    return NextResponse.json({ error: updateError }, { status: 500 });
   }
 
   return NextResponse.json({ received: true });

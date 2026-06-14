@@ -97,7 +97,11 @@ export default async function AdminSettingsPage() {
       </section>
 
       <section className="rounded-2xl border border-adab-gray-300 bg-white p-5 text-sm text-adab-gray-600">
-        <h2 className="font-semibold text-adab-navy-800">Paystack</h2>
+        <h2 className="font-semibold text-adab-navy-800">Paystack (rent payments)</h2>
+        <p className="mt-2">
+          Active tenant checkout path. Tenants pay pending rent from{" "}
+          <code className="rounded bg-adab-gray-200 px-1 text-xs">/tenant/dashboard</code>.
+        </p>
         <p className="mt-2">
           <a
             href="https://dashboard.paystack.com/#/settings/developers"
@@ -115,7 +119,11 @@ export default async function AdminSettingsPage() {
           <code className="rounded bg-adab-gray-200 px-1 text-xs">
             NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY
           </code>{" "}
-          in Vercel.
+          in Vercel. Also set{" "}
+          <code className="rounded bg-adab-gray-200 px-1 text-xs">
+            SUPABASE_SERVICE_ROLE_KEY
+          </code>{" "}
+          so webhooks can mark payments paid.
         </p>
         <p className="mt-3 font-medium text-adab-navy-800">Webhook URL</p>
         <p className="mt-1">
@@ -131,6 +139,29 @@ export default async function AdminSettingsPage() {
           Validates{" "}
           <code className="rounded bg-adab-gray-200 px-1">x-paystack-signature</code>{" "}
           against <code className="rounded bg-adab-gray-200 px-1">PAYSTACK_SECRET_KEY</code>.
+        </p>
+      </section>
+
+      <section className="rounded-2xl border border-dashed border-adab-gray-300 bg-adab-cream/50 p-5 text-sm text-adab-gray-600">
+        <h2 className="font-semibold text-adab-navy-800">Site analytics</h2>
+        <p className="mt-2">
+          Page views are collected on public pages via{" "}
+          <code className="rounded bg-adab-gray-200 px-1 text-xs">
+            /api/analytics/collect
+          </code>
+          . Inserts require{" "}
+          <code className="rounded bg-adab-gray-200 px-1 text-xs">
+            SUPABASE_SERVICE_ROLE_KEY
+          </code>{" "}
+          in Vercel. Run{" "}
+          <code className="rounded bg-adab-gray-200 px-1 text-xs">
+            supabase/analytics.sql
+          </code>{" "}
+          once, then check{" "}
+          <code className="rounded bg-adab-gray-200 px-1 text-xs">
+            /admin/analytics
+          </code>
+          .
         </p>
       </section>
 

@@ -87,3 +87,35 @@ export async function syncApprovedListingToCrm(input: {
     console.error("[crm] approved listing deal sync failed:", result.error);
   }
 }
+
+export async function syncApplicationReviewToCrm(input: {
+  fullName: string;
+  email: string;
+  applicationType: string;
+  status: string;
+  propertyInterest?: string | null;
+  adminNotes?: string | null;
+}): Promise<void> {
+  if (!isZohoConfigured()) return;
+
+  const description = [
+    `Application status: ${input.status}`,
+    `Type: ${input.applicationType}`,
+    input.propertyInterest ? `Property interest: ${input.propertyInterest}` : null,
+    input.adminNotes ? `Admin notes: ${input.adminNotes}` : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  const result = await createZohoLead({
+    fullName: input.fullName,
+    email: input.email,
+    source: `Tenant application — ${input.status}`,
+    propertyInterest: input.propertyInterest ?? undefined,
+    description,
+  });
+
+  if (!result.ok) {
+    console.error("[crm] application review sync failed:", result.error);
+  }
+}

@@ -4,4 +4,5 @@ export {
   syncPropertyInquiryToCrm,
   syncTenantApplicationToCrm,
   syncApprovedListingToCrm,
+  syncApplicationReviewToCrm,
 } from "@/lib/crm/sync";

@@ -23,21 +23,40 @@ type PendingListing = {
 };
 
 export function PendingListingsPanel({
-  listings,
+  listings: initialListings,
 }: {
   listings: PendingListing[];
 }) {
   const router = useRouter();
+  const [listings, setListings] = useState(initialListings);
   const [pending, startTransition] = useTransition();
-  const [message, setMessage] = useState<string | null>(null);
+  const [actingId, setActingId] = useState<string | null>(null);
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
   function refresh() {
-    startTransition(() => router.refresh());
+    startTransition(() => {
+      router.refresh();
+    });
   }
 
   async function approve(id: string) {
+    setActingId(id);
+    setMessage(null);
     const result = await approveListingAdmin(id);
-    setMessage(result.error ?? result.success ?? null);
+    if (result.error) {
+      setMessage({ type: "error", text: result.error });
+      setActingId(null);
+      return;
+    }
+    setListings((current) => current.filter((item) => item.id !== id));
+    setMessage({
+      type: "success",
+      text: result.success ?? "Listing approved and published.",
+    });
+    setActingId(null);
     refresh();
   }
 
@@ -47,24 +66,56 @@ export function PendingListingsPanel({
       "Please update photos and property details.",
     );
     if (reason === null) return;
+
+    setActingId(id);
+    setMessage(null);
     const result = await rejectListingAdmin(id, reason);
-    setMessage(result.error ?? result.success ?? null);
+    if (result.error) {
+      setMessage({ type: "error", text: result.error });
+      setActingId(null);
+      return;
+    }
+    setListings((current) => current.filter((item) => item.id !== id));
+    setMessage({
+      type: "success",
+      text: result.success ?? "Listing rejected.",
+    });
+    setActingId(null);
     refresh();
   }
 
   if (!listings.length) {
     return (
-      <p className="rounded-2xl border border-adab-gray-300 bg-white p-8 text-sm text-adab-gray-500">
-        No listings awaiting approval.
-      </p>
+      <div className="space-y-4">
+        {message && (
+          <p
+            className={`rounded-xl px-4 py-3 text-sm ${
+              message.type === "error"
+                ? "bg-red-50 text-red-700"
+                : "bg-emerald-50 text-emerald-800"
+            }`}
+          >
+            {message.text}
+          </p>
+        )}
+        <p className="rounded-2xl border border-adab-gray-300 bg-white p-8 text-sm text-adab-gray-500">
+          No listings awaiting approval.
+        </p>
+      </div>
     );
   }
 
   return (
     <div className="space-y-4">
       {message && (
-        <p className="rounded-xl bg-adab-cream px-4 py-3 text-sm text-adab-navy-800">
-          {message}
+        <p
+          className={`rounded-xl px-4 py-3 text-sm ${
+            message.type === "error"
+              ? "bg-red-50 text-red-700"
+              : "bg-emerald-50 text-emerald-800"
+          }`}
+        >
+          {message.text}
         </p>
       )}
       {listings.map((item) => {
@@ -72,6 +123,7 @@ export function PendingListingsPanel({
         const place = [item.location?.area, item.location?.city, item.location?.state]
           .filter(Boolean)
           .join(", ");
+        const busy = pending || actingId === item.id;
 
         return (
           <article
@@ -105,19 +157,19 @@ export function PendingListingsPanel({
               <div className="mt-4 flex flex-wrap gap-2">
                 <button
                   type="button"
-                  disabled={pending}
+                  disabled={busy}
                   onClick={() => approve(item.id)}
                   className="rounded-full bg-adab-gold-500 px-4 py-2 text-sm font-semibold text-adab-navy-900 hover:bg-adab-gold-400 disabled:opacity-50"
                 >
-                  Approve & publish
+                  {actingId === item.id ? "Approving…" : "Approve & publish"}
                 </button>
                 <button
                   type="button"
-                  disabled={pending}
+                  disabled={busy}
                   onClick={() => reject(item.id)}
                   className="rounded-full border border-adab-gray-300 px-4 py-2 text-sm font-semibold text-adab-navy-800 hover:border-adab-navy-800 disabled:opacity-50"
                 >
-                  Reject
+                  {actingId === item.id ? "Working…" : "Reject"}
                 </button>
               </div>
             </div>
