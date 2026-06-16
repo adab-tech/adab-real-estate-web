@@ -171,6 +171,131 @@ export const promoTemplates: BrandAsset[] = [
   },
 ];
 
+export const presentationTemplates: BrandAsset[] = [
+  {
+    id: "corporate-deck",
+    name: "Corporate presentation deck",
+    description:
+      "Browser slide deck for client meetings. Export to PDF via print (landscape).",
+    preview: "/brand/logo.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/presentation/corporate-deck.html",
+        format: "HTML",
+      },
+      { label: "Guide", href: "/BRAND-KIT-GUIDE.md", format: "MD" },
+    ],
+  },
+];
+
+export const printKitTemplates: BrandAsset[] = [
+  {
+    id: "tshirt-design",
+    name: "T-shirt design",
+    description: "Front/back branded t-shirt artwork for print vendors.",
+    preview: "/brand/logo.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/print/tshirt-design.html",
+        format: "HTML",
+      },
+    ],
+  },
+  {
+    id: "sticker-sheet",
+    name: "Sticker sheet",
+    description: "A4 sticker sheet with logo and contact variants.",
+    preview: "/brand/logo.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/print/sticker-sheet.html",
+        format: "HTML",
+      },
+    ],
+  },
+  {
+    id: "jotting-pad",
+    name: "Jotting pad",
+    description: "Branded meeting notes / jotter page template.",
+    preview: "/brand/logo.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/print/jotting-pad.html",
+        format: "HTML",
+      },
+    ],
+  },
+  {
+    id: "banner-roll-up",
+    name: "Banner roll-up",
+    description: "Event roll-up banner concept (A3 base, scale for vendor).",
+    preview: "/brand/logo.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/print/banner-roll-up.html",
+        format: "HTML",
+      },
+    ],
+  },
+  {
+    id: "flyer-a5",
+    name: "Flyer (A5)",
+    description: "A5 property or promo flyer for print distribution.",
+    preview: "/brand/og-image.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/print/flyer-a5.html",
+        format: "HTML",
+      },
+    ],
+  },
+];
+
+export const digitalCardTemplates: BrandAsset[] = [
+  {
+    id: "digital-card",
+    name: "Digital business card",
+    description: "Shareable web contact card for clients and events.",
+    preview: "/brand/logo.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/digital/digital-card.html",
+        format: "HTML",
+      },
+      {
+        label: "vCard",
+        href: "/brand/downloads/digital/adab-contact.vcf",
+        format: "VCF",
+      },
+    ],
+  },
+  {
+    id: "qr-vcard-flow",
+    name: "QR + vCard flow",
+    description: "QR code and step-by-step contact-save instructions.",
+    preview: "/brand/logo.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/digital/qr-vcard-flow.html",
+        format: "HTML",
+      },
+      {
+        label: "vCard",
+        href: "/brand/downloads/digital/adab-contact.vcf",
+        format: "VCF",
+      },
+    ],
+  },
+];
+
 export const corporateWordTemplates: BrandAsset[] = [
   {
     id: "corporate-profile-doc",

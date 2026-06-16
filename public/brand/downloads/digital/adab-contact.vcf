@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Agency;Adab Real Estate;;;
+FN:Adab Real Estate Agency
+ORG:Adab Real Estate Agency
+TITLE:Property Services
+TEL;TYPE=WORK,VOICE:+2348128272287
+EMAIL;TYPE=INTERNET:hello@adab.ng
+URL:https://adab.ng
+NOTE:CAC Registration RC 9590252
+ADR;TYPE=WORK:;;Nigeria;;;;
+END:VCARD

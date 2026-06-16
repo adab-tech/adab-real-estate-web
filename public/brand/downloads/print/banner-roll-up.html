@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adab Banner Roll-Up</title>
+  <style>
+    @page { size: A3 portrait; margin: 0; }
+    body { margin: 0; font-family: Inter, Arial, sans-serif; background: #e8e6e1; }
+    .toolbar { background: #1B2A4A; color: #fff; padding: 10px 16px; display: flex; justify-content: space-between; }
+    .toolbar button { background: #C9A227; border: 0; border-radius: 999px; padding: 8px 14px; color: #1B2A4A; font-weight: 700; }
+    .banner { width: 297mm; min-height: 420mm; margin: 20px auto; background: linear-gradient(180deg, #1B2A4A 0%, #1B2A4A 50%, #F8F6F1 50%, #F8F6F1 100%); padding: 20mm; color: #fff; }
+    .headline { font-size: 52px; margin-top: 24mm; max-width: 220mm; }
+    .sub { color: #C9A227; font-size: 24px; margin-top: 8mm; }
+    .contact { margin-top: 140mm; color: #1B2A4A; font-size: 18px; }
+    @media print { .toolbar { display: none; } body { background: #fff; } .banner { margin: 0; } }
+  </style>
+</head>
+<body>
+  <div class="toolbar"><span>Roll-up concept (scale to vendor dimensions)</span><button onclick="window.print()">Print</button></div>
+  <section class="banner">
+    <img src="/brand/logo.png" alt="Adab" style="height:48px;filter:brightness(0) invert(1)" />
+    <h1 class="headline" contenteditable="true">Trusted Property Solutions Across Nigeria</h1>
+    <p class="sub" contenteditable="true">Buy | Sell | Rent | Manage</p>
+    <p class="contact" contenteditable="true">hello@adab.ng | +2348128272287 | RC 9590252</p>
+  </section>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adab Sticker Sheet</title>
+  <style>
+    @page { size: A4 portrait; margin: 10mm; }
+    body { margin: 0; font-family: Inter, Arial, sans-serif; background: #eceae5; }
+    .toolbar { background: #1B2A4A; color: #fff; padding: 10px 16px; display: flex; justify-content: space-between; }
+    .toolbar button { background: #C9A227; border: 0; border-radius: 999px; padding: 8px 14px; color: #1B2A4A; font-weight: 700; }
+    .sheet { width: 210mm; min-height: 297mm; background: #fff; margin: 20px auto; padding: 10mm; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8mm; }
+    .sticker { border: 1px dashed #C9A227; border-radius: 12px; height: 50mm; display: grid; place-items: center; text-align: center; color: #1B2A4A; }
+    .sticker img { max-width: 70%; max-height: 16mm; margin-bottom: 4mm; }
+    @media print { .toolbar { display: none; } body { background: #fff; } .sheet { margin: 0; } }
+  </style>
+</head>
+<body>
+  <div class="toolbar"><span>Sticker sheet (trim on dotted lines)</span><button onclick="window.print()">Print</button></div>
+  <section class="sheet">
+    <div class="grid">
+      <div class="sticker"><div><img src="/brand/logo.png" alt="Adab"><div>adab.ng</div></div></div>
+      <div class="sticker"><div><img src="/brand/logo.png" alt="Adab"><div>hello@adab.ng</div></div></div>
+      <div class="sticker"><div><img src="/brand/logo.png" alt="Adab"><div>+2348128272287</div></div></div>
+      <div class="sticker"><div><img src="/brand/logo.png" alt="Adab"><div>Trusted Property Solutions</div></div></div>
+      <div class="sticker"><div><img src="/brand/logo.png" alt="Adab"><div>RC 9590252</div></div></div>
+      <div class="sticker"><div><img src="/brand/logo.png" alt="Adab"><div>Buy | Sell | Rent</div></div></div>
+      <div class="sticker"><div><img src="/brand/logo.png" alt="Adab"><div>adab.ng</div></div></div>
+      <div class="sticker"><div><img src="/brand/logo.png" alt="Adab"><div>hello@adab.ng</div></div></div>
+      <div class="sticker"><div><img src="/brand/logo.png" alt="Adab"><div>+2348128272287</div></div></div>
+    </div>
+  </section>
+</body>
+</html>

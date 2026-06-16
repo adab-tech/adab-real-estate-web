@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adab Digital Card</title>
+  <style>
+    body { margin: 0; font-family: Inter, Arial, sans-serif; background: linear-gradient(160deg, #1B2A4A, #0f1a2e); color: #fff; min-height: 100vh; display: grid; place-items: center; }
+    .card { width: min(420px, 92vw); background: #F8F6F1; color: #1B2A4A; border-radius: 16px; padding: 24px; box-shadow: 0 12px 30px rgba(0,0,0,.35); }
+    .logo { height: 34px; margin-bottom: 18px; }
+    h1 { margin: 0 0 4px; font-size: 24px; }
+    p { margin: 0 0 8px; }
+    .meta { color: #6b7280; margin-bottom: 14px; }
+    .actions { display: grid; gap: 10px; margin-top: 14px; }
+    .actions a { text-decoration: none; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(27,42,74,.2); color: #1B2A4A; font-weight: 600; background: #fff; }
+    .actions a.primary { background: #C9A227; border-color: #C9A227; }
+    .footer { font-size: 12px; margin-top: 14px; color: #6b7280; }
+  </style>
+</head>
+<body>
+  <article class="card">
+    <img class="logo" src="/brand/logo.png" alt="Adab" />
+    <h1 contenteditable="true">Adab Real Estate Agency</h1>
+    <p class="meta" contenteditable="true">Trusted property solutions across Nigeria</p>
+    <p>Email: <a href="mailto:hello@adab.ng">hello@adab.ng</a></p>
+    <p>Phone: <a href="tel:+2348128272287">+2348128272287</a></p>
+    <p>Website: <a href="https://adab.ng">adab.ng</a></p>
+    <p>RC: 9590252</p>
+    <div class="actions">
+      <a class="primary" href="/brand/downloads/digital/adab-contact.vcf" download>Add to contacts (.vcf)</a>
+      <a href="/brand/downloads/digital/qr-vcard-flow.html">Open QR / vCard flow guide</a>
+    </div>
+    <p class="footer">Share this card link directly or generate a QR from the flow guide.</p>
+  </article>
+</body>
+</html>

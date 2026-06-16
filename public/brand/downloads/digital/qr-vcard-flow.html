@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adab QR + vCard Flow</title>
+  <style>
+    body { margin: 0; font-family: Inter, Arial, sans-serif; background: #f8f6f1; color: #1B2A4A; padding: 24px; }
+    .wrap { max-width: 900px; margin: 0 auto; display: grid; gap: 20px; }
+    .panel { background: #fff; border: 1px solid rgba(27,42,74,.15); border-radius: 12px; padding: 18px; }
+    h1 { margin: 0 0 8px; }
+    ol { margin: 10px 0 0 22px; line-height: 1.6; }
+    .qr { display: grid; place-items: center; padding: 10px; }
+    .btn { display: inline-block; text-decoration: none; background: #C9A227; color: #1B2A4A; font-weight: 700; border-radius: 999px; padding: 10px 14px; }
+    code { background: #eef1f6; padding: 1px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="panel">
+      <h1>Digital Card QR + vCard Flow</h1>
+      <p>Use this flow when sharing Adab contact details at events, client meetings, and property inspections.</p>
+      <ol>
+        <li>Share <code>/brand/downloads/digital/digital-card.html</code> as the public digital card.</li>
+        <li>Use the button inside the digital card to download <code>adab-contact.vcf</code>.</li>
+        <li>For print materials, scan the QR below. It points to the digital card URL.</li>
+        <li>After scan, user taps <strong>Add to contacts (.vcf)</strong>.</li>
+      </ol>
+      <p style="margin-top:12px;">
+        <a class="btn" href="/brand/downloads/digital/adab-contact.vcf" download>Download vCard</a>
+      </p>
+    </section>
+    <section class="panel qr">
+      <img
+        alt="QR code for Adab digital card"
+        src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=https%3A%2F%2Fadab.ng%2Fbrand%2Fdownloads%2Fdigital%2Fdigital-card.html"
+      />
+      <p>Target URL: https://adab.ng/brand/downloads/digital/digital-card.html</p>
+    </section>
+  </main>
+</body>
+</html>

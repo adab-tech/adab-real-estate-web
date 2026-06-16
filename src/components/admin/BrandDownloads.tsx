@@ -4,7 +4,10 @@ import {
   brandColors,
   brandKitZip,
   corporateWordTemplates,
+  digitalCardTemplates,
   officeTemplates,
+  presentationTemplates,
+  printKitTemplates,
   promoTemplates,
   type BrandAsset,
 } from "@/lib/brand-assets";
@@ -90,6 +93,26 @@ export function BrandDownloads() {
         <p className="mt-1 text-sm text-adab-gray-500">
           Download official logos, colors, and files for staff use.
         </p>
+      </div>
+
+      <div className="flex flex-col gap-6 rounded-2xl border border-adab-gray-300/60 bg-white p-6 tablet:flex-row tablet:items-center tablet:justify-between tablet:p-8">
+        <div>
+          <h2 className="font-display text-xl font-bold text-adab-navy-800">
+            Staff usage guide
+          </h2>
+          <p className="mt-2 max-w-xl text-sm text-adab-gray-500">
+            How to export Word docs, presentation slides, print files, and
+            digital cards with the correct brand details.
+          </p>
+        </div>
+        <a
+          href="/BRAND-KIT-GUIDE.md"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-adab-navy-800/20 bg-adab-cream px-6 py-3 text-sm font-semibold text-adab-navy-800 transition-colors hover:border-adab-gold-500"
+        >
+          Open guide
+        </a>
       </div>
 
       <div className="flex flex-col gap-6 rounded-2xl border border-adab-gray-300/60 bg-white p-6 tablet:flex-row tablet:items-center tablet:justify-between tablet:p-8">
@@ -241,6 +264,39 @@ export function BrandDownloads() {
         <div className="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-3">
           {promoTemplates.map((asset) => (
             <TemplateCard key={asset.id} asset={asset} darkPreview />
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="mb-6 font-display text-lg font-bold text-adab-navy-800">
+          Corporate presentation
+        </h2>
+        <div className="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-3">
+          {presentationTemplates.map((asset) => (
+            <TemplateCard key={asset.id} asset={asset} />
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="mb-6 font-display text-lg font-bold text-adab-navy-800">
+          Print kit
+        </h2>
+        <div className="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-3">
+          {printKitTemplates.map((asset) => (
+            <TemplateCard key={asset.id} asset={asset} />
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="mb-6 font-display text-lg font-bold text-adab-navy-800">
+          Digital cards
+        </h2>
+        <div className="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-3">
+          {digitalCardTemplates.map((asset) => (
+            <TemplateCard key={asset.id} asset={asset} />
           ))}
         </div>
       </section>

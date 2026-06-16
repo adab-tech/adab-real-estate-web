@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adab Flyer A5</title>
+  <style>
+    @page { size: A5 portrait; margin: 0; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Inter, Arial, sans-serif; background: #e8e6e1; }
+    .toolbar { background: #1B2A4A; color: #fff; padding: 10px 16px; display: flex; justify-content: space-between; }
+    .toolbar button { background: #C9A227; border: 0; border-radius: 999px; padding: 8px 14px; color: #1B2A4A; font-weight: 700; }
+    .page { width: 148mm; min-height: 210mm; margin: 20px auto; background: #F8F6F1; border: 2mm solid #1B2A4A; padding: 14mm; display: grid; grid-template-rows: auto auto 1fr auto; gap: 8mm; }
+    .title { font-size: 28px; color: #1B2A4A; margin: 0; }
+    .tag { color: #C9A227; font-weight: 700; font-size: 16px; }
+    .block { background: #fff; border: 1px solid rgba(27,42,74,.18); border-radius: 10px; padding: 12px; }
+    .block p { margin: 0 0 8px; }
+    .foot { border-top: 2px solid #C9A227; padding-top: 8px; font-size: 12px; color: #1B2A4A; }
+    @media print { .toolbar { display: none; } body { background: #fff; } .page { margin: 0; } }
+  </style>
+</head>
+<body>
+  <div class="toolbar"><span>Edit then print A5</span><button onclick="window.print()">Print</button></div>
+  <article class="page">
+    <img src="/brand/logo.png" alt="Adab" style="height:36px" />
+    <div>
+      <h1 class="title" contenteditable="true">Featured Property in Lagos</h1>
+      <p class="tag" contenteditable="true">FOR SALE | FOR RENT</p>
+    </div>
+    <div class="block" contenteditable="true">
+      <p><strong>Property:</strong> 4-Bedroom Duplex, Lekki</p>
+      <p><strong>Price:</strong> NGN 280,000,000</p>
+      <p><strong>Highlights:</strong> Ensuite rooms, modern kitchen, ample parking, secure estate.</p>
+      <p><strong>Call to action:</strong> Book inspection today.</p>
+    </div>
+    <footer class="foot">hello@adab.ng | +2348128272287 | RC 9590252</footer>
+  </article>
+</body>
+</html>
