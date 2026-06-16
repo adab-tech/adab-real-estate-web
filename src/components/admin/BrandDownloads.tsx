@@ -3,6 +3,7 @@ import {
   brandAssets,
   brandColors,
   brandKitZip,
+  corporateWordTemplates,
   officeTemplates,
   promoTemplates,
   type BrandAsset,
@@ -51,18 +52,28 @@ function TemplateCard({
           {asset.description}
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
-          {asset.files.map((file) => (
-            <a
-              key={file.href}
-              href={file.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-full border border-adab-navy-800/15 bg-adab-cream px-3 py-1.5 text-xs font-semibold text-adab-navy-800 transition-colors hover:border-adab-gold-500 hover:bg-adab-gold-500/10"
-            >
-              <DownloadIcon />
-              {file.label}
-            </a>
-          ))}
+          {asset.files.map((file) =>
+            file.href.startsWith("/admin") ? (
+              <a
+                key={file.href}
+                href={file.href}
+                className="inline-flex items-center gap-1.5 rounded-full border border-adab-gold-500/40 bg-adab-gold-500/15 px-3 py-1.5 text-xs font-semibold text-adab-navy-800 transition-colors hover:bg-adab-gold-500/25"
+              >
+                {file.label}
+              </a>
+            ) : (
+              <a
+                key={file.href}
+                href={file.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-full border border-adab-navy-800/15 bg-adab-cream px-3 py-1.5 text-xs font-semibold text-adab-navy-800 transition-colors hover:border-adab-gold-500 hover:bg-adab-gold-500/10"
+              >
+                <DownloadIcon />
+                {file.label}
+              </a>
+            ),
+          )}
         </div>
       </div>
     </article>
@@ -84,6 +95,24 @@ export function BrandDownloads() {
       <div className="flex flex-col gap-6 rounded-2xl border border-adab-gray-300/60 bg-white p-6 tablet:flex-row tablet:items-center tablet:justify-between tablet:p-8">
         <div>
           <h2 className="font-display text-xl font-bold text-adab-navy-800">
+            Template editor
+          </h2>
+          <p className="mt-2 max-w-xl text-sm text-adab-gray-500">
+            Customize templates with your listing photos, ₦ prices, agent details,
+            and export PNGs for WhatsApp Status, Instagram, and LinkedIn.
+          </p>
+        </div>
+        <a
+          href="/admin/brand/editor"
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-adab-gold-500 px-6 py-3 text-sm font-semibold text-adab-navy-900 transition-colors hover:bg-adab-gold-400"
+        >
+          Open editor
+        </a>
+      </div>
+
+      <div className="flex flex-col gap-6 rounded-2xl border border-adab-gray-300/60 bg-white p-6 tablet:flex-row tablet:items-center tablet:justify-between tablet:p-8">
+        <div>
+          <h2 className="font-display text-xl font-bold text-adab-navy-800">
             Complete brand kit
           </h2>
           <p className="mt-2 max-w-xl text-sm text-adab-gray-500">
@@ -94,7 +123,7 @@ export function BrandDownloads() {
         <a
           href={brandKitZip}
           download="adab-brand-kit.zip"
-          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-adab-gold-500 px-6 py-3 text-sm font-semibold text-adab-navy-900 transition-colors hover:bg-adab-gold-400"
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-adab-navy-800/20 bg-adab-cream px-6 py-3 text-sm font-semibold text-adab-navy-800 transition-colors hover:border-adab-gold-500"
         >
           <DownloadIcon />
           Download ZIP
@@ -212,6 +241,17 @@ export function BrandDownloads() {
         <div className="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-3">
           {promoTemplates.map((asset) => (
             <TemplateCard key={asset.id} asset={asset} darkPreview />
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="mb-6 font-display text-lg font-bold text-adab-navy-800">
+          Corporate kit (Word)
+        </h2>
+        <div className="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-3">
+          {corporateWordTemplates.map((asset) => (
+            <TemplateCard key={asset.id} asset={asset} />
           ))}
         </div>
       </section>

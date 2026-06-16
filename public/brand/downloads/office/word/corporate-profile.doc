@@ -1,0 +1,83 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Adab Real Estate Agency — Corporate Profile</title>
+<!--[if gte mso 9]><xml>
+<w:WordDocument>
+<w:View>Print</w:View>
+<w:Zoom>100</w:Zoom>
+<w:DoNotOptimizeForBrowser/>
+</w:WordDocument>
+</xml><![endif]-->
+<style>
+@page { size: A4; margin: 2.5cm 2cm; }
+body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1B2A4A; line-height: 1.5; }
+h1 { font-size: 22pt; color: #1B2A4A; border-bottom: 3pt solid #C9A227; padding-bottom: 6pt; margin-bottom: 12pt; }
+h2 { font-size: 14pt; color: #C9A227; margin-top: 18pt; margin-bottom: 6pt; }
+p { margin: 0 0 8pt; }
+.header { margin-bottom: 24pt; }
+.tagline { font-size: 12pt; color: #6B7280; font-style: italic; }
+.contact { font-size: 10pt; margin-top: 12pt; }
+.gold { color: #C9A227; font-weight: bold; }
+.footer { margin-top: 36pt; padding-top: 12pt; border-top: 1pt solid #C9A227; font-size: 9pt; color: #6B7280; text-align: center; }
+ul { margin: 0 0 8pt 18pt; }
+li { margin-bottom: 4pt; }
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>Adab Real Estate Agency</h1>
+<p class="tagline">Trusted property solutions across Nigeria — for local buyers and diaspora investors.</p>
+<p class="contact">
+<strong>Website:</strong> adab.ng &nbsp;|&nbsp;
+<strong>Email:</strong> hello@adab.ng &nbsp;|&nbsp;
+<strong>Phone / WhatsApp:</strong> +234 812 827 2287<br>
+<strong>CAC Registration:</strong> RC 9590252
+</p>
+</div>
+
+<h2>Company Overview</h2>
+<p>
+[Edit this section.] Adab Real Estate Agency is a Nigerian property consultancy helping clients buy, sell, rent, and manage residential and commercial real estate. We serve homeowners, tenants, landlords, and diaspora Nigerians investing from abroad — with transparent pricing in NGN and clear communication via phone, email, and WhatsApp.
+</p>
+
+<h2>Our Services</h2>
+<ul>
+<li><strong>Property Sales</strong> — Listings, valuations, and buyer representation across Lagos, Abuja, and other Nigerian markets.</li>
+<li><strong>Rentals &amp; Lettings</strong> — Tenant sourcing, lease agreements, and move-in coordination.</li>
+<li><strong>Property Management</strong> — Rent collection, maintenance oversight, and landlord reporting.</li>
+<li><strong>Investment Advisory</strong> — Guidance for diaspora and local investors on Nigerian real estate opportunities.</li>
+<li><strong>Documentation Support</strong> — Assistance with title verification, surveys, and handover processes.</li>
+</ul>
+
+<h2>Why Adab</h2>
+<ul>
+<li>Registered with the Corporate Affairs Commission (RC 9590252)</li>
+<li>Local market knowledge with diaspora-friendly communication</li>
+<li>Transparent fees quoted in Nigerian Naira (NGN)</li>
+<li>Responsive support on WhatsApp: +234 812 827 2287</li>
+</ul>
+
+<h2>Markets We Serve</h2>
+<p>
+[Edit locations.] Lagos · Abuja · Port Harcourt · [Add other cities]
+</p>
+
+<h2>Contact Us</h2>
+<p>
+<strong>Adab Real Estate Agency</strong><br>
+Email: hello@adab.ng<br>
+Phone / WhatsApp: +234 812 827 2287<br>
+Website: adab.ng
+</p>
+
+<div class="footer">
+Adab Real Estate Agency · hello@adab.ng · +234 812 827 2287 · adab.ng · CAC Reg. No. RC 9590252
+</div>
+
+</body>
+</html>

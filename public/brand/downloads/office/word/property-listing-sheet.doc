@@ -1,0 +1,70 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Adab Property Listing Brief</title>
+<!--[if gte mso 9]><xml>
+<w:WordDocument>
+<w:View>Print</w:View>
+<w:Zoom>100</w:Zoom>
+</w:WordDocument>
+</xml><![endif]-->
+<style>
+@page { size: A4; margin: 2cm; }
+body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1B2A4A; }
+h1 { font-size: 18pt; color: #1B2A4A; border-bottom: 2pt solid #C9A227; padding-bottom: 4pt; }
+h2 { font-size: 12pt; color: #C9A227; margin-top: 16pt; margin-bottom: 4pt; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 12pt; }
+td { border: 1pt solid #1B2A4A; padding: 6pt 8pt; vertical-align: top; }
+td.label { background: #F8F6F1; font-weight: bold; width: 35%; }
+p { margin: 0 0 8pt; }
+.footer { margin-top: 24pt; font-size: 9pt; color: #6B7280; text-align: center; border-top: 1pt solid #C9A227; padding-top: 8pt; }
+</style>
+</head>
+<body>
+
+<h1>Property Listing Brief — Adab Real Estate Agency</h1>
+<p><em>Internal listing sheet. Complete all fields before marketing. Prices in NGN unless noted.</em></p>
+
+<h2>Property Details</h2>
+<table>
+<tr><td class="label">Listing reference</td><td>[e.g. ADAB-2026-001]</td></tr>
+<tr><td class="label">Property title</td><td>[e.g. 3-Bed Semi-Detached, Lekki Phase 1]</td></tr>
+<tr><td class="label">Listing type</td><td>☐ Sale &nbsp; ☐ Rent &nbsp; ☐ Short let</td></tr>
+<tr><td class="label">Asking price (NGN)</td><td>₦ [amount] / [monthly or total]</td></tr>
+<tr><td class="label">Location</td><td>[Area, LGA, State]</td></tr>
+<tr><td class="label">Property type</td><td>[Flat · Duplex · Land · Commercial · etc.]</td></tr>
+<tr><td class="label">Bedrooms / Bathrooms</td><td>[ ] bed / [ ] bath</td></tr>
+<tr><td class="label">Land size / Built area</td><td>[sqm / sq ft]</td></tr>
+<tr><td class="label">Furnishing</td><td>☐ Unfurnished &nbsp; ☐ Partly &nbsp; ☐ Fully</td></tr>
+<tr><td class="label">Title / documentation</td><td>[C of O · Governor's Consent · Deed · etc.]</td></tr>
+</table>
+
+<h2>Features &amp; Amenities</h2>
+<p>[List key selling points: parking, generator, security, pool, proximity to schools, etc.]</p>
+
+<h2>Owner / Landlord</h2>
+<table>
+<tr><td class="label">Owner name</td><td>[Full name]</td></tr>
+<tr><td class="label">Contact phone</td><td>[+234 …]</td></tr>
+<tr><td class="label">WhatsApp</td><td>[Same or alternate]</td></tr>
+<tr><td class="label">Commission agreed</td><td>[ ]% / flat ₦[ ]</td></tr>
+</table>
+
+<h2>Marketing Notes</h2>
+<table>
+<tr><td class="label">Target audience</td><td>[Local buyers · Diaspora · Tenants · etc.]</td></tr>
+<tr><td class="label">Photo status</td><td>☐ Pending &nbsp; ☐ Scheduled &nbsp; ☐ Complete</td></tr>
+<tr><td class="label">Listing agent</td><td>[Staff name]</td></tr>
+<tr><td class="label">Go-live date</td><td>[DD Month YYYY]</td></tr>
+<tr><td class="label">Internal notes</td><td>[Viewing instructions, keys, restrictions]</td></tr>
+</table>
+
+<div class="footer">
+Adab Real Estate Agency · hello@adab.ng · +234 812 827 2287 · adab.ng · CAC Reg. No. RC 9590252
+</div>
+
+</body>
+</html>

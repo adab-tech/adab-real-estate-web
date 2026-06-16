@@ -1,0 +1,79 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Adab Tenant Application Form</title>
+<!--[if gte mso 9]><xml>
+<w:WordDocument>
+<w:View>Print</w:View>
+<w:Zoom>100</w:Zoom>
+</w:WordDocument>
+</xml><![endif]-->
+<style>
+@page { size: A4; margin: 2cm; }
+body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1B2A4A; }
+h1 { font-size: 18pt; color: #1B2A4A; border-bottom: 2pt solid #C9A227; padding-bottom: 4pt; }
+h2 { font-size: 12pt; color: #C9A227; margin-top: 14pt; margin-bottom: 4pt; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 10pt; }
+td { border: 1pt solid #1B2A4A; padding: 8pt; vertical-align: top; height: 28pt; }
+td.label { background: #F8F6F1; font-weight: bold; width: 38%; }
+p { margin: 0 0 8pt; }
+.note { font-size: 9pt; color: #6B7280; font-style: italic; }
+.sig-line { border-bottom: 1pt solid #1B2A4A; height: 24pt; margin-top: 8pt; }
+.footer { margin-top: 20pt; font-size: 9pt; color: #6B7280; text-align: center; border-top: 1pt solid #C9A227; padding-top: 8pt; }
+</style>
+</head>
+<body>
+
+<h1>Tenant Application Form</h1>
+<p><strong>Adab Real Estate Agency</strong> · Property: [Address / Listing ref]</p>
+<p class="note">All information is confidential. Rent amounts in Nigerian Naira (NGN). Diaspora applicants may include overseas contact details.</p>
+
+<h2>Applicant Details</h2>
+<table>
+<tr><td class="label">Full name</td><td></td></tr>
+<tr><td class="label">Date of birth</td><td></td></tr>
+<tr><td class="label">Nationality</td><td></td></tr>
+<tr><td class="label">Phone (Nigeria)</td><td></td></tr>
+<tr><td class="label">WhatsApp number</td><td></td></tr>
+<tr><td class="label">Email address</td><td></td></tr>
+<tr><td class="label">Current address</td><td></td></tr>
+<tr><td class="label">NIN / ID type &amp; number</td><td></td></tr>
+</table>
+
+<h2>Employment &amp; Income</h2>
+<table>
+<tr><td class="label">Employer / Business name</td><td></td></tr>
+<tr><td class="label">Job title</td><td></td></tr>
+<tr><td class="label">Employer address</td><td></td></tr>
+<tr><td class="label">Monthly income (NGN)</td><td>₦</td></tr>
+<tr><td class="label">Length of employment</td><td></td></tr>
+</table>
+
+<h2>Rental Requirements</h2>
+<table>
+<tr><td class="label">Desired move-in date</td><td></td></tr>
+<tr><td class="label">Proposed rent (NGN/month)</td><td>₦</td></tr>
+<tr><td class="label">Number of occupants</td><td></td></tr>
+<tr><td class="label">Pets</td><td>☐ Yes &nbsp; ☐ No — Details:</td></tr>
+</table>
+
+<h2>References</h2>
+<table>
+<tr><td class="label">Previous landlord name &amp; phone</td><td></td></tr>
+<tr><td class="label">Personal reference (name &amp; phone)</td><td></td></tr>
+<tr><td class="label">Emergency contact</td><td></td></tr>
+</table>
+
+<h2>Declaration</h2>
+<p>I confirm that the information provided is true and complete. I authorise Adab Real Estate Agency to verify details with references and conduct reasonable checks.</p>
+<p>Applicant signature: <span class="sig-line">&nbsp;</span> &nbsp; Date: <span class="sig-line">&nbsp;</span></p>
+
+<div class="footer">
+Adab Real Estate Agency · hello@adab.ng · +234 812 827 2287 · adab.ng · CAC Reg. No. RC 9590252
+</div>
+
+</body>
+</html>

@@ -138,6 +138,7 @@ export const promoTemplates: BrandAsset[] = [
         href: "/brand/downloads/promo/instagram-post.html",
         format: "HTML",
       },
+      { label: "Editor", href: "/admin/brand/editor", format: "APP" },
     ],
   },
   {
@@ -151,6 +152,7 @@ export const promoTemplates: BrandAsset[] = [
         href: "/brand/downloads/promo/instagram-story.html",
         format: "HTML",
       },
+      { label: "Editor", href: "/admin/brand/editor", format: "APP" },
     ],
   },
   {
@@ -163,6 +165,49 @@ export const promoTemplates: BrandAsset[] = [
         label: "HTML",
         href: "/brand/downloads/promo/whatsapp-property-status.html",
         format: "HTML",
+      },
+      { label: "Editor", href: "/admin/brand/editor", format: "APP" },
+    ],
+  },
+];
+
+export const corporateWordTemplates: BrandAsset[] = [
+  {
+    id: "corporate-profile-doc",
+    name: "Corporate profile (Word)",
+    description: "Company overview document for proposals.",
+    preview: "/brand/logo.png",
+    files: [
+      {
+        label: "DOC",
+        href: "/brand/downloads/office/word/corporate-profile.doc",
+        format: "DOC",
+      },
+    ],
+  },
+  {
+    id: "property-listing-sheet-doc",
+    name: "Property listing sheet (Word)",
+    description: "Offline listing details template.",
+    preview: "/brand/logo.png",
+    files: [
+      {
+        label: "DOC",
+        href: "/brand/downloads/office/word/property-listing-sheet.doc",
+        format: "DOC",
+      },
+    ],
+  },
+  {
+    id: "tenant-application-form-doc",
+    name: "Tenant application (Word)",
+    description: "Printable tenant application form.",
+    preview: "/brand/logo.png",
+    files: [
+      {
+        label: "DOC",
+        href: "/brand/downloads/office/word/tenant-application-form.doc",
+        format: "DOC",
       },
     ],
   },
