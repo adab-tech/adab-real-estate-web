@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adab Instagram Post (1080×1080)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+      background: #e8e6e1;
+      color: #1b2a4a;
+    }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #1b2a4a;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.875rem;
+    }
+    .toolbar button {
+      background: #c9a227;
+      color: #1b2a4a;
+      border: none;
+      border-radius: 999px;
+      padding: 0.5rem 1.25rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .canvas-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .post {
+      width: 1080px;
+      height: 1080px;
+      background: #1b2a4a;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(27, 42, 74, 0.2);
+      transform-origin: top center;
+    }
+    @media (max-width: 1120px) {
+      .post { transform: scale(0.45); margin-bottom: -580px; }
+    }
+    .post-header {
+      padding: 48px 56px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .post-header img { height: 56px; filter: brightness(0) invert(1); }
+    .badge {
+      background: #c9a227;
+      color: #1b2a4a;
+      font-size: 22px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 12px 28px;
+      border-radius: 999px;
+    }
+    .hero {
+      position: relative;
+      margin: 0 56px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #f8f6f1;
+      min-height: 0;
+    }
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6b7280;
+      font-size: 24px;
+      border: 3px dashed rgba(27, 42, 74, 0.2);
+    }
+    .post-footer {
+      padding: 40px 56px 56px;
+      background: linear-gradient(transparent, rgba(15, 26, 46, 0.85));
+      margin-top: -120px;
+      position: relative;
+      z-index: 1;
+    }
+    .price {
+      font-size: 52px;
+      font-weight: 800;
+      color: #c9a227;
+      margin-bottom: 8px;
+    }
+    .title {
+      font-size: 38px;
+      font-weight: 700;
+      color: #f8f6f1;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .location {
+      font-size: 26px;
+      color: rgba(248, 246, 241, 0.85);
+    }
+    .cta {
+      margin-top: 28px;
+      display: inline-block;
+      background: #c9a227;
+      color: #1b2a4a;
+      font-size: 24px;
+      font-weight: 700;
+      padding: 16px 36px;
+      border-radius: 999px;
+    }
+    .cac {
+      text-align: center;
+      font-size: 18px;
+      color: rgba(248, 246, 241, 0.5);
+      padding: 0 56px 32px;
+    }
+    [contenteditable="true"]:focus { outline: 2px dashed rgba(201, 162, 39, 0.6); outline-offset: 4px; }
+    @media print {
+      body { background: #fff; }
+      .toolbar { display: none; }
+      .canvas-wrap { padding: 0; }
+      .post { transform: none !important; margin: 0 !important; box-shadow: none; }
+      [contenteditable="true"]:focus { outline: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <span>1080×1080 Instagram post · Edit text · Replace photo URL · Screenshot or Print to PNG/PDF</span>
+    <button type="button" onclick="window.print()">Print / Save PDF</button>
+  </div>
+
+  <div class="canvas-wrap">
+    <article class="post">
+      <header class="post-header">
+        <img src="/brand/logo.png" alt="Adab Real Estate Agency" />
+        <span class="badge" contenteditable="true">For Sale</span>
+      </header>
+
+      <div class="hero">
+        <img
+          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1080&q=80"
+          alt="Property photo"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        />
+        <div class="hero-placeholder" style="display:none;">Property photo</div>
+      </div>
+
+      <footer class="post-footer">
+        <p class="price" contenteditable="true">₦185,000,000</p>
+        <h1 class="title" contenteditable="true">4-Bed Duplex · Gwarinpa</h1>
+        <p class="location" contenteditable="true">Abuja · Verified title · View today</p>
+        <span class="cta" contenteditable="true">adab.ng · WhatsApp us</span>
+      </footer>
+
+      <p class="cac">Adab Real Estate Agency · CAC RC 9590252</p>
+    </article>
+  </div>
+</body>
+</html>

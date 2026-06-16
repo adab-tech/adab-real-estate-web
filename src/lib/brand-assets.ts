@@ -126,6 +126,48 @@ export const officeTemplates: BrandAsset[] = [
   },
 ];
 
+export const promoTemplates: BrandAsset[] = [
+  {
+    id: "instagram-post",
+    name: "Instagram Post",
+    description: "1080×1080 square graphic for feed posts.",
+    preview: "/brand/og-image.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/promo/instagram-post.html",
+        format: "HTML",
+      },
+    ],
+  },
+  {
+    id: "instagram-story",
+    name: "Instagram Story",
+    description: "1080×1920 vertical story template.",
+    preview: "/brand/og-image.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/promo/instagram-story.html",
+        format: "HTML",
+      },
+    ],
+  },
+  {
+    id: "whatsapp-property-status",
+    name: "WhatsApp Property Status",
+    description: "9:16 status graphic for WhatsApp and similar channels.",
+    preview: "/brand/og-image.png",
+    files: [
+      {
+        label: "HTML",
+        href: "/brand/downloads/promo/whatsapp-property-status.html",
+        format: "HTML",
+      },
+    ],
+  },
+];
+
 export const brandColors = [
   { name: "Adab Navy", hex: "#1B2A4A", class: "bg-adab-navy-800" },
   { name: "Adab Navy Dark", hex: "#0F1A2E", class: "bg-adab-navy-900" },

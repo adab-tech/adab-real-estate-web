@@ -4,6 +4,8 @@ import {
   brandColors,
   brandKitZip,
   officeTemplates,
+  promoTemplates,
+  type BrandAsset,
 } from "@/lib/brand-assets";
 
 function DownloadIcon() {
@@ -18,6 +20,52 @@ function DownloadIcon() {
       <path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z" />
       <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
     </svg>
+  );
+}
+
+function TemplateCard({
+  asset,
+  darkPreview = false,
+}: {
+  asset: BrandAsset;
+  darkPreview?: boolean;
+}) {
+  return (
+    <article className="flex flex-col overflow-hidden rounded-2xl border border-adab-gray-300/60 bg-white shadow-sm">
+      <div
+        className={`flex h-28 items-center justify-center p-4 ${
+          darkPreview ? "bg-adab-navy-800" : "bg-adab-cream"
+        }`}
+      >
+        <Image
+          src={asset.preview}
+          alt={asset.name}
+          width={120}
+          height={48}
+          className="max-h-16 w-auto object-contain"
+        />
+      </div>
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="font-semibold text-adab-navy-800">{asset.name}</h3>
+        <p className="mt-1 flex-1 text-sm text-adab-gray-500">
+          {asset.description}
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {asset.files.map((file) => (
+            <a
+              key={file.href}
+              href={file.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-adab-navy-800/15 bg-adab-cream px-3 py-1.5 text-xs font-semibold text-adab-navy-800 transition-colors hover:border-adab-gold-500 hover:bg-adab-gold-500/10"
+            >
+              <DownloadIcon />
+              {file.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -148,44 +196,22 @@ export function BrandDownloads() {
 
       <section>
         <h2 className="mb-6 font-display text-lg font-bold text-adab-navy-800">
-          Office & promotional templates
+          Office templates
         </h2>
         <div className="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-4">
           {officeTemplates.map((asset) => (
-            <article
-              key={asset.id}
-              className="flex flex-col overflow-hidden rounded-2xl border border-adab-gray-300/60 bg-white shadow-sm"
-            >
-              <div className="flex h-28 items-center justify-center bg-adab-cream p-4">
-                <Image
-                  src={asset.preview}
-                  alt={asset.name}
-                  width={120}
-                  height={48}
-                  className="max-h-16 w-auto object-contain"
-                />
-              </div>
-              <div className="flex flex-1 flex-col p-5">
-                <h3 className="font-semibold text-adab-navy-800">{asset.name}</h3>
-                <p className="mt-1 flex-1 text-sm text-adab-gray-500">
-                  {asset.description}
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {asset.files.map((file) => (
-                    <a
-                      key={file.href}
-                      href={file.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-full border border-adab-navy-800/15 bg-adab-cream px-3 py-1.5 text-xs font-semibold text-adab-navy-800 transition-colors hover:border-adab-gold-500 hover:bg-adab-gold-500/10"
-                    >
-                      <DownloadIcon />
-                      {file.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </article>
+            <TemplateCard key={asset.id} asset={asset} />
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="mb-6 font-display text-lg font-bold text-adab-navy-800">
+          Promo & social templates
+        </h2>
+        <div className="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-3">
+          {promoTemplates.map((asset) => (
+            <TemplateCard key={asset.id} asset={asset} darkPreview />
           ))}
         </div>
       </section>

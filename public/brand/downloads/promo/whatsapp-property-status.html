@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adab WhatsApp Property Status (1080×1920)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+      background: #e8e6e1;
+      color: #1b2a4a;
+    }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #1b2a4a;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.875rem;
+    }
+    .toolbar button {
+      background: #c9a227;
+      color: #1b2a4a;
+      border: none;
+      border-radius: 999px;
+      padding: 0.5rem 1.25rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .canvas-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .status {
+      width: 1080px;
+      height: 1920px;
+      background: linear-gradient(165deg, #1b2a4a 0%, #0f1a2e 55%, #1b2a4a 100%);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(27, 42, 74, 0.2);
+      transform-origin: top center;
+    }
+    @media (max-width: 1120px) {
+      .status { transform: scale(0.35); margin-bottom: -1240px; }
+    }
+    .status-top {
+      padding: 80px 64px 32px;
+      text-align: center;
+    }
+    .status-top img { height: 72px; filter: brightness(0) invert(1); margin-bottom: 24px; }
+    .headline {
+      font-size: 44px;
+      font-weight: 800;
+      color: #c9a227;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .hero {
+      flex: 1;
+      margin: 32px 48px;
+      border-radius: 28px;
+      overflow: hidden;
+      background: #f8f6f1;
+      border: 4px solid #c9a227;
+      min-height: 0;
+    }
+    .hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6b7280;
+      font-size: 28px;
+    }
+    .status-body {
+      padding: 0 64px 48px;
+      text-align: center;
+    }
+    .price {
+      font-size: 72px;
+      font-weight: 800;
+      color: #c9a227;
+      margin-bottom: 12px;
+    }
+    .title {
+      font-size: 42px;
+      font-weight: 700;
+      color: #f8f6f1;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .location {
+      font-size: 30px;
+      color: rgba(248, 246, 241, 0.85);
+      margin-bottom: 40px;
+    }
+    .whatsapp-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: #25d366;
+      color: #fff;
+      font-size: 34px;
+      font-weight: 800;
+      padding: 28px 48px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+    }
+    .whatsapp-cta svg { width: 44px; height: 44px; fill: currentColor; flex-shrink: 0; }
+    .link-line {
+      font-size: 28px;
+      color: rgba(248, 246, 241, 0.7);
+    }
+    .link-line a { color: #c9a227; text-decoration: none; font-weight: 700; }
+    .cac {
+      font-size: 20px;
+      color: rgba(248, 246, 241, 0.4);
+      padding: 0 64px 56px;
+      text-align: center;
+    }
+    [contenteditable="true"]:focus { outline: 2px dashed rgba(201, 162, 39, 0.6); outline-offset: 4px; }
+    @media print {
+      body { background: #fff; }
+      .toolbar { display: none; }
+      .canvas-wrap { padding: 0; }
+      .status { transform: none !important; margin: 0 !important; box-shadow: none; }
+      [contenteditable="true"]:focus { outline: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <span>WhatsApp Status 9:16 · Edit text · Replace photo · Screenshot and upload to Status</span>
+    <button type="button" onclick="window.print()">Print / Save PDF</button>
+  </div>
+
+  <div class="canvas-wrap">
+    <article class="status">
+      <div class="status-top">
+        <img src="/brand/logo.png" alt="Adab Real Estate Agency" />
+        <p class="headline" contenteditable="true">Just Listed</p>
+      </div>
+
+      <div class="hero">
+        <img
+          src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1080&q=80"
+          alt="Property photo"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        />
+        <div class="hero-placeholder" style="display:none;">Property photo</div>
+      </div>
+
+      <div class="status-body">
+        <p class="price" contenteditable="true">₦72,000,000</p>
+        <h1 class="title" contenteditable="true">2-Bed Apartment · Maitama</h1>
+        <p class="location" contenteditable="true">Abuja · Serviced · Available now</p>
+
+        <div class="whatsapp-cta" contenteditable="true">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Reply on WhatsApp
+        </div>
+
+        <p class="link-line">
+          <span contenteditable="true">+234 812 827 2287</span> ·
+          <a href="https://adab.ng">adab.ng</a>
+        </p>
+      </div>
+
+      <p class="cac">Adab Real Estate Agency · CAC RC 9590252</p>
+    </article>
+  </div>
+</body>
+</html>
