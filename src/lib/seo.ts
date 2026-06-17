@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { PRODUCTION_URL } from "@/lib/domain";
-import { formatPropertyPrice } from "@/lib/format";
+import { formatLocation, formatPropertyPrice } from "@/lib/format";
+import {
+  getListerDisplayName,
+  listerTypeLabel,
+  type PublicListerProfile,
+} from "@/lib/lister/profile";
 import { siteConfig } from "@/lib/site-config";
 import type { Post } from "@/types/post";
 import type { Property } from "@/types/property";
-import type { PublicListerProfile } from "@/lib/lister/profile";
-import { getListerDisplayName } from "@/lib/lister/profile";
 
 export function getSiteUrl(): string {
   const url = process.env.NEXT_PUBLIC_SITE_URL;
@@ -16,6 +19,22 @@ export function getSiteUrl(): string {
 export function absoluteUrl(path: string): string {
   const base = getSiteUrl();
   return path.startsWith("/") ? `${base}${path}` : `${base}/${path}`;
+}
+
+export type DynamicOgParams = {
+  title: string;
+  price?: string;
+  location?: string;
+  image?: string;
+};
+
+export function buildDynamicOgUrl(params: DynamicOgParams): string {
+  const search = new URLSearchParams();
+  search.set("title", params.title);
+  if (params.price) search.set("price", params.price);
+  if (params.location) search.set("location", params.location);
+  if (params.image) search.set("image", params.image);
+  return absoluteUrl(`/api/og/property?${search.toString()}`);
 }
 
 export function buildDefaultMetadata(): Metadata {
