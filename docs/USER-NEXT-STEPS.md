@@ -2,6 +2,8 @@
 
 Manual setup after deploy. **No secrets in this file** — add values only in Vercel and Supabase dashboards.
 
+Operations runbook: see [OPERATIONS-MANUAL.md](./OPERATIONS-MANUAL.md) for production operations, incidents, rollback, and smoke-test procedures.
+
 For Cursor agents deploying via CLI, see [VERCEL-AGENT-WORKFLOW.md](./VERCEL-AGENT-WORKFLOW.md).
 
 ---
