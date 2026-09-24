@@ -65,3 +65,7 @@ SEO routes: `/sitemap.xml`, `/robots.txt`
 ## Configuration
 
 Edit contact details in `src/lib/site-config.ts` before deploying.
+
+## License
+
+All rights reserved — see [LICENSE](LICENSE).
