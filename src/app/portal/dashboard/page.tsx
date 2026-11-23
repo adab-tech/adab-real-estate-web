@@ -1,3 +1,4 @@
+import { hasAdminJwtRole } from "@/lib/auth/admin";
 import { redirect } from "next/navigation";
 import { DashboardListings } from "@/components/portal/DashboardListings";
 import { PortalHeader } from "@/components/portal/PortalHeader";
@@ -14,7 +15,7 @@ export default async function PortalDashboardPage() {
   if (!session) redirect("/portal/login");
   if (!session.verified) redirect("/portal/verify-email?reason=confirm");
 
-  const isAdmin = session.profile?.role === "admin";
+  const isAdmin = hasAdminJwtRole(session.user);
 
   const { data: usernameRow } = await session.supabase
     .from("profiles")

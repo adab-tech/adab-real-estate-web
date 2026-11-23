@@ -1,3 +1,4 @@
+import { hasAdminJwtRole } from "@/lib/auth/admin";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -24,36 +25,13 @@ export async function createSupabaseAuthClient() {
   });
 }
 
-export function isAdminUser(user: {
-  app_metadata?: Record<string, unknown>;
-  user_metadata?: Record<string, unknown>;
-}): boolean {
-  return (
-    user.app_metadata?.role === "admin" ||
-    user.user_metadata?.role === "admin"
-  );
-}
-
-/** Resolves an admin session from JWT metadata or profiles.role. */
 export async function resolveAdminSession() {
   const supabase = await createSupabaseAuthClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return null;
-
-  if (isAdminUser(user)) {
-    return { supabase, user };
-  }
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  if (profile?.role !== "admin") return null;
+  if (!user || !hasAdminJwtRole(user)) return null;
 
   return { supabase, user };
 }

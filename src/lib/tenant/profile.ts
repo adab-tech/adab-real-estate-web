@@ -1,3 +1,4 @@
+import { hasAdminJwtRole } from "@/lib/auth/admin";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseAuthClient } from "@/lib/supabase/auth-server";
 
@@ -35,7 +36,7 @@ export async function requireTenantUser() {
   if (
     profile?.role !== "tenant" &&
     profile?.role !== "client" &&
-    profile?.role !== "admin"
+    !hasAdminJwtRole(user)
   ) {
     return null;
   }
