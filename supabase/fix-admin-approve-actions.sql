@@ -3,7 +3,7 @@
 -- reverting published → pending_review when is_admin() is false during UPDATE.
 -- Safe to re-run.
 
--- 1. Align is_admin() with app auth (profiles.role OR JWT metadata)
+-- 1. Align is_admin() with app auth (JWT app_metadata)
 create or replace function public.is_admin()
 returns boolean
 language sql
@@ -11,13 +11,7 @@ stable
 security definer
 set search_path = public
 as $$
-  select
-    exists (
-      select 1 from public.profiles
-      where id = auth.uid() and role = 'admin'
-    )
-    or coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'admin'
-    or coalesce(auth.jwt() -> 'user_metadata' ->> 'role', '') = 'admin';
+  select coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'admin';
 $$;
 
 -- 2. Only non-admin listers get review enforcement; service-role / admin path may publish

@@ -36,7 +36,7 @@ src/
 
 1. **Server actions** live in `src/app/*-actions.ts` or co-located `actions.ts`
 2. **Supabase clients:** browser (`createSupabaseBrowserClient`), server (`getSupabaseServerClient`), auth (`createSupabaseAuthClient`)
-3. **Admin access:** JWT `role=admin` in app/user metadata OR `profiles.role = admin`
+3. **Admin access:** JWT `app_metadata.role=admin`
 4. **Public forms:** use `guardPublicForm` (honeypot + Turnstile + Upstash rate limit)
 5. **Brand colors:** Navy `#1B2A4A`, Gold `#C9A227`, Cream `#F8F6F1`
 6. **Fonts:** Plus Jakarta Sans (display), Inter (body)

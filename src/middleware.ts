@@ -1,3 +1,4 @@
+import { adminDestination, hasAdminJwtRole } from "@/lib/auth/admin";
 import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
@@ -23,21 +24,12 @@ function isBrandDownload(pathname: string): boolean {
   );
 }
 
-function isAdminUser(user: {
-  app_metadata?: Record<string, unknown>;
-  user_metadata?: Record<string, unknown>;
-}): boolean {
-  return (
-    user.app_metadata?.role === "admin" || user.user_metadata?.role === "admin"
-  );
-}
-
 export async function middleware(request: NextRequest) {
   const { supabaseResponse, user } = await updateSession(request);
   const { pathname } = request.nextUrl;
 
   if (isBrandDownload(pathname)) {
-    if (!user || !isAdminUser(user)) {
+    if (!user || !hasAdminJwtRole(user)) {
       const loginUrl = request.nextUrl.clone();
       loginUrl.pathname = "/admin/login";
       loginUrl.searchParams.set("next", pathname);
@@ -69,7 +61,7 @@ export async function middleware(request: NextRequest) {
 
   if (!isAdminRoute) return supabaseResponse;
 
-  const isAdmin = user ? isAdminUser(user) : false;
+  const isAdmin = user ? hasAdminJwtRole(user) : false;
 
   if (!user && !isLogin) {
     const loginUrl = request.nextUrl.clone();
@@ -78,8 +70,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  if (user && isLogin) {
-    const dest = request.nextUrl.searchParams.get("next") || "/admin/properties";
+  if (isAdmin && isLogin) {
+    const dest = adminDestination(request.nextUrl.searchParams.get("next"));
     return NextResponse.redirect(new URL(dest, request.url));
   }
 

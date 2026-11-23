@@ -9,14 +9,17 @@ update public.profiles
 set
   role = 'admin',
   lister_type = null
-where lower(email) = 'hello@adab.ng';
+where id in (
+  select id from auth.users
+  where lower(email) = 'hello@adab.ng' and email_confirmed_at is not null
+);
 
 -- 2. Auth JWT: app_metadata.role = admin (used by /admin panel + RLS is_admin())
 update auth.users
 set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) || '{"role":"admin"}'::jsonb
-where lower(email) = 'hello@adab.ng';
+where lower(email) = 'hello@adab.ng' and email_confirmed_at is not null;
 
--- 3. RLS helper: profiles.role OR JWT app_metadata.role
+-- 3. RLS helper: JWT app_metadata.role
 create or replace function public.is_admin()
 returns boolean
 language sql
@@ -24,13 +27,7 @@ stable
 security definer
 set search_path = public
 as $$
-  select
-    exists (
-      select 1 from public.profiles
-      where id = auth.uid() and role = 'admin'
-    )
-    or coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'admin'
-    or coalesce(auth.jwt() -> 'user_metadata' ->> 'role', '') = 'admin';
+  select coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'admin';
 $$;
 
 -- 4. Backfill any auth users missing profiles (fixes pm_applications FK)

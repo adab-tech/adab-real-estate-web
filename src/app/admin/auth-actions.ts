@@ -1,5 +1,6 @@
 "use server";
 
+import { adminDestination, hasAdminJwtRole } from "@/lib/auth/admin";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createSupabaseAuthClient } from "@/lib/supabase/auth-server";
@@ -26,11 +27,7 @@ export async function signInAdmin(
 
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
-  const next = String(formData.get("next") ?? "/admin/properties");
-  const destination =
-    next.startsWith("/admin") && !next.startsWith("/admin/login")
-      ? next
-      : "/admin/properties";
+  const destination = adminDestination(String(formData.get("next") ?? ""));
 
   if (!email || !password) {
     return { error: "Email and password are required." };
@@ -44,10 +41,15 @@ export async function signInAdmin(
     return { error: message };
   }
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
     return { error: error.message };
+  }
+
+  if (!data.user || !hasAdminJwtRole(data.user)) {
+    await supabase.auth.signOut({ scope: "local" });
+    return { error: "This account does not have administrator access." };
   }
 
   redirect(destination);

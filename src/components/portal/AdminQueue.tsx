@@ -1,5 +1,7 @@
 "use client";
 
+import { hasAdminJwtRole } from "@/lib/auth/admin";
+
 import { useCallback, useEffect, useState } from "react";
 import {
   approveListing,
@@ -36,19 +38,13 @@ export function AdminQueue() {
 
   const load = useCallback(async () => {
     const client = createSupabaseBrowserClient();
-    const session = await client.auth.getSession();
-    if (!session.data.session) {
+    const { data: { user } } = await client.auth.getUser();
+    if (!user) {
       window.location.href = "/portal/login";
       return;
     }
 
-    const profile = await client
-      .from("profiles")
-      .select("role")
-      .eq("id", session.data.session.user.id)
-      .single();
-
-    if (profile.error || profile.data.role !== "admin") {
+    if (!hasAdminJwtRole(user)) {
       window.location.href = "/portal/dashboard";
       return;
     }

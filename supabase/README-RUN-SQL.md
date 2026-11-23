@@ -18,13 +18,16 @@ Run in this order:
 | 4 | `cms-posts.sql` | Blog / CMS posts |
 | 5 | `tenant-portal.sql` | Tenant applications, rent payments |
 | 6 | `analytics.sql` | Page view analytics for `/admin/analytics` |
-| 7 | `seed-admin.sql` | Promote `hello@adab.ng` to admin **after** that user registers |
+| 7 | `fix-is-admin-jwt.sql` | Protect administrator authorization and profile roles |
+| 8 | `seed-admin.sql` | Promote `hello@adab.ng` to admin **after** that user registers |
 
 Shortcut: `setup-all.sql` chains the main fresh-project scripts (check its header before running).
 
 ---
 
 ## Existing or upgraded project
+
+For the administrator authorization update, verify each legitimate administrator has `app_metadata.role = admin` in Supabase Auth. Use `seed-admin.sql` for the designated account. Apply `fix-is-admin-jwt.sql` to the existing database and deploy the corresponding application changes. Administrators with newly updated metadata should sign in again to refresh their session. Review existing profile roles and audit logs for unexpected administrator assignments or activity.
 
 | # | File | When to run |
 |---|------|-------------|

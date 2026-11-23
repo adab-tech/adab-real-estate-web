@@ -1,13 +1,15 @@
--- Promote the first Adab admin after portal signup.
--- Run once in Supabase SQL Editor AFTER hello@adab.ng has registered and confirmed email.
--- Dashboard: https://supabase.com/dashboard/project/<your-project-id>/sql/new
+-- Run in Supabase SQL Editor after the designated administrator confirms email.
+begin;
 
--- Verify the profile exists (optional):
--- select id, email, role from public.profiles where email = 'hello@adab.ng';
+update auth.users
+set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) || '{"role":"admin"}'::jsonb
+where lower(email) = 'hello@adab.ng' and email_confirmed_at is not null;
 
-update public.profiles
+update public.profiles as profile
 set role = 'admin'
-where email = 'hello@adab.ng';
+from auth.users as account
+where profile.id = account.id
+  and lower(account.email) = 'hello@adab.ng'
+  and account.email_confirmed_at is not null;
 
--- Confirm:
--- select id, email, role from public.profiles where email = 'hello@adab.ng';
+commit;

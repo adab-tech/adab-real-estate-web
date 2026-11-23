@@ -37,17 +37,13 @@ export async function requirePortalUser() {
 
 export async function requirePortalAdmin() {
   const adminSession = await resolveAdminSession();
-  if (adminSession) {
-    const profile = await getPortalProfile(adminSession.user.id);
-    return {
-      user: adminSession.user,
-      profile: profile ?? { role: "admin" as const, full_name: null },
-      verified: true as const,
-      supabase: adminSession.supabase,
-    };
-  }
+  if (!adminSession) return null;
 
-  const session = await requirePortalUser();
-  if (!session?.verified || session.profile?.role !== "admin") return null;
-  return session;
+  const profile = await getPortalProfile(adminSession.user.id);
+  return {
+    user: adminSession.user,
+    profile: { role: "admin" as const, full_name: profile?.full_name ?? null },
+    verified: true as const,
+    supabase: adminSession.supabase,
+  };
 }
